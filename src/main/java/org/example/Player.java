@@ -23,8 +23,32 @@ public class Player implements Serializable{
     Client clientConnection;
     Player[] players = new Player[3];
 
+    Dice[] dice = new Dice[8];
+
     public Player getPlayer() {
         return this;
+    }
+
+    public class Dice implements Serializable{
+        Faces face;
+        public Dice(){
+            Faces face = Faces.DIAMOND;
+        }
+
+        public Dice(int i){
+            Faces face = Faces.values()[i];
+        }
+
+
+    }
+
+    public void roll(String roll){
+        for (int i = 0; i < roll.length(); i++){
+            int d = roll.charAt(i);
+            dice[i].face = Faces.values()[(int) (Math.random() * 6)];
+            System.out.println(dice[i].face);
+        }
+
     }
 
     /*
@@ -61,6 +85,10 @@ public class Player implements Serializable{
 
     public void startGame() {
 
+        roll("1234");
+        while (true){
+
+        }
     }
 
 
@@ -147,6 +175,9 @@ public class Player implements Serializable{
      */
     public Player(String n) {
         name = n;
+        for (int i = 0; i < dice.length; i++){
+            dice[i] = new Dice();
+        }
     }
 
     public static void main(String[] args) {
