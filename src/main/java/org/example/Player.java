@@ -25,6 +25,8 @@ public class Player implements Serializable{
 
     Dice[] dice = new Dice[8];
 
+    Cards card;
+
     public Player getPlayer() {
         return this;
     }
@@ -49,6 +51,11 @@ public class Player implements Serializable{
             System.out.println(dice[i].face);
         }
 
+    }
+
+    public void draw(){
+        card = Cards.values()[(int) (Math.random() * 11)];
+        System.out.println(card);
     }
 
     /*
@@ -86,6 +93,7 @@ public class Player implements Serializable{
     public void startGame() {
 
         roll("1234");
+        draw();
         while (true){
 
         }
