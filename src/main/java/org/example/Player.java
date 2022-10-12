@@ -4,13 +4,6 @@ import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
 
-/**
- * Player object that connects to GameServer
- *
- * @author Sebastian Gadzinski
- * @author Tarnish
- */
-
 
 public class Player implements Serializable{
 
@@ -18,6 +11,7 @@ public class Player implements Serializable{
     @Serial
     private static final long serialVersionUID = 1L;
     public String name;
+    public States state;
 
     int playerId = 0;
     Client clientConnection;
@@ -91,10 +85,8 @@ public class Player implements Serializable{
 
 
     public void startGame() {
-
-        roll("1234");
-        draw();
-        while (true){
+        clientConnection.recieveState();
+        while (state != States.GAMEOVER){
 
         }
     }
@@ -143,9 +135,9 @@ public class Player implements Serializable{
             try {
                 dOut.writeObject(getPlayer());
                 dOut.flush();
-            } catch (IOException ex) {
+            } catch (IOException e) {
                 System.out.println("Player not sent");
-                ex.printStackTrace();
+                e.printStackTrace();
             }
         }
 
@@ -160,6 +152,19 @@ public class Player implements Serializable{
                 System.out.println("String not sent");
                 ex.printStackTrace();
             }
+        }
+
+        public void recieveState(){
+            try{
+                state = (States) dIn.readObject();
+            } catch (ClassNotFoundException e){
+                System.out.println("Class not found");
+                e.printStackTrace();
+            } catch (IOException e){
+                System.out.println("State not recieved");
+                e.printStackTrace();
+            }
+
         }
 
 

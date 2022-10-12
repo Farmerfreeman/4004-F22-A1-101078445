@@ -4,21 +4,18 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-/**
- * Config contains all configuration values needed for this project
- *
- * @author Sebastian Gadzinski
- * @author Tarnish
- */
 
 public class GameServer implements Serializable, Runnable {
 
     @Serial
     private static final long serialVersionUID = 1L;
     public boolean isAcceptingConnections;
+    public States state;
     private int turnsMade;
     private int maxTurns;
     private int currentPlayer = 0;
+
+
 
     Server[] playerServer = new Server[3];
     Player[] players = new Player[3];
@@ -132,6 +129,8 @@ public class GameServer implements Serializable, Runnable {
 
     synchronized public void gameLoop() {
         System.out.println("Inside of gameloop");
+        state = States.PLAYERTURN_1;
+
 
 
     }
@@ -168,6 +167,16 @@ public class GameServer implements Serializable, Runnable {
                     System.out.println("Run failed");
                     ex.printStackTrace();
                 }
+            }
+        }
+
+        public void sendState(States state){
+            try{
+                dOut.writeObject(state);
+                dOut.flush();
+            } catch (Exception e){
+                System.out.println("Failed to send state.");
+                e.printStackTrace();
             }
         }
 
