@@ -12,6 +12,23 @@ public class PirateTest {
     @DisplayName("Dice Roll")
     void rollDice(){
         Player p = new Player("Test");
+        p.roll("12368");
+
+
+        for (Player.Dice die : p.dice){
+            for (Faces f : Faces.values()){
+                if (f.equals(die.face)){
+                    assertEquals(f, die.face);
+                }
+            }
+
+        }
+    }
+
+    @Test
+    @DisplayName("All Dice Roll")
+    void rollAllDice(){
+        Player p = new Player("Test");
         p.roll("12345678");
 
 
