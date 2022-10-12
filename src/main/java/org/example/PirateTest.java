@@ -41,4 +41,17 @@ public class PirateTest {
 
         }
     }
+
+    @Test
+    @DisplayName("Draw a fortune card")
+    void drawCard(){
+        Player p = new Player("Test");
+        p.draw();
+
+        for (Cards c : Cards.values()){
+            if (c.equals(p.card)){
+                assertEquals(c, p.card);
+            }
+        }
+    }
 }
