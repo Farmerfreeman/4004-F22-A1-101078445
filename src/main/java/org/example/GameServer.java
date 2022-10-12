@@ -4,12 +4,6 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-/**
- * Config contains all configuration values needed for this project
- *
- * @author Sebastian Gadzinski
- * @author Tarnish
- */
 
 public class GameServer implements Serializable, Runnable {
 

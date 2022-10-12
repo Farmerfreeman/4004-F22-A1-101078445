@@ -4,13 +4,6 @@ import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
 
-/**
- * Player object that connects to GameServer
- *
- * @author Sebastian Gadzinski
- * @author Tarnish
- */
-
 
 public class Player implements Serializable{
 
