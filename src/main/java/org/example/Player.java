@@ -52,6 +52,21 @@ public class Player implements Serializable{
         System.out.println(card);
     }
 
+    public boolean isPlayerTurn(){
+        switch (playerId){
+            case 1:
+                if (state == States.PLAYERTURN_1) return true;
+                else return false;
+            case 2:
+                if (state == States.PLAYERTURN_2) return true;
+                else return false;
+            case 3:
+                if (state == States.PLAYERTURN_3) return true;
+                else return false;
+        }
+        return false;
+    }
+
     /*
      * ----------Networking Code------------
      */
@@ -140,6 +155,8 @@ public class Player implements Serializable{
                 e.printStackTrace();
             }
         }
+
+
 
         /*
          * function to send strings

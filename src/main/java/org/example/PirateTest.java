@@ -59,11 +59,12 @@ public class PirateTest {
     @DisplayName("Check if it's players turn or not")
     void isPlayersTurn(){
         Player p = new Player("Test");
+        p.playerId = 1;
         p.state = States.PLAYERTURN_2;
 
         assertEquals(p.isPlayerTurn(), false);
         p.state = States.PLAYERTURN_1;
-        assertEquals(p.isPlayerTurn, true);
+        assertEquals(p.isPlayerTurn(), true);
     }
 
 
