@@ -100,10 +100,29 @@ public class Player implements Serializable{
 
 
     public void startGame() {
-        clientConnection.recieveState();
-        while (state != States.GAMEOVER){
-
+        players = clientConnection.receivePlayer();
+        System.out.println(String.format("Three players have connected: %s, %s and %s", players[0].name, players[1].name, players[2].name));
+        System.out.println("The game will now begin.");
+        while (true){
+            clientConnection.recieveState();
+            if (state == States.GAMEOVER) break;
+            if (isPlayerTurn()){
+                System.out.println("It is your turn!");
+            }
+            else{
+                if (state == States.PLAYERTURN_1){
+                    System.out.println(String.format("%s is currently playing. Please wait...", players[0].name));
+                }
+                else if (state == States.PLAYERTURN_2){
+                    System.out.println(String.format("%s is currently playing. Please wait...", players[1].name));
+                }
+                else if (state == States.PLAYERTURN_3){
+                    System.out.println(String.format("%s is currently playing. Please wait...", players[2].name));
+                }
+            }
         }
+
+
     }
 
 
@@ -154,6 +173,27 @@ public class Player implements Serializable{
                 System.out.println("Player not sent");
                 e.printStackTrace();
             }
+        }
+
+        public Player[] receivePlayer() {
+            Player[] pl = new Player[3];
+            try {
+                Player p = (Player) dIn.readObject();
+                pl[0] = p;
+                p = (Player) dIn.readObject();
+                pl[1] = p;
+                p = (Player) dIn.readObject();
+                pl[2] = p;
+                return pl;
+
+            } catch (IOException e) {
+                System.out.println("Score sheet not received");
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                System.out.println("class not found");
+                e.printStackTrace();
+            }
+            return pl;
         }
 
 

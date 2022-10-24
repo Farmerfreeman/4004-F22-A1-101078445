@@ -129,8 +129,13 @@ public class GameServer implements Serializable, Runnable {
 
     synchronized public void gameLoop() {
         System.out.println("Inside of gameloop");
+        playerServer[0].sendPlayers(players);
+        playerServer[1].sendPlayers(players);
+        playerServer[2].sendPlayers(players);
         state = States.PLAYERTURN_1;
-
+        playerServer[0].sendState(state);
+        playerServer[1].sendState(state);
+        playerServer[2].sendState(state);
 
 
     }
@@ -152,6 +157,20 @@ public class GameServer implements Serializable, Runnable {
             } catch (IOException ex) {
                 System.out.println("Server Connection failed");
             }
+        }
+
+        public void sendPlayers(Player[] pl) {
+            try {
+                for (Player p : pl) {
+                    dOut.writeObject(p);
+                    dOut.flush();
+                }
+
+            } catch (IOException ex) {
+                System.out.println("Score sheet not sent");
+                ex.printStackTrace();
+            }
+
         }
 
         /*
