@@ -70,7 +70,7 @@ public class Player implements Serializable{
     }
 
     public int scoreDice(){
-        return game.scoreDice(dice);
+        return game.scoreDice(dice, card);
     }
 
     /*
