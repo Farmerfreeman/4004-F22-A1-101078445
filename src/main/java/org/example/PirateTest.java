@@ -67,5 +67,16 @@ public class PirateTest {
         assertEquals(p.isPlayerTurn(), true);
     }
 
+    @Test
+    @DisplayName("A-TEST ROW 45: If a player rolls 3+ skulls, they die and score 0")
+    void row45(){
+        Player p = new Player("test");
+        p.roll("12345678");
+        p.dice[0].face = Faces.SKULL;
+        p.dice[1].face = Faces.SKULL;
+        p.dice[2].face = Faces.SKULL;
+        int score = p.scoreDice();
+        assertEquals(0, score);
+    }
 
 }
