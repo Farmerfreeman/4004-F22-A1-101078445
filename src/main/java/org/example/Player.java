@@ -13,6 +13,8 @@ public class Player implements Serializable{
     public String name;
     public States state;
 
+    Game game = new Game();
+
     int playerId = 0;
     Client clientConnection;
     Player[] players = new Player[3];
@@ -31,8 +33,8 @@ public class Player implements Serializable{
             Faces face = Faces.DIAMOND;
         }
 
-        public Dice(int i){
-            Faces face = Faces.values()[i];
+        public Dice(Faces i){
+            face = i;
         }
 
 
@@ -65,6 +67,10 @@ public class Player implements Serializable{
                 else return false;
         }
         return false;
+    }
+
+    public int scoreDice(){
+        return game.scoreDice(dice);
     }
 
     /*
