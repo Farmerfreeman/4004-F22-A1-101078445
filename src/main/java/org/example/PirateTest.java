@@ -699,7 +699,7 @@ public class PirateTest {
         p.dice[5].face = Faces.SKULL;
         p.dice[6].face = Faces.MONKEY;
         p.dice[7].face = Faces.MONKEY;
-        p.dice[5] = p.game.useSorcress(p.dice[5]);
+        p.dice[5] = p.game.useSorcress(p.dice[5], p.card);
         p.dice[5].face = Faces.MONKEY;
         int score = p.scoreDice();
         assertEquals(500, score);
@@ -722,7 +722,7 @@ public class PirateTest {
         p.dice[5].face = Faces.PARROT;
         p.dice[6].face = Faces.SWORD;
         p.dice[7].face = Faces.SWORD;
-        p.dice[0] = p.game.useSorcress(p.dice[0]);
+        p.dice[0] = p.game.useSorcress(p.dice[0], p.card);
         p.dice[0].face = Faces.PARROT;
         p.game.reRollNotHeld(p.dice, held);
         p.dice[6].face = Faces.PARROT;
