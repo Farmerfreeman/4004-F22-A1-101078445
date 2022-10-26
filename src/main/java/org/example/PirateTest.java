@@ -367,4 +367,28 @@ public class PirateTest {
         assertEquals(800, score);
     }
 
+    @Test
+    @DisplayName("A-TEST ROW 59")
+    void row59() {
+        Player p = new Player("test");
+        p.draw();
+        String[] held = {"1", "2", "3", "6", "7", "8"};
+        p.card = Cards.CAPTAIN;
+        p.game.rollDice(p.dice);
+        p.dice[0].face = Faces.SKULL;
+        p.dice[1].face = Faces.COIN;
+        p.dice[2].face = Faces.COIN;
+        p.dice[3].face = Faces.PARROT;
+        p.dice[4].face = Faces.PARROT;
+        p.dice[5].face = Faces.SWORD;
+        p.dice[6].face = Faces.SWORD;
+        p.dice[7].face = Faces.SWORD;
+        p.game.reRollNotHeld(p.dice, held);
+        p.dice[3].face = Faces.COIN;
+        p.dice[4].face = Faces.SWORD;
+
+        int score = p.scoreDice();
+        assertEquals(1200, score);
+    }
+
 }
