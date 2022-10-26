@@ -75,7 +75,7 @@ public class Game implements Serializable {
         }
         score += dict.get(Faces.DIAMOND) * 100;
         score += dict.get(Faces.COIN) * 100;
-
+        System.out.println("Player scored " + score);
         return score;
 
     }
