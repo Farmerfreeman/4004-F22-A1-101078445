@@ -129,13 +129,39 @@ public class GameServer implements Serializable, Runnable {
 
     synchronized public void gameLoop() {
         System.out.println("Inside of gameloop");
-        playerServer[0].sendPlayers(players);
-        playerServer[1].sendPlayers(players);
-        playerServer[2].sendPlayers(players);
-        state = States.PLAYERTURN_1;
-        playerServer[0].sendState(state);
-        playerServer[1].sendState(state);
-        playerServer[2].sendState(state);
+        try {
+            playerServer[0].sendPlayers(players);
+            playerServer[1].sendPlayers(players);
+            playerServer[2].sendPlayers(players);
+            state = States.PLAYERTURN_1;
+            while (state != States.GAMEOVER){
+
+
+                playerServer[0].sendState(state);
+                playerServer[1].sendState(state);
+                playerServer[2].sendState(state);
+
+                players[currentPlayer].setScore(playerServer[currentPlayer].recieveScore());
+                System.out.println(String.format("Player %s completed their turn and recieved a score of %d", players[currentPlayer].name, players[currentPlayer].score));
+
+                currentPlayer++;
+                switch (state){
+                    case PLAYERTURN_1:
+                        state = States.PLAYERTURN_2;
+                        break;
+                    case PLAYERTURN_2:
+                        state = States.PLAYERTURN_3;
+                        break;
+                }
+                if (currentPlayer == 3) {
+                    currentPlayer = 0;
+                    state = States.PLAYERTURN_1;
+                }
+            }
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
 
 
     }
@@ -171,6 +197,16 @@ public class GameServer implements Serializable, Runnable {
                 ex.printStackTrace();
             }
 
+        }
+
+        public int recieveScore(){
+            try{
+                return dIn.readInt();
+            }catch (IOException e){
+                System.out.println(String.format("Did not recieve score from %s", players[currentPlayer].name));
+                e.printStackTrace();
+            }
+            return -1;
         }
 
         /*

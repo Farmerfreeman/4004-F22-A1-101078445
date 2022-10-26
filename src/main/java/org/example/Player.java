@@ -2,6 +2,7 @@ package org.example;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.Dictionary;
 import java.util.Scanner;
 
 
@@ -12,6 +13,8 @@ public class Player implements Serializable{
     private static final long serialVersionUID = 1L;
     public String name;
     public States state;
+
+    int score = 0;
 
     Game game = new Game();
 
@@ -26,6 +29,8 @@ public class Player implements Serializable{
     public Player getPlayer() {
         return this;
     }
+
+    public void setScore(int score){this.score = score;}
 
     public class Dice implements Serializable{
         Faces face;
@@ -69,6 +74,21 @@ public class Player implements Serializable{
         return false;
     }
 
+    public int isDead(boolean firstRoll){
+        Dictionary<Faces, Integer> dict = game.countFaces(dice);
+        dict = game.handleFortuneCard(dict, card);
+        if (dict.get(Faces.SKULL) >= 3){
+            if (dict.get(Faces.SKULL) >= 4 && firstRoll){
+                sendStateToServer(States.SKULL_ISLAND);
+                return 2;
+            }
+            System.out.println("You have died. You will receive no points this round.");
+            return 1;
+        }
+        else return 0;
+
+    }
+
     public int scoreDice(){
         return game.scoreDice(dice, card);
     }
@@ -81,6 +101,10 @@ public class Player implements Serializable{
     //region Client Methods
     public void sendStringToServer(String str) {
         clientConnection.sendString(str);
+    }
+
+    public void sendStateToServer(States state){
+        clientConnection.sendState(state);
     }
 
     public void connectToClient() {
@@ -109,12 +133,17 @@ public class Player implements Serializable{
         players = clientConnection.receivePlayer();
         System.out.println(String.format("Three players have connected: %s, %s and %s", players[0].name, players[1].name, players[2].name));
         System.out.println("The game will now begin.");
+
+
         while (true){
             clientConnection.recieveState();
             if (state == States.GAMEOVER) break;
-            if (isPlayerTurn()){
-                System.out.println("It is your turn!");
-            }
+                if (isPlayerTurn()){
+                    System.out.println("It is your turn!");
+                    this.score = playTurn();
+                    System.out.println(String.format("You scored %d", score));
+                    clientConnection.sendScore();
+                }
             else{
                 if (state == States.PLAYERTURN_1){
                     System.out.println(String.format("%s is currently playing. Please wait...", players[0].name));
@@ -129,6 +158,51 @@ public class Player implements Serializable{
         }
 
 
+    }
+
+    public int playTurn(){
+        Scanner scan = new Scanner(System.in);
+        int score = 0;
+        dice = game.rollDice(dice);
+        draw();
+        System.out.println(String.format("You have rolled %s, %s, %s, %s, %s, %s, %s and %s", dice[0].face, dice[1].face, dice[2].face, dice[3].face, dice[4].face, dice[5].face, dice[6].face, dice[7].face));
+        System.out.println(String.format("You have drawn the %s fortune card.", card.name()));
+        int dead = isDead(true);
+        if (dead == 2){
+            System.out.println("You have reached skull island!");
+
+        }
+        else if (dead == 1){
+
+            return 0;
+        }
+        while (true) {
+            System.out.println("Select an action:");
+            System.out.println("(1) Score with currently held dice.");
+            System.out.println("(2) Choose specific dice to reroll.");
+            int act = scan.nextInt();
+            switch (act){
+                case 1:
+                    return scoreDice();
+                case 2:
+                    while (true) {
+                        System.out.println("Select which die you wish to hold (Held dice are not rerolled): (1,2,4..)");
+                        String[] die = (scan.next()).replaceAll("\\s", "").split(",");
+                        if (die.length <= 1) {
+                            System.out.println("You must reroll at least two dice.");
+                            continue;
+                        }
+                        else{
+                            dice = game.reRollNotHeld(dice, die);
+                            break;
+                        }
+                    }
+
+                    System.out.println(String.format("You have now rolled %s, %s, %s, %s, %s, %s, %s and %s", dice[0].face, dice[1].face, dice[2].face, dice[3].face, dice[4].face, dice[5].face, dice[6].face, dice[7].face));
+            }
+
+            return score;
+        }
     }
 
 
@@ -217,6 +291,15 @@ public class Player implements Serializable{
             }
         }
 
+        public void sendState(States state){
+            try{
+                dOut.writeObject(state);
+            }catch (IOException e){
+                System.out.println("State could not be sent.");
+                e.printStackTrace();
+            }
+        }
+
         public void recieveState(){
             try{
                 state = (States) dIn.readObject();
@@ -228,6 +311,15 @@ public class Player implements Serializable{
                 e.printStackTrace();
             }
 
+        }
+
+        public void sendScore(){
+            try{
+                dOut.writeInt(score);
+            }catch (IOException e){
+                System.out.println("Could not send score.");
+                e.printStackTrace();
+            }
         }
 
 
