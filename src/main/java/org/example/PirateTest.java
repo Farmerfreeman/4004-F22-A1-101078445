@@ -303,7 +303,7 @@ public class PirateTest {
     }
 
     @Test
-    @DisplayName("A-TEST ROW 55: 3d, 2sk, 1m, 1sw, 1p score 500")
+    @DisplayName("A-TEST ROW 56")
     void row56(){
         Player p = new Player("test");
         p.draw();
@@ -320,6 +320,28 @@ public class PirateTest {
 
         int score = p.scoreDice();
         assertEquals(700, score);
+    }
+
+    @Test
+    @DisplayName("A-TEST ROW 57")
+    void row57() {
+        Player p = new Player("test");
+        p.draw();
+
+        p.card = Cards.GOLD;
+        p.game.rollDice(p.dice);
+        p.dice[0].face = Faces.SWORD;
+        p.dice[1].face = Faces.SWORD;
+        p.dice[2].face = Faces.SWORD;
+        p.dice[3].face = Faces.PARROT;
+        p.dice[4].face = Faces.PARROT;
+        p.dice[5].face = Faces.PARROT;
+        p.dice[6].face = Faces.PARROT;
+        p.dice[7].face = Faces.SKULL;
+
+        int score = p.scoreDice();
+        assertEquals(400, score);
+
     }
 
 
