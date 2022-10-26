@@ -260,6 +260,27 @@ public class PirateTest {
 
     }
 
+    @Test
+    @DisplayName("A-TEST ROW 54")
+    void row54() {
+        Player p = new Player("test");
+        p.draw();
+        p.card = Cards.GOLD;
+        p.game.rollDice(p.dice);
+        p.dice[0].face = Faces.MONKEY;
+        p.dice[1].face = Faces.MONKEY;
+        p.dice[2].face = Faces.MONKEY;
+        p.dice[3].face = Faces.SWORD;
+        p.dice[4].face = Faces.SWORD;
+        p.dice[5].face = Faces.SWORD;
+        p.dice[6].face = Faces.SKULL;
+        p.dice[7].face = Faces.SKULL;
+
+
+        int score = p.scoreDice();
+        assertEquals(300, score);
+
+    }
 
 
 
