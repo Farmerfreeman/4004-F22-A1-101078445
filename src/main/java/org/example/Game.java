@@ -47,7 +47,10 @@ public class Game implements Serializable {
         Dictionary<Faces, Integer> dict = countFaces(dice);
         dict = handleFortuneCard(dict, card);
         //If the player has 3 or more skulls they are dead and score 0
-        if (dict.get(Faces.SKULL) >= 3) return 0;
+        if (dict.get(Faces.SKULL) >= 3){
+            System.out.println("You died and will score 0 this round.");
+            return 0;
+        }
 
         for (Faces f : Faces.values()) {
             if (f == Faces.SKULL) continue;
