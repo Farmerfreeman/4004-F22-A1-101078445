@@ -140,8 +140,11 @@ public class Game implements Serializable {
         return dict;
     }
 
-    public Player.Dice useSorcress(Player.Dice die){
-        die.face = Faces.values()[(int) (Math.random() * 6)];
+    public Player.Dice useSorcress(Player.Dice die, Cards card){
+        if (card == Cards.SORCERESS) {
+            die.face = Faces.values()[(int) (Math.random() * 6)];
+        }
         return die;
+
     }
 }

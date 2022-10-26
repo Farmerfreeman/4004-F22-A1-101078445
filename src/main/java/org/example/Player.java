@@ -184,7 +184,7 @@ public class Player implements Serializable{
                         case "Y":
                             for (int i = 0; i <= dice.length; i++){
                                 if (dice[i].face == Faces.SKULL){
-                                    dice[i] = game.useSorcress(dice[i]);
+                                    dice[i] = game.useSorcress(dice[i], card);
                                     System.out.println("You rerolled a skull into a" + dice[i].face);
                                     break;
                                 }
@@ -261,7 +261,7 @@ public class Player implements Serializable{
 
                     for (int i = 0; i <= dice.length; i++) {
                         if (dice[i].face == Faces.SKULL) {
-                            dice[i] = game.useSorcress(dice[i]);
+                            dice[i] = game.useSorcress(dice[i], card);
                             System.out.println("You rerolled a skull into a" + dice[i].face);
                             sorcUsed = true;
                             break;
