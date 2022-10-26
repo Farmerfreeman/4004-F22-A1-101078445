@@ -94,6 +94,10 @@ public class PirateTest {
         assertEquals(3, dict.get(Faces.SWORD));
     }
 
+    /*
+    ACCEPTANCE TESTS:
+    Below are all acceptance tests, starting with row 45
+    */
     @Test
     @DisplayName("A-TEST ROW 45: If a player rolls 3+ skulls, they die and score 0")
     void row45(){
@@ -667,6 +671,36 @@ public class PirateTest {
 
         int score = p.scoreDice();
         assertEquals(600, score);
+    }
+
+    /*
+    PART 2
+    Below are Misc fortune card and Full Chest Acceptance tests
+     */
+    @Test
+    @DisplayName("A-TEST ROW 77")
+    void row77() {
+        Player p = new Player("test");
+        p.draw();
+        String[] held = {"1","2", "3", "4", "5"};
+
+        p.card = Cards.SORCERESS;
+        p.game.rollDice(p.dice);
+        p.dice[0].face = Faces.DIAMOND;
+        p.dice[1].face = Faces.DIAMOND;
+        p.dice[2].face = Faces.SWORD;
+        p.dice[3].face = Faces.MONKEY;
+        p.dice[4].face = Faces.COIN;
+        p.dice[5].face = Faces.PARROT;
+        p.dice[6].face = Faces.PARROT;
+        p.dice[7].face = Faces.PARROT;
+        p.game.reRollNotHeld(p.dice, held);
+        p.dice[5].face = Faces.SKULL;
+        p.dice[6].face = Faces.MONKEY;
+        p.dice[7].face = Faces.MONKEY;
+        p.dice[5] = p.game.useSorcress(p.dice[5]);
+        int score = p.scoreDice();
+        assertEquals(500, score);
     }
 
 
