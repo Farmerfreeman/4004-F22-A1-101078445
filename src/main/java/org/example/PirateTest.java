@@ -98,6 +98,8 @@ public class PirateTest {
     @DisplayName("A-TEST ROW 45: If a player rolls 3+ skulls, they die and score 0")
     void row45(){
         Player p = new Player("test");
+        p.draw();
+        p.card = Cards.GOLD;
         p.game.rollDice(p.dice);
         p.dice[0].face = Faces.SKULL;
         p.dice[1].face = Faces.SKULL;
