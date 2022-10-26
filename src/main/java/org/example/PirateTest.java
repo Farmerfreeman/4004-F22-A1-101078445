@@ -549,7 +549,7 @@ public class PirateTest {
     }
 
     @Test
-    @DisplayName("A-TEST ROW 67")
+    @DisplayName("A-TEST ROW 68")
     void row68() {
         Player p = new Player("test");
         p.draw();
@@ -570,6 +570,31 @@ public class PirateTest {
         p.dice[7].face = Faces.DIAMOND;
         int score = p.scoreDice();
         assertEquals(400, score);
+    }
+
+    @Test
+    @DisplayName("A-TEST ROW 69")
+    void row69() {
+        Player p = new Player("test");
+        p.draw();
+        String[] held = {"3", "4", "5", "6", "7","8" };
+
+        p.card = Cards.GOLD;
+        p.game.rollDice(p.dice);
+        p.dice[0].face = Faces.MONKEY;
+        p.dice[1].face = Faces.MONKEY;
+        p.dice[2].face = Faces.SKULL;
+        p.dice[3].face = Faces.SKULL;
+        p.dice[4].face = Faces.SWORD;
+        p.dice[5].face = Faces.SWORD;
+        p.dice[6].face = Faces.DIAMOND;
+        p.dice[7].face = Faces.PARROT;
+        p.game.reRollNotHeld(p.dice, held);
+        p.dice[0].face = Faces.DIAMOND;
+        p.dice[1].face = Faces.DIAMOND;
+        int score = p.scoreDice();
+        assertEquals(500, score);
+
     }
 
 
