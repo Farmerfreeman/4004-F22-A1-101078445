@@ -72,11 +72,17 @@ public class Game implements Serializable {
                         break;
                     case 8: score += 4000;
                         break;
+                    case 9: score += 4000;
+                        break;
                 }
             }
         }
         score += dict.get(Faces.DIAMOND) * 100;
         score += dict.get(Faces.COIN) * 100;
+
+        if (isFullChest(dict) && dict.get(Faces.SKULL) == 0){
+            score += 500;
+        }
 
         if (captain) score = score*2;
         System.out.println("Player scored " + score);
@@ -101,6 +107,19 @@ public class Game implements Serializable {
             dict.put(d.face, dict.get(d.face) + 1);
         }
         return dict;
+    }
+
+    public boolean isFullChest(Dictionary<Faces, Integer> dict){
+        if (dict.get(Faces.SKULL) > 0) return false;
+
+        if (dict.get(Faces.SWORD) == 0 || dict.get(Faces.SWORD) >= 3){
+            if (dict.get(Faces.MONKEY) == 0 || dict.get(Faces.MONKEY) >= 3){
+                if (dict.get(Faces.PARROT) == 0 || dict.get(Faces.PARROT) >= 3){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public Dictionary<Faces, Integer> handleFortuneCard(Dictionary<Faces, Integer> dict, Cards card){
