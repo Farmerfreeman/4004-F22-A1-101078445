@@ -135,6 +135,11 @@ public class Game implements Serializable {
                 break;
             case CAPTAIN: captain = true;
                 break;
+            case MONKEY_BUSINESS:
+                int monkeys = dict.get(Faces.MONKEY);
+                dict.put(Faces.PARROT, dict.get(Faces.PARROT) + monkeys);
+                dict.put(Faces.MONKEY, 0);
+                break;
 
         }
         return dict;
