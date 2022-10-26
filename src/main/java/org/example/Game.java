@@ -1,12 +1,41 @@
 package org.example;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
 public class Game implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+
+    public Player.Dice[] rollDice(Player.Dice[] dice) {
+
+        for (int i = 0; i < 8; i++) {
+            dice[i].face = Faces.values()[(int) (Math.random() * 6 )];
+        }
+        return dice;
+    }
+
+    public Player.Dice[] rerollDie(Player.Dice[] dieRoll, int i) {
+        dieRoll[i].face = Faces.values()[(int) (Math.random() * 6)];
+        return dieRoll;
+    }
+
+    public Player.Dice[] reRollNotHeld(Player.Dice[] dieRoll, String[] held) {
+        ArrayList<Integer> rolls = new ArrayList<Integer>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7));
+        for (String s : held) {
+            int rem = Integer.parseInt(s) - 1;
+            rolls.remove(rolls.indexOf(rem));
+        }
+        // remove the index from the ones to be rolled
+        for (int s : rolls) {
+            dieRoll = rerollDie(dieRoll, (s));
+        }
+        return dieRoll;
+    }
 
     public int scoreDice(Player.Dice[] dice, Cards card){
         int score = 0;
@@ -16,7 +45,6 @@ public class Game implements Serializable {
         dict = handleFortuneCard(dict, card);
         //If the player has 3 or more skulls they are dead and score 0
         if (dict.get(Faces.SKULL) >= 3) return 0;
-        //Remove the skulls so they aren't scored like the others.
 
         for (Faces f : Faces.values()) {
             if (f == Faces.SKULL) continue;
@@ -48,7 +76,7 @@ public class Game implements Serializable {
 
 
 
-    private Dictionary<Faces, Integer> countFaces (Player.Dice[] dice){
+    public Dictionary<Faces, Integer> countFaces (Player.Dice[] dice){
         Dictionary<Faces, Integer> dict = new Hashtable();
         dict.put(Faces.COIN, 0);
         dict.put(Faces.DIAMOND, 0);
@@ -64,13 +92,16 @@ public class Game implements Serializable {
         return dict;
     }
 
-    private Dictionary<Faces, Integer> handleFortuneCard(Dictionary<Faces, Integer> dict, Cards card){
+    public Dictionary<Faces, Integer> handleFortuneCard(Dictionary<Faces, Integer> dict, Cards card){
 
         switch (card){
             case GOLD: dict.put(Faces.COIN, dict.get(Faces.COIN) + 1);
                 break;
             case DIAMOND: dict.put(Faces.DIAMOND, dict.get(Faces.DIAMOND) + 1);
                 break;
+            case SKULL_1: dict.put(Faces.SKULL, dict.get(Faces.SKULL) + 1);
+                break;
+            case SKULL_2: dict.put(Faces.SKULL, dict.get(Faces.SKULL) + 2);
         }
         return dict;
     }
