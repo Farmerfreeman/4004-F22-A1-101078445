@@ -15,12 +15,15 @@ public class Game implements Serializable {
 
         for (int i = 0; i < 8; i++) {
             dice[i].face = Faces.values()[(int) (Math.random() * 6 )];
+            System.out.println(dice[i].face);
         }
+
         return dice;
     }
 
     public Player.Dice[] rerollDie(Player.Dice[] dieRoll, int i) {
         dieRoll[i].face = Faces.values()[(int) (Math.random() * 6)];
+        System.out.println(dieRoll[i].face);
         return dieRoll;
     }
 

@@ -205,6 +205,51 @@ public class Player implements Serializable{
         }
     }
 
+    public int playTurn(Scanner scan){
+
+        int score = 0;
+        dice = game.rollDice(dice);
+        draw();
+        System.out.println(String.format("You have rolled %s, %s, %s, %s, %s, %s, %s and %s", dice[0].face, dice[1].face, dice[2].face, dice[3].face, dice[4].face, dice[5].face, dice[6].face, dice[7].face));
+        System.out.println(String.format("You have drawn the %s fortune card.", card.name()));
+        int dead = isDead(true);
+        if (dead == 2){
+            System.out.println("You have reached skull island!");
+
+        }
+        else if (dead == 1){
+
+            return 0;
+        }
+        while (true) {
+            System.out.println("Select an action:");
+            System.out.println("(1) Score with currently held dice.");
+            System.out.println("(2) Choose specific dice to reroll.");
+            int act = scan.nextInt();
+            switch (act){
+                case 1:
+                    return scoreDice();
+                case 2:
+                    while (true) {
+                        System.out.println("Select which die you wish to hold (Held dice are not rerolled): (1,2,4..)");
+                        String[] die = (scan.next()).replaceAll("\\s", "").split(",");
+                        if (die.length <= 1) {
+                            System.out.println("You must reroll at least two dice.");
+                            continue;
+                        }
+                        else{
+                            dice = game.reRollNotHeld(dice, die);
+                            break;
+                        }
+                    }
+
+                    System.out.println(String.format("You have now rolled %s, %s, %s, %s, %s, %s, %s and %s", dice[0].face, dice[1].face, dice[2].face, dice[3].face, dice[4].face, dice[5].face, dice[6].face, dice[7].face));
+            }
+
+            return score;
+        }
+    }
+
 
 
     private class Client {
