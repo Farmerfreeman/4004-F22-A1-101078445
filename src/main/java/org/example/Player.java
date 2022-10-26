@@ -26,6 +26,8 @@ public class Player implements Serializable{
 
     Cards card;
 
+    boolean sorcUsed = false;
+
     public Player getPlayer() {
         return this;
     }
@@ -173,13 +175,68 @@ public class Player implements Serializable{
 
         }
         else if (dead == 1){
+            //This code handles if a player would have died on roll 1, but held a Sorc card.
+            if (card == Cards.SORCERESS){
+                while (true){
+                    System.out.println("You have died, but you have a Sorcress card! Would you like to use it to reroll a skull? Y/N");
+                    String choice = scan.nextLine();
+                    switch (choice) {
+                        case "Y":
+                            for (int i = 0; i <= dice.length; i++){
+                                if (dice[i].face == Faces.SKULL){
+                                    dice[i] = game.useSorcress(dice[i]);
+                                    System.out.println("You rerolled a skull into a" + dice[i].face);
+                                    break;
+                                }
+                            }
+                            dead = isDead(false);
+                            if(dead == 1){
+                                System.out.println("Bad luck.. You got another skull and died.");
+                                break;
+                            }
+                            else{
 
+                                while (true) {
+                                    System.out.println("Select an action:");
+                                    System.out.println("(1) Score with currently held dice.");
+                                    System.out.println("(2) Choose specific dice to reroll.");
+                                    int act = scan.nextInt();
+                                    switch (act){
+                                        case 1:
+                                            return scoreDice();
+                                        case 2:
+                                            while (true) {
+                                                System.out.println("Select which die you wish to hold (Held dice are not rerolled): (1,2,4..)");
+                                                String[] die = (scan.next()).replaceAll("\\s", "").split(",");
+                                                if (die.length <= 1) {
+                                                    System.out.println("You must reroll at least two dice.");
+                                                    continue;
+                                                }
+                                                else{
+                                                    dice = game.reRollNotHeld(dice, die);
+                                                    break;
+                                                }
+                                            }
+
+                                            System.out.println(String.format("You have now rolled %s, %s, %s, %s, %s, %s, %s and %s", dice[0].face, dice[1].face, dice[2].face, dice[3].face, dice[4].face, dice[5].face, dice[6].face, dice[7].face));
+                                    }
+
+                                    return score;
+                                }
+                            }
+                    }
+                }
+            }
             return 0;
         }
         while (true) {
+            //TODO: Check for player death on each roll
             System.out.println("Select an action:");
             System.out.println("(1) Score with currently held dice.");
             System.out.println("(2) Choose specific dice to reroll.");
+            if (card == Cards.SORCERESS && sorcUsed == false){
+                System.out.println("(3) Reroll a skull using your Sorcress card.");
+            }
             int act = scan.nextInt();
             switch (act){
                 case 1:
@@ -199,6 +256,22 @@ public class Player implements Serializable{
                     }
 
                     System.out.println(String.format("You have now rolled %s, %s, %s, %s, %s, %s, %s and %s", dice[0].face, dice[1].face, dice[2].face, dice[3].face, dice[4].face, dice[5].face, dice[6].face, dice[7].face));
+                    break;
+                case 3:
+
+                    for (int i = 0; i <= dice.length; i++) {
+                        if (dice[i].face == Faces.SKULL) {
+                            dice[i] = game.useSorcress(dice[i]);
+                            System.out.println("You rerolled a skull into a" + dice[i].face);
+                            sorcUsed = true;
+                            break;
+                        }
+                    }
+                    if (sorcUsed == false){
+                        System.out.println("You do not currently have a skull to reroll.");
+                        continue;
+                    }
+                    break;
             }
 
             return score;
