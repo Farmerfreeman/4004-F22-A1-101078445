@@ -316,6 +316,7 @@ public class Player implements Serializable{
         public void sendScore(){
             try{
                 dOut.writeInt(score);
+                dOut.flush();
             }catch (IOException e){
                 System.out.println("Could not send score.");
                 e.printStackTrace();

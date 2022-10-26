@@ -11,8 +11,7 @@ public class GameServer implements Serializable, Runnable {
     private static final long serialVersionUID = 1L;
     public boolean isAcceptingConnections;
     public States state;
-    private int turnsMade;
-    private int maxTurns;
+
     private int currentPlayer = 0;
 
 
@@ -48,8 +47,7 @@ public class GameServer implements Serializable, Runnable {
     public GameServer() {
         System.out.println("Starting game server");
         numPlayers = 0;
-        turnsMade = 0;
-        maxTurns = 13;
+
         // initialize the players list with new players
         for (int i = 0; i < players.length; i++) {
             players[i] = new Player(" ");
@@ -69,8 +67,7 @@ public class GameServer implements Serializable, Runnable {
      */
     synchronized public String hardReset() throws IOException {
         numPlayers = 0;
-        turnsMade = 0;
-        maxTurns = 13;
+
         currentPlayer = 0;
         for (int i = 0; i < players.length; i++) {
             players[i] = new Player(" ");
