@@ -594,7 +594,6 @@ public class PirateTest {
         p.dice[1].face = Faces.DIAMOND;
         int score = p.scoreDice();
         assertEquals(500, score);
-
     }
 
 
