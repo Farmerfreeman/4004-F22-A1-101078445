@@ -546,6 +546,7 @@ public class PirateTest {
         p.dice[7].face = Faces.MONKEY;
         int score = p.scoreDice();
         assertEquals(4600, score);
+
     }
 
 
