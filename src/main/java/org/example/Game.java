@@ -10,6 +10,7 @@ public class Game implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    boolean captain = false;
 
     public Player.Dice[] rollDice(Player.Dice[] dice) {
 
@@ -44,6 +45,7 @@ public class Game implements Serializable {
         int score = 0;
 
 
+
         Dictionary<Faces, Integer> dict = countFaces(dice);
         dict = handleFortuneCard(dict, card);
         //If the player has 3 or more skulls they are dead and score 0
@@ -75,7 +77,10 @@ public class Game implements Serializable {
         }
         score += dict.get(Faces.DIAMOND) * 100;
         score += dict.get(Faces.COIN) * 100;
+
+        if (captain) score = score*2;
         System.out.println("Player scored " + score);
+        captain = false;
         return score;
 
     }
@@ -108,6 +113,10 @@ public class Game implements Serializable {
             case SKULL_1: dict.put(Faces.SKULL, dict.get(Faces.SKULL) + 1);
                 break;
             case SKULL_2: dict.put(Faces.SKULL, dict.get(Faces.SKULL) + 2);
+                break;
+            case CAPTAIN: captain = true;
+                break;
+
         }
         return dict;
     }
