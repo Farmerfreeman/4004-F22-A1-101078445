@@ -1221,7 +1221,7 @@ public class PirateTest {
         diceset[0] = new Player.Dice[] {new Player.Dice(Faces.SWORD), new Player.Dice(Faces.SWORD),
                 new Player.Dice(Faces.SKULL), new Player.Dice(Faces.SKULL), new Player.Dice(Faces.PARROT),
                 new Player.Dice(Faces.PARROT), new Player.Dice(Faces.PARROT), new Player.Dice(Faces.PARROT)};
-        diceset[0] = new Player.Dice[] {new Player.Dice(Faces.SWORD), new Player.Dice(Faces.SWORD),
+        diceset[1] = new Player.Dice[] {new Player.Dice(Faces.SWORD), new Player.Dice(Faces.SWORD),
                 new Player.Dice(Faces.SKULL), new Player.Dice(Faces.SKULL), new Player.Dice(Faces.SKULL),
                 new Player.Dice(Faces.SKULL), new Player.Dice(Faces.SKULL), new Player.Dice(Faces.SKULL)};
         System.setIn(input);
@@ -1282,7 +1282,7 @@ public class PirateTest {
         diceset[0] = new Player.Dice[] {new Player.Dice(Faces.MONKEY), new Player.Dice(Faces.MONKEY),
                 new Player.Dice(Faces.MONKEY), new Player.Dice(Faces.MONKEY), new Player.Dice(Faces.SWORD),
                 new Player.Dice(Faces.SKULL), new Player.Dice(Faces.PARROT), new Player.Dice(Faces.PARROT)};
-        diceset[0] = new Player.Dice[] {new Player.Dice(Faces.MONKEY), new Player.Dice(Faces.MONKEY),
+        diceset[1] = new Player.Dice[] {new Player.Dice(Faces.MONKEY), new Player.Dice(Faces.MONKEY),
                 new Player.Dice(Faces.MONKEY), new Player.Dice(Faces.MONKEY), new Player.Dice(Faces.SWORD),
                 new Player.Dice(Faces.SKULL), new Player.Dice(Faces.SWORD), new Player.Dice(Faces.SKULL)};
         System.setIn(input);

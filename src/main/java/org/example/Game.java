@@ -180,6 +180,7 @@ public class Game implements Serializable {
                                 }
                                 else{
                                     dice = reRollNotHeld(dice, die);
+                                    dict = countFaces(dice);
                                 }
                                 System.out.println(String.format("You have now rolled %s, %s, %s, %s, %s, %s, %s and %s", dice[0].face, dice[1].face, dice[2].face, dice[3].face, dice[4].face, dice[5].face, dice[6].face, dice[7].face));
                                 break;
@@ -213,7 +214,7 @@ public class Game implements Serializable {
                                 }
                                 else{
                                     dice = reRollNotHeld(dice, die);
-
+                                    dict = countFaces(dice);
                                 }
                                 System.out.println(String.format("You have now rolled %s, %s, %s, %s, %s, %s, %s and %s", dice[0].face, dice[1].face, dice[2].face, dice[3].face, dice[4].face, dice[5].face, dice[6].face, dice[7].face));
                                 break;
@@ -247,7 +248,7 @@ public class Game implements Serializable {
                                 }
                                 else{
                                     dice = reRollNotHeld(dice, die);
-
+                                    dict = countFaces(dice);
                                 }
                                 System.out.println(String.format("You have now rolled %s, %s, %s, %s, %s, %s, %s and %s", dice[0].face, dice[1].face, dice[2].face, dice[3].face, dice[4].face, dice[5].face, dice[6].face, dice[7].face));
                                 break;
@@ -298,6 +299,7 @@ public class Game implements Serializable {
                                     dice = reRollNotHeld(dice, die);
                                     dice = inDice[rollCount];
                                     rollCount++;
+                                    dict = countFaces(dice);
                                 }
                                 //System.out.println(String.format("You have now rolled %s, %s, %s, %s, %s, %s, %s and %s", dice[0].face, dice[1].face, dice[2].face, dice[3].face, dice[4].face, dice[5].face, dice[6].face, dice[7].face));
                                 break;
@@ -333,7 +335,7 @@ public class Game implements Serializable {
                                     dice = reRollNotHeld(dice, die);
                                     dice = inDice[rollCount];
                                     rollCount++;
-
+                                    dict = countFaces(dice);
                                 }
                                 //System.out.println(String.format("You have now rolled %s, %s, %s, %s, %s, %s, %s and %s", dice[0].face, dice[1].face, dice[2].face, dice[3].face, dice[4].face, dice[5].face, dice[6].face, dice[7].face));
                                 break;
@@ -369,7 +371,7 @@ public class Game implements Serializable {
                                     dice = reRollNotHeld(dice, die);
                                     dice = inDice[rollCount];
                                     rollCount++;
-
+                                    dict = countFaces(dice);
                                 }
                                 //System.out.println(String.format("You have now rolled %s, %s, %s, %s, %s, %s, %s and %s", dice[0].face, dice[1].face, dice[2].face, dice[3].face, dice[4].face, dice[5].face, dice[6].face, dice[7].face));
                                 break;
