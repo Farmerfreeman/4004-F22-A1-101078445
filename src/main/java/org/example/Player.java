@@ -204,6 +204,20 @@ public class Player implements Serializable{
             }
         }
 
+        //TODO: temp wins for some reason here, but not in gameserver.
+        players = clientConnection.receivePlayer();
+        System.out.println("The game is over!");
+        Player winner = new Player("temp");
+        winner.score = 0;
+        for (Player p : players){
+            if (p.score > winner.score){
+                winner = p;
+
+            }
+            System.out.println(String.format("Player %s scored %d", p.name, p.score));
+        }
+        System.out.println("Player " + winner.name + " has won!");
+
 
     }
 

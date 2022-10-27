@@ -14,6 +14,8 @@ public class GameServer implements Serializable, Runnable {
 
     private int currentPlayer = 0;
 
+    private int countdown = 3;
+
 
 
     Server[] playerServer = new Server[3];
@@ -30,6 +32,7 @@ public class GameServer implements Serializable, Runnable {
 
         sr.acceptConnections();
         sr.gameLoop();
+
     }
 
     @Override
@@ -126,6 +129,8 @@ public class GameServer implements Serializable, Runnable {
 
     synchronized public void gameLoop() {
         System.out.println("Inside of gameloop");
+
+        int highscore = 0;
         try {
             playerServer[0].sendPlayers(players);
             playerServer[1].sendPlayers(players);
@@ -138,8 +143,15 @@ public class GameServer implements Serializable, Runnable {
                 playerServer[1].sendState(state);
                 playerServer[2].sendState(state);
 
-                players[currentPlayer].setScore(playerServer[currentPlayer].recieveScore());
-                System.out.println(String.format("Player %s completed their turn and recieved a score of %d", players[currentPlayer].name, players[currentPlayer].score));
+                players[currentPlayer].setScore(playerServer[currentPlayer].recieveScore() + players[currentPlayer].score);
+                System.out.println(String.format("Player %s completed their turn and their score is now %d", players[currentPlayer].name, players[currentPlayer].score));
+                for (Player p : players){
+                    if (p.score > highscore) highscore = p.score;
+                }
+                if (highscore >= 3000){
+                    countdown--;
+                    System.out.println("A player has exceeded 3000 points. The game will end in " + countdown + " turns unless diminished.");
+                }
 
                 currentPlayer++;
                 switch (state){
@@ -154,7 +166,28 @@ public class GameServer implements Serializable, Runnable {
                     currentPlayer = 0;
                     state = States.PLAYERTURN_1;
                 }
+
+                if (countdown == 0){
+                    state = States.GAMEOVER;
+                    playerServer[0].sendState(state);
+                    playerServer[1].sendState(state);
+                    playerServer[2].sendState(state);
+                }
             }
+            playerServer[0].sendPlayers(players);
+            playerServer[1].sendPlayers(players);
+            playerServer[2].sendPlayers(players);
+            System.out.println("The game is over!");
+            Player winner = new Player("temp");
+            winner.score = 0;
+            for (Player p : players){
+                if (p.score > winner.score){
+                    winner = p;
+
+                }
+                System.out.println(String.format("Player %s scored %d", p.name, p.score));
+            }
+            System.out.println("Player " + winner.name + " has won!");
 
         } catch (Exception e){
             e.printStackTrace();
