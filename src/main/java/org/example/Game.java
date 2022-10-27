@@ -153,4 +153,108 @@ public class Game implements Serializable {
         return die;
 
     }
+
+    public int seaBattle(Player.Dice[] dice, Cards card){
+        Scanner scan = new Scanner(System.in);
+        Dictionary<Faces, Integer> dict = countFaces(dice);
+        switch (card){
+            case SEA_BATTLE_2:
+                System.out.println("Hoist the sails! You need two swords to win. You're fighting for 300 points");
+                while (dict.get(Faces.SKULL) < 3){
+                    if (dict.get(Faces.SWORD) >= 2){
+                        System.out.println("You've won! You'll receive an extra 300 points.");
+                        return scoreDice(dice, card) + 300;
+                    }
+                    else{
+                        System.out.println("You currently have " + dict.get(Faces.SWORD) + "swords. Would you like to roll? (Y/N)");
+                        String choice = scan.nextLine();
+                        switch (choice.toUpperCase()){
+                            case "Y":
+                                System.out.println("Select which die you wish to hold (Held dice are not rerolled): (1,2,4..)");
+                                String[] die = (scan.next()).replaceAll("\\s", "").split(",");
+                                if (die.length <= 1) {
+                                    System.out.println("You must reroll at least two dice.");
+                                    continue;
+                                }
+                                else{
+                                    dice = reRollNotHeld(dice, die);
+                                }
+                                System.out.println(String.format("You have now rolled %s, %s, %s, %s, %s, %s, %s and %s", dice[0].face, dice[1].face, dice[2].face, dice[3].face, dice[4].face, dice[5].face, dice[6].face, dice[7].face));
+                                break;
+                            case "N":
+                                System.out.println("You didn't have enough swords. You died and will lose 300 points.");
+                                return -300;
+                            default:
+                                System.out.println("You must enter Y or N");
+                        }
+                    }
+                }
+            case SEA_BATTLE_3:
+                System.out.println("Hoist the sails! You need three swords to win. You're fighting for 500 points");
+                while (dict.get(Faces.SKULL) < 3){
+                    if (dict.get(Faces.SWORD) >= 3){
+                        System.out.println("You've won! You'll receive an extra 500 points.");
+                        return scoreDice(dice, card) + 500;
+                    }
+                    else{
+                        System.out.println("You currently have " + dict.get(Faces.SWORD) + "swords. Would you like to roll? (Y/N)");
+                        String choice = scan.nextLine();
+                        switch (choice.toUpperCase()){
+                            case "Y":
+                                System.out.println("Select which die you wish to hold (Held dice are not rerolled): (1,2,4..)");
+                                String[] die = (scan.next()).replaceAll("\\s", "").split(",");
+                                if (die.length <= 1) {
+                                    System.out.println("You must reroll at least two dice.");
+                                    continue;
+                                }
+                                else{
+                                    dice = reRollNotHeld(dice, die);
+
+                                }
+                                System.out.println(String.format("You have now rolled %s, %s, %s, %s, %s, %s, %s and %s", dice[0].face, dice[1].face, dice[2].face, dice[3].face, dice[4].face, dice[5].face, dice[6].face, dice[7].face));
+                                break;
+                            case "N":
+                                System.out.println("You didn't have enough swords. You died and will lose 500 points.");
+                                return -500;
+                            default:
+                                System.out.println("You must enter Y or N");
+                        }
+                    }
+                }
+            case SEA_BATTLE_4:
+                System.out.println("Hoist the sails! You need four swords to win. You're fighting for 1000 points");
+                while (dict.get(Faces.SKULL) < 3){
+                    if (dict.get(Faces.SWORD) >= 4){
+                        System.out.println("You've won! You'll receive an extra 1000 points.");
+                        return scoreDice(dice, card) + 1000;
+                    }
+                    else{
+                        System.out.println("You currently have " + dict.get(Faces.SWORD) + "swords. Would you like to roll? (Y/N)");
+                        String choice = scan.nextLine();
+                        switch (choice.toUpperCase()){
+                            case "Y":
+                                System.out.println("Select which die you wish to hold (Held dice are not rerolled): (1,2,4..)");
+                                String[] die = (scan.next()).replaceAll("\\s", "").split(",");
+                                if (die.length <= 1) {
+                                    System.out.println("You must reroll at least two dice.");
+                                    continue;
+                                }
+                                else{
+                                    dice = reRollNotHeld(dice, die);
+
+                                }
+                                System.out.println(String.format("You have now rolled %s, %s, %s, %s, %s, %s, %s and %s", dice[0].face, dice[1].face, dice[2].face, dice[3].face, dice[4].face, dice[5].face, dice[6].face, dice[7].face));
+                                break;
+                            case "N":
+                                System.out.println("You didn't have enough swords. You died and will lose 1000 points.");
+                                return -1000;
+                            default:
+                                System.out.println("You must enter Y or N");
+                        }
+                    }
+                }
+
+        }
+        return -1;
+    }
 }
