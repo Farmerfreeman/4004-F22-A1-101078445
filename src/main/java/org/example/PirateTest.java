@@ -1041,4 +1041,5 @@ public class PirateTest {
         int score = p.scoreDice();
         assertEquals(0, score);
     }
+
 }
