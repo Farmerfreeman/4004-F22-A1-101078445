@@ -496,7 +496,9 @@ public class Player implements Serializable{
                         System.out.println("You have to type Y or N to choose, numbskull!");
                 }
             }
+            if (card == Cards.CAPTAIN) numSkulls = numSkulls*2;
             System.out.println("You're done here! Other players will lose " + numSkulls * 100 + " points.");
+
             return numSkulls * -100;
         }
         else if (dead == 1){
