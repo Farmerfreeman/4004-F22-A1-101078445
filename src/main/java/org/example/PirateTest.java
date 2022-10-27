@@ -114,6 +114,26 @@ public class PirateTest {
         assertEquals(2, p.isDead(true));
     }
 
+    @Test
+    @DisplayName("Drawing SEA_BATTLE2 will take you to a 2-sword sea battle.")
+    void seaBattle2(){
+        Player p = new Player("Test");
+        p.game.rollDice(p.dice);
+        p.draw();
+        p.card = Cards.SEA_BATTLE_2;
+        p.dice[0].face = Faces.COIN;
+        p.dice[1].face = Faces.COIN;
+        p.dice[2].face = Faces.COIN;
+        p.dice[3].face = Faces.SKULL;
+        p.dice[4].face = Faces.PARROT;
+        p.dice[5].face = Faces.DIAMOND;
+        p.dice[6].face = Faces.DIAMOND;
+        p.dice[7].face = Faces.SWORD;
+
+        //the isdead function returns 2 if the player rolled 4+ skulls on the first roll
+        assertEquals(2, p.isDead(true));
+    }
+
 
     /*
     ACCEPTANCE TESTS:
@@ -1090,7 +1110,7 @@ public class PirateTest {
     /*This test involves using the playTurn(Dice[][]) function to test skull island functionality
     This means that the interface will be present but the test will feed input to the scanner on its own, no input user is
     necessary. This is because the Skull Island code is not a function in itself, but essentially a block in the playTurn
-    function.
+    function. I also disabled all flavour text to make this more readable when the full suite is run.
      This involves generating all the dice sets for each roll individually beforehand, and then feeding them into the function.*/
     void row108(){
         byte[] in = "Y\nY\nN".getBytes();
@@ -1120,7 +1140,7 @@ public class PirateTest {
     /*This test involves using the playTurn(Dice[][]) function to test skull island functionality
     This means that the interface will be present but the test will feed input to the scanner on its own, no input user is
     necessary. This is because the Skull Island code is not a function in itself, but essentially a block in the playTurn
-    function.
+    function. I also disabled all flavour text to make this more readable when the full suite is run.
      This involves generating all the dice sets for each roll individually beforehand, and then feeding them into the function.*/
     void row110(){
         byte[] in = "Y\nN".getBytes();
@@ -1168,4 +1188,6 @@ public class PirateTest {
         assertEquals(-500, deduction);
         assertEquals(0, p.score);
     }
+
+
 }
