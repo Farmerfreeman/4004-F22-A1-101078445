@@ -102,6 +102,10 @@ public class Player implements Serializable{
         return game.scoreDice(dice, card);
     }
 
+    public int scoreDice(List<Player.Dice> dice){
+        Dice[] dArr = dice.toArray(new Dice[dice.size()]);
+        return game.scoreDice(dArr, card);}
+
     public void placeInChest(String[] placed){
         if (card != Cards.TREASURE_CHEST){
             System.out.println("You don't have the treasure chest card.");
@@ -218,64 +222,96 @@ public class Player implements Serializable{
             //This code handles if a player would have died on roll 1, but held a Sorc card.
             if (card == Cards.SORCERESS){
                 while (true){
-                    System.out.println("You have died, but you have a Sorcress card! Would you like to use it to reroll a skull? Y/N");
+                    System.out.println("But you have a Sorceress card! Would you like to use it to reroll a skull? Y/N");
                     String choice = scan.nextLine();
-                    switch (choice) {
-                        case "Y":
-                            for (int i = 0; i <= dice.length; i++){
-                                if (dice[i].face == Faces.SKULL){
-                                    dice[i] = game.useSorcress(dice[i], card);
-                                    System.out.println("You rerolled a skull into a " + dice[i].face);
-                                    break;
-                                }
-                            }
-                            dead = isDead(false);
-                            if(dead == 1){
-                                System.out.println("Bad luck.. You got another skull and died.");
+                    if (choice.toUpperCase() == "Y") {
+
+                        for (int i = 0; i <= dice.length; i++){
+                            if (dice[i].face == Faces.SKULL){
+                                dice[i] = game.useSorcress(dice[i], card);
+                                sorcUsed = true;
+                                System.out.println("You rerolled a skull into a " + dice[i].face);
                                 break;
                             }
-                            else{
+                        }
+                        dead = isDead(false);
+                        if(dead == 1){
+                            System.out.println("Bad luck.. You got another skull and died.");
+                            return 0;
+                        }
+                        else{
 
-                                while (true) {
-                                    System.out.println("Select an action:");
-                                    System.out.println("(1) Score with currently held dice.");
-                                    System.out.println("(2) Choose specific dice to reroll.");
-                                    int act = scan.nextInt();
-                                    switch (act){
-                                        case 1:
-                                            return scoreDice();
-                                        case 2:
-                                            while (true) {
-                                                System.out.println("Select which die you wish to hold (Held dice are not rerolled): (1,2,4..)");
-                                                String[] die = (scan.next()).replaceAll("\\s", "").split(",");
-                                                if (die.length <= 1) {
-                                                    System.out.println("You must reroll at least two dice.");
-                                                    continue;
-                                                }
-                                                else{
-                                                    dice = game.reRollNotHeld(dice, die);
-                                                    break;
-                                                }
+                            while (true) {
+                                System.out.println("Select an action:");
+                                System.out.println("(1) Score with currently held dice.");
+                                System.out.println("(2) Choose specific dice to reroll.");
+                                int act = scan.nextInt();
+                                switch (act){
+                                    case 1:
+                                        return scoreDice();
+                                    case 2:
+                                        while (true) {
+                                            System.out.println("Select which die you wish to hold (Held dice are not rerolled): (1,2,4..)");
+                                            String[] die = (scan.next()).replaceAll("\\s", "").split(",");
+                                            if (die.length <= 1) {
+                                                System.out.println("You must reroll at least two dice.");
+                                                continue;
                                             }
+                                            else{
+                                                dice = game.reRollNotHeld(dice, die);
+                                                break;
+                                            }
+                                        }
 
-                                            System.out.println(String.format("You have now rolled %s, %s, %s, %s, %s, %s, %s and %s", dice[0].face, dice[1].face, dice[2].face, dice[3].face, dice[4].face, dice[5].face, dice[6].face, dice[7].face));
-                                    }
-
-                                    return score;
+                                        System.out.println(String.format("You have now rolled %s, %s, %s, %s, %s, %s, %s and %s", dice[0].face, dice[1].face, dice[2].face, dice[3].face, dice[4].face, dice[5].face, dice[6].face, dice[7].face));
                                 }
+
+                                return score;
                             }
+
+                        }
                     }
+                    else return 0;
                 }
             }
             return 0;
         }
+        //main loop
         while (true) {
-            //TODO: Check for player death on each roll
+            if (isDead(false) == 1){
+                switch (card){
+                    case SORCERESS:
+                        System.out.println("But you have a Sorceress card! Would you like to use it to reroll a skull? Y/N");
+                        String choice = scan.nextLine();
+                        if (choice.toUpperCase() == "Y") {
+                            for (int i = 0; i <= dice.length; i++){
+                                if (dice[i].face == Faces.SKULL){
+                                    dice[i] = game.useSorcress(dice[i], card);
+                                    System.out.println("You rerolled a skull into a " + dice[i].face);
+                                    sorcUsed =true;
+                                    break;
+                                }
+                            }
+                            dead = isDead(false);
+                            if(dead == 1) {
+                                System.out.println("Bad luck.. You got another skull and died.");
+                                return 0;
+                            }
+                        }
+                    case TREASURE_CHEST:
+                        if (!chest.isEmpty()){
+                            System.out.println("But you had dice stored in your chest!");
+                            return scoreDice(chest);
+                        }
+                    default:
+
+                }
+            }
             System.out.println("Select an action:");
             System.out.println("(1) Score with currently held dice.");
             System.out.println("(2) Choose specific dice to reroll.");
             if (card == Cards.SORCERESS && sorcUsed == false){
-                System.out.println("(3) Reroll a skull using your Sorcress card.");
+                System.out.println("(3) Reroll a skull using your Sorceress card.");
             }
             if (card == Cards.TREASURE_CHEST){
                 System.out.println("(3) Place di(c)e into your treasure chest for safekeeping.");
