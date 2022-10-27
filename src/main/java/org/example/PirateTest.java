@@ -1042,7 +1042,6 @@ public class PirateTest {
         assertEquals(0, score);
     }
 
-
     @Test
     @DisplayName("A-TEST ROW 107")
     void row107() {
@@ -1065,4 +1064,5 @@ public class PirateTest {
         int score = p.scoreDice();
         assertEquals(0, score);
     }
+
 }
