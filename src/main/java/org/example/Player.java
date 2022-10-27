@@ -104,6 +104,7 @@ public class Player implements Serializable{
 
     public int scoreDice(List<Player.Dice> dice){
         Dice[] dArr = dice.toArray(new Dice[dice.size()]);
+        System.out.println("You have died.");
         return game.scoreDice(dArr, card);}
 
 
@@ -120,7 +121,6 @@ public class Player implements Serializable{
         for (int s : d){
             chest.add(dice[s]);
             this.dice[s].inChest = true;
-            System.out.println(chest);
         }
 
     }
