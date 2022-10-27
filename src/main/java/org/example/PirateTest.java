@@ -1331,4 +1331,5 @@ public class PirateTest {
         p.score = p.game.seaBattle(diceset, Cards.SEA_BATTLE_3, true);
         assertEquals(-500, p.score);
     }
+
 }
