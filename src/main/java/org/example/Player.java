@@ -40,7 +40,7 @@ public class Player implements Serializable{
 
     public void setScore(int score){this.score = score;}
 
-    public class Dice implements Serializable{
+    public static class Dice implements Serializable{
         Faces face;
 
         Boolean inChest = false;
@@ -444,7 +444,7 @@ public class Player implements Serializable{
 
     //This playTurn function is only for some of the A/U-Tests which wouldn't work with the normal method I've been using
     //This function takes a 2D array of dice, and uses the next set of dice everytime dice are rolled.
-    public int playTurn(Dice[][] inDice){
+    public int playTurn(Dice[][] inDice, Cards card){
         Scanner scan = new Scanner(System.in);
         int score = 0;
         int rollCount = 0;
@@ -453,13 +453,13 @@ public class Player implements Serializable{
         dice = game.rollDice(dice);
         dice = inDice[rollCount];
         rollCount++;
-        draw();
+        this.card = card;
         System.out.println(String.format("You have rolled %s, %s, %s, %s, %s, %s, %s and %s", dice[0].face, dice[1].face, dice[2].face, dice[3].face, dice[4].face, dice[5].face, dice[6].face, dice[7].face));
         System.out.println(String.format("You have drawn the %s fortune card.", card.name()));
         int dead = isDead(true);
         if (dead == 2){
             //Code for skull island
-            sendStateToServer(States.SKULL_ISLAND);
+            //sendStateToServer(States.SKULL_ISLAND);
             state = States.SKULL_ISLAND;
             Dictionary<Faces, Integer> dict = game.countFaces(dice);
             dict = game.handleFortuneCard(dict, card);
