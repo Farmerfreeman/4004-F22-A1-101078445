@@ -95,6 +95,26 @@ public class PirateTest {
         assertEquals(3, dict.get(Faces.SWORD));
     }
 
+    @Test
+    @DisplayName("Rolling 4+ skulls on the first roll takes you to skull island.")
+    void skullIsland(){
+        Player p = new Player("Test");
+        p.game.rollDice(p.dice);
+        p.draw();
+        p.dice[0].face = Faces.SKULL;
+        p.dice[1].face = Faces.SKULL;
+        p.dice[2].face = Faces.SKULL;
+        p.dice[3].face = Faces.SKULL;
+        p.dice[4].face = Faces.PARROT;
+        p.dice[5].face = Faces.SWORD;
+        p.dice[6].face = Faces.SWORD;
+        p.dice[7].face = Faces.SWORD;
+
+        //the isdead function returns 2 if the player rolled 4+ skulls on the first roll
+        assertEquals(2, p.isDead(true));
+    }
+
+
     /*
     ACCEPTANCE TESTS:
     Below are all acceptance tests, starting with row 45
