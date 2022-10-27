@@ -117,6 +117,7 @@ public class PirateTest {
     @Test
     @DisplayName("Drawing SEA_BATTLE2 will take you to a 2-sword sea battle.")
     void seaBattle2(){
+
         Player p = new Player("Test");
         p.game.rollDice(p.dice);
         p.draw();
@@ -127,11 +128,10 @@ public class PirateTest {
         p.dice[3].face = Faces.SKULL;
         p.dice[4].face = Faces.PARROT;
         p.dice[5].face = Faces.DIAMOND;
-        p.dice[6].face = Faces.DIAMOND;
+        p.dice[6].face = Faces.SWORD;
         p.dice[7].face = Faces.SWORD;
+        assertEquals(800 ,p.game.seaBattle(p.dice, p.card));
 
-        //the isdead function returns 2 if the player rolled 4+ skulls on the first roll
-        assertEquals(2, p.isDead(true));
     }
 
 

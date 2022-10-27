@@ -242,6 +242,12 @@ public class Player implements Serializable{
 
         dice = game.rollDice(dice);
         draw();
+
+        if (card == Cards.SEA_BATTLE_2 || card == Cards.SEA_BATTLE_3 || card == Cards.SEA_BATTLE_4){
+            System.out.println("Avast! Ye have engaged in a sea battle.");
+            return game.seaBattle(dice, card);
+        }
+
         System.out.println(String.format("You have rolled %s, %s, %s, %s, %s, %s, %s and %s", dice[0].face, dice[1].face, dice[2].face, dice[3].face, dice[4].face, dice[5].face, dice[6].face, dice[7].face));
         System.out.println(String.format("You have drawn the %s fortune card.", card.name()));
         int dead = isDead(true);
