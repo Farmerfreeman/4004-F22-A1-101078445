@@ -1085,4 +1085,35 @@ public class PirateTest {
         assertEquals(0, score);
     }
 
+    @Test
+    @DisplayName("A-TEST ROW 108")
+    /*This test involves using the playTurn(Dice[][]) function to test skull island functionality
+    This means that the interface will be present but the test will feed input to the scanner on its own, no input user is
+    necessary. This is because the Skull Island code is not a function in itself, but essentially a block in the playTurn
+    function.
+     This involves generating all the dice sets for each roll individually beforehand, and then feeding them into the function.*/
+    void row108(){
+        byte[] in = "Y\nY\nN".getBytes();
+        ByteArrayInputStream input = new ByteArrayInputStream(in);
+
+
+        Player p = new Player("Test");
+        Player.Dice[][] diceset = new Player.Dice[3][8];
+        diceset[0] = new Player.Dice[] {new Player.Dice(Faces.SKULL), new Player.Dice(Faces.SKULL),
+                new Player.Dice(Faces.PARROT), new Player.Dice(Faces.PARROT), new Player.Dice(Faces.PARROT),
+                new Player.Dice(Faces.MONKEY), new Player.Dice(Faces.MONKEY), new Player.Dice(Faces.MONKEY)};
+        diceset[1] = new Player.Dice[] {new Player.Dice(Faces.SKULL), new Player.Dice(Faces.SKULL),
+                new Player.Dice(Faces.SKULL), new Player.Dice(Faces.SKULL), new Player.Dice(Faces.SWORD),
+                new Player.Dice(Faces.MONKEY), new Player.Dice(Faces.MONKEY), new Player.Dice(Faces.MONKEY)};
+        diceset[2] = new Player.Dice[] {new Player.Dice(Faces.SKULL), new Player.Dice(Faces.SKULL),
+                new Player.Dice(Faces.SKULL), new Player.Dice(Faces.SKULL), new Player.Dice(Faces.SKULL),
+                new Player.Dice(Faces.SKULL), new Player.Dice(Faces.SKULL), new Player.Dice(Faces.SWORD)};
+        System.setIn(input);
+        int deduction = p.playTurn(diceset, Cards.SKULL_2);
+
+        assertEquals(-900, deduction);
+        assertEquals(0, p.score);
+    }
+
+
 }
