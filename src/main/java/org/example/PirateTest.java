@@ -1042,4 +1042,27 @@ public class PirateTest {
         assertEquals(0, score);
     }
 
+
+    @Test
+    @DisplayName("A-TEST ROW 107")
+    void row107() {
+        Player p = new Player("test");
+        p.draw();
+
+        p.card = Cards.SKULL_1;
+        p.game.rollDice(p.dice);
+        p.dice[0].face = Faces.SKULL;
+        p.dice[1].face = Faces.SKULL;
+        p.dice[2].face = Faces.SWORD;
+        p.dice[3].face = Faces.SWORD;
+        p.dice[4].face = Faces.SWORD;
+        p.dice[5].face = Faces.SWORD;
+        p.dice[6].face = Faces.SWORD;
+        p.dice[7].face = Faces.SWORD;
+
+
+        assertEquals(1, p.isDead(true));
+        int score = p.scoreDice();
+        assertEquals(0, score);
+    }
 }
