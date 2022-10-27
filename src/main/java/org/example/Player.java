@@ -91,7 +91,7 @@ public class Player implements Serializable{
                 sendStateToServer(States.SKULL_ISLAND);
                 return 2;
             }
-            System.out.println("You have died. You will receive no points this round.");
+            System.out.println("You have died.");
             return 1;
         }
         else return 0;
@@ -105,6 +105,7 @@ public class Player implements Serializable{
     public int scoreDice(List<Player.Dice> dice){
         Dice[] dArr = dice.toArray(new Dice[dice.size()]);
         return game.scoreDice(dArr, card);}
+
 
     public void placeInChest(String[] placed){
         if (card != Cards.TREASURE_CHEST){
@@ -234,8 +235,8 @@ public class Player implements Serializable{
                                 break;
                             }
                         }
-                        dead = isDead(false);
-                        if(dead == 1){
+
+                        if(isDead(false) == 1){
                             System.out.println("Bad luck.. You got another skull and died.");
                             return 0;
                         }
@@ -304,7 +305,7 @@ public class Player implements Serializable{
                             return scoreDice(chest);
                         }
                     default:
-
+                        return 0;
                 }
             }
             System.out.println("Select an action:");
@@ -360,12 +361,14 @@ public class Player implements Serializable{
                         String[] die = (scan.next()).replaceAll("\\s", "").split(",");
                         placeInChest(die);
                     }
+                    break;
                 case 4:
                     if (card == Cards.TREASURE_CHEST){
                         System.out.println("Select which die you wish to remove from the chest (1,2,4..)");
                         String[] die = (scan.next()).replaceAll("\\s", "").split(",");
                         removeFromChest(die);
                     }
+                    break;
             }
 
 
