@@ -130,7 +130,7 @@ public class PirateTest {
         p.dice[5].face = Faces.DIAMOND;
         p.dice[6].face = Faces.SWORD;
         p.dice[7].face = Faces.SWORD;
-        assertEquals(800 ,p.game.seaBattle(p.dice, p.card, true));
+        assertEquals(800 ,p.game.seaBattle(p.dice, p.card));
 
     }
 
@@ -1205,9 +1205,29 @@ public class PirateTest {
         p.dice[6].face = Faces.SKULL;
         p.dice[7].face = Faces.SWORD;
 
-        p.score = p.game.seaBattle(p.dice, p.card, true);
+        p.score = p.game.seaBattle(p.dice, p.card);
         assertEquals(-300, p.score);
     }
 
+    @Test
+    @DisplayName("A-TEST ROW 115")
+    void row115(){
+        byte[] in = "Y\n1,2,3,4".getBytes();
+        ByteArrayInputStream input = new ByteArrayInputStream(in);
+
+
+        Player p = new Player("Test");
+        Player.Dice[][] diceset = new Player.Dice[2][8];
+        diceset[0] = new Player.Dice[] {new Player.Dice(Faces.SWORD), new Player.Dice(Faces.SWORD),
+                new Player.Dice(Faces.SKULL), new Player.Dice(Faces.SKULL), new Player.Dice(Faces.PARROT),
+                new Player.Dice(Faces.PARROT), new Player.Dice(Faces.PARROT), new Player.Dice(Faces.PARROT)};
+        diceset[0] = new Player.Dice[] {new Player.Dice(Faces.SWORD), new Player.Dice(Faces.SWORD),
+                new Player.Dice(Faces.SKULL), new Player.Dice(Faces.SKULL), new Player.Dice(Faces.SKULL),
+                new Player.Dice(Faces.SKULL), new Player.Dice(Faces.SKULL), new Player.Dice(Faces.SKULL)};
+        System.setIn(input);
+
+        p.score = p.game.seaBattle(diceset, Cards.SEA_BATTLE_2, true);
+        assertEquals(-300, p.score);
+    }
 
 }
