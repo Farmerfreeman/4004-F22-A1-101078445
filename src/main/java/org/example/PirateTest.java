@@ -130,7 +130,7 @@ public class PirateTest {
         p.dice[5].face = Faces.DIAMOND;
         p.dice[6].face = Faces.SWORD;
         p.dice[7].face = Faces.SWORD;
-        assertEquals(800 ,p.game.seaBattle(p.dice, p.card));
+        assertEquals(800 ,p.game.seaBattle(p.dice, p.card, true));
 
     }
 
@@ -1187,6 +1187,26 @@ public class PirateTest {
 
         assertEquals(-500, deduction);
         assertEquals(0, p.score);
+    }
+
+    @Test
+    @DisplayName("A-TEST ROW 114")
+    void row114(){
+        Player p = new Player("Test");
+        p.game.rollDice(p.dice);
+        p.draw();
+        p.card = Cards.SEA_BATTLE_2;
+        p.dice[0].face = Faces.MONKEY;
+        p.dice[1].face = Faces.MONKEY;
+        p.dice[2].face = Faces.MONKEY;
+        p.dice[3].face = Faces.MONKEY;
+        p.dice[4].face = Faces.SKULL;
+        p.dice[5].face = Faces.SKULL;
+        p.dice[6].face = Faces.SKULL;
+        p.dice[7].face = Faces.SWORD;
+
+        p.score = p.game.seaBattle(p.dice, p.card, true);
+        assertEquals(-300, p.score);
     }
 
 
