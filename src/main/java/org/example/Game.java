@@ -266,8 +266,14 @@ public class Game implements Serializable {
         return -1;
     }
 
-    public int seaBattle(Player.Dice[] dice, Cards card, boolean test){
+    public int seaBattle(Player.Dice[][] inDice, Cards card, boolean test){
         Scanner scan = new Scanner(System.in);
+
+        int rollCount = 0;
+        Player.Dice[] dice = new Player.Dice[9];
+
+        dice = inDice[rollCount];
+        rollCount++;
         Dictionary<Faces, Integer> dict = countFaces(dice);
         switch (card){
             case SEA_BATTLE_2:
@@ -290,6 +296,8 @@ public class Game implements Serializable {
                                 }
                                 else{
                                     dice = reRollNotHeld(dice, die);
+                                    dice = inDice[rollCount];
+                                    rollCount++;
                                 }
                                 //System.out.println(String.format("You have now rolled %s, %s, %s, %s, %s, %s, %s and %s", dice[0].face, dice[1].face, dice[2].face, dice[3].face, dice[4].face, dice[5].face, dice[6].face, dice[7].face));
                                 break;
@@ -323,6 +331,8 @@ public class Game implements Serializable {
                                 }
                                 else{
                                     dice = reRollNotHeld(dice, die);
+                                    dice = inDice[rollCount];
+                                    rollCount++;
 
                                 }
                                 //System.out.println(String.format("You have now rolled %s, %s, %s, %s, %s, %s, %s and %s", dice[0].face, dice[1].face, dice[2].face, dice[3].face, dice[4].face, dice[5].face, dice[6].face, dice[7].face));
@@ -357,6 +367,8 @@ public class Game implements Serializable {
                                 }
                                 else{
                                     dice = reRollNotHeld(dice, die);
+                                    dice = inDice[rollCount];
+                                    rollCount++;
 
                                 }
                                 //System.out.println(String.format("You have now rolled %s, %s, %s, %s, %s, %s, %s and %s", dice[0].face, dice[1].face, dice[2].face, dice[3].face, dice[4].face, dice[5].face, dice[6].face, dice[7].face));
