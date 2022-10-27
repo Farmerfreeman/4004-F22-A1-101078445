@@ -1226,8 +1226,27 @@ public class PirateTest {
                 new Player.Dice(Faces.SKULL), new Player.Dice(Faces.SKULL), new Player.Dice(Faces.SKULL)};
         System.setIn(input);
 
-        p.score = p.game.seaBattle(diceset, Cards.SEA_BATTLE_2, true);
-        assertEquals(-300, p.score);
+        p.score = p.game.seaBattle(diceset, Cards.SEA_BATTLE_3, true);
+        assertEquals(-500, p.score);
     }
 
+    @Test
+    @DisplayName("A-TEST ROW 116")
+    void row116(){
+        Player p = new Player("Test");
+        p.game.rollDice(p.dice);
+        p.draw();
+        p.card = Cards.SEA_BATTLE_4;
+        p.dice[0].face = Faces.MONKEY;
+        p.dice[1].face = Faces.MONKEY;
+        p.dice[2].face = Faces.SKULL;
+        p.dice[3].face = Faces.SKULL;
+        p.dice[4].face = Faces.SKULL;
+        p.dice[5].face = Faces.SWORD;
+        p.dice[6].face = Faces.SWORD;
+        p.dice[7].face = Faces.SWORD;
+
+        p.score = p.game.seaBattle(p.dice, p.card);
+        assertEquals(-1000, p.score);
+    }
 }
