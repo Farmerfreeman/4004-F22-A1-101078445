@@ -1270,4 +1270,5 @@ public class PirateTest {
         assertEquals(500, p.score);
     }
 
+
 }
