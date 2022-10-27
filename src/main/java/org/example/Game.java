@@ -379,7 +379,7 @@ public class Game implements Serializable {
                                 System.out.println("You didn't have enough swords. You died and will lose 1000 points.");
                                 return -1000;
                             default:
-                                System.out.println("You must enter Y or N");
+                                //System.out.println("You must enter Y or N");
                         }
                     }
                 }
