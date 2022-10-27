@@ -191,6 +191,8 @@ public class Game implements Serializable {
                         }
                     }
                 }
+                System.out.println("You died and will lose 300 points.");
+                return -300;
             case SEA_BATTLE_3:
                 System.out.println("Hoist the sails! You need three swords to win. You're fighting for 500 points");
                 while (dict.get(Faces.SKULL) < 3){
@@ -223,6 +225,8 @@ public class Game implements Serializable {
                         }
                     }
                 }
+                System.out.println("You died and will lose 500 points.");
+                return -500;
             case SEA_BATTLE_4:
                 System.out.println("Hoist the sails! You need four swords to win. You're fighting for 1000 points");
                 while (dict.get(Faces.SKULL) < 3){
@@ -255,6 +259,8 @@ public class Game implements Serializable {
                         }
                     }
                 }
+                System.out.println("You died and will lose 1000 points.");
+                return -1000;
 
         }
         return -1;
@@ -295,6 +301,8 @@ public class Game implements Serializable {
                         }
                     }
                 }
+                System.out.println("You died and will lose 300 points.");
+                return -300;
             case SEA_BATTLE_3:
                 //System.out.println("Hoist the sails! You need three swords to win. You're fighting for 500 points");
                 while (dict.get(Faces.SKULL) < 3){
@@ -327,6 +335,8 @@ public class Game implements Serializable {
                         }
                     }
                 }
+                System.out.println("You died and will lose 500 points.");
+                return -500;
             case SEA_BATTLE_4:
                 //System.out.println("Hoist the sails! You need four swords to win. You're fighting for 1000 points");
                 while (dict.get(Faces.SKULL) < 3){
@@ -359,6 +369,8 @@ public class Game implements Serializable {
                         }
                     }
                 }
+                System.out.println("You died and will lose 1000 points.");
+                return -1000;
 
         }
         return -1;
