@@ -100,7 +100,7 @@ public class PirateTest {
     Below are all acceptance tests, starting with row 45
     */
     @Test
-    @DisplayName("A-TEST ROW 45: If a player rolls 3+ skulls, they die and score 0")
+    @DisplayName("A-TEST ROW 45")
     void row45(){
         Player p = new Player("test");
         p.draw();
@@ -109,6 +109,16 @@ public class PirateTest {
         p.dice[0].face = Faces.SKULL;
         p.dice[1].face = Faces.SKULL;
         p.dice[2].face = Faces.SKULL;
+        p.dice[3].face = Faces.SWORD;
+        p.dice[4].face = Faces.SWORD;
+        p.dice[5].face = Faces.SWORD;
+        p.dice[6].face = Faces.SWORD;
+        p.dice[7].face = Faces.SWORD;
+
+        //isDead is a function that takes 1 boolean parameter(firstRoll) and returns 2 if the player reached skull island,
+        //1 if the player died, and 0 otherwise. Reaching skull island is only possible when firstRoll is true
+        //isDead is used in the normal game loop on every roll to determine if the player is alive or not.
+        assertEquals(1, p.isDead(true));
         int score = p.scoreDice();
         assertEquals(0, score);
     }
@@ -134,6 +144,10 @@ public class PirateTest {
         p.dice[6].face = Faces.SKULL;
         p.dice[7].face = Faces.SWORD;
 
+        //isDead is a function that takes 1 boolean parameter(firstRoll) and returns 2 if the player reached skull island,
+        //1 if the player died, and 0 otherwise. Reaching skull island is only possible when firstRoll is true
+        //isDead is used in the normal game loop on every roll to determine if the player is alive or not.
+        assertEquals(1, p.isDead(true));
         int score = p.scoreDice();
         assertEquals(0, score);
 
@@ -160,6 +174,10 @@ public class PirateTest {
         p.dice[6].face = Faces.SKULL;
         p.dice[7].face = Faces.SWORD;
 
+        //isDead is a function that takes 1 boolean parameter(firstRoll) and returns 2 if the player reached skull island,
+        //1 if the player died, and 0 otherwise. Reaching skull island is only possible when firstRoll is true
+        //isDead is used in the normal game loop on every roll to determine if the player is alive or not.
+        assertEquals(1, p.isDead(true));
         int score = p.scoreDice();
         assertEquals(0, score);
     }
@@ -188,6 +206,11 @@ public class PirateTest {
         p.game.reRollNotHeld(p.dice, held);
         p.dice[6].face = Faces.SKULL;
         p.dice[7].face = Faces.MONKEY;
+
+        //isDead is a function that takes 1 boolean parameter(firstRoll) and returns 2 if the player reached skull island,
+        //1 if the player died, and 0 otherwise. Reaching skull island is only possible when firstRoll is true
+        //isDead is used in the normal game loop on every roll to determine if the player is alive or not.
+        assertEquals(1, p.isDead(true));
         int score = p.scoreDice();
         assertEquals(0, score);
     }
@@ -824,6 +847,10 @@ public class PirateTest {
         p.dice[6].face = Faces.PARROT;
         p.dice[7].face = Faces.PARROT;
 
+        //isDead is a function that takes 1 boolean parameter(firstRoll) and returns 2 if the player reached skull island,
+        //1 if the player died, and 0 otherwise. Reaching skull island is only possible when firstRoll is true
+        //isDead is used in the normal game loop on every roll to determine if the player is alive or not.
+        assertEquals(1, p.isDead(true));
         int score = p.scoreDice();
         assertEquals(0, score);
     }
@@ -898,7 +925,10 @@ public class PirateTest {
         p.dice[2].face = Faces.SKULL;
         p.dice[3].face = Faces.DIAMOND;
 
-
+        //isDead is a function that takes 1 boolean parameter(firstRoll) and returns 2 if the player reached skull island,
+        //1 if the player died, and 0 otherwise. Reaching skull island is only possible when firstRoll is true
+        //isDead is used in the normal game loop on every roll to determine if the player is alive or not.
+        assertEquals(1, p.isDead(true));
         int score = p.scoreDice(p.chest);
         assertEquals(600, score);
     }
