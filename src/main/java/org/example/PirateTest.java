@@ -1310,4 +1310,25 @@ public class PirateTest {
         p.score = p.game.seaBattle(p.dice, p.card);
         assertEquals(800, p.score);
     }
+
+    @Test
+    @DisplayName("A-TEST ROW 121")
+    void row121(){
+        byte[] in = "Y\n5,6".getBytes();
+        ByteArrayInputStream input = new ByteArrayInputStream(in);
+
+
+        Player p = new Player("Test");
+        Player.Dice[][] diceset = new Player.Dice[2][8];
+        diceset[0] = new Player.Dice[] {new Player.Dice(Faces.MONKEY), new Player.Dice(Faces.MONKEY),
+                new Player.Dice(Faces.MONKEY), new Player.Dice(Faces.MONKEY), new Player.Dice(Faces.SWORD),
+                new Player.Dice(Faces.SWORD), new Player.Dice(Faces.SKULL), new Player.Dice(Faces.SKULL)};
+        diceset[1] = new Player.Dice[] {new Player.Dice(Faces.SWORD), new Player.Dice(Faces.SWORD),
+                new Player.Dice(Faces.SKULL), new Player.Dice(Faces.SKULL), new Player.Dice(Faces.SWORD),
+                new Player.Dice(Faces.SWORD), new Player.Dice(Faces.SKULL), new Player.Dice(Faces.SKULL)};
+        System.setIn(input);
+
+        p.score = p.game.seaBattle(diceset, Cards.SEA_BATTLE_3, true);
+        assertEquals(-500, p.score);
+    }
 }
