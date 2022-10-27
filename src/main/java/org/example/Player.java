@@ -65,7 +65,6 @@ public class Player implements Serializable{
 
     public void draw(){
         card = Cards.values()[(int) (Math.random() * 11)];
-        System.out.println(card);
     }
 
     public boolean isPlayerTurn(){
@@ -95,7 +94,6 @@ public class Player implements Serializable{
             return 1;
         }
         else return 0;
-
     }
 
     public int scoreDice(){
@@ -104,7 +102,7 @@ public class Player implements Serializable{
 
     public int scoreDice(List<Player.Dice> dice){
         Dice[] dArr = dice.toArray(new Dice[dice.size()]);
-        System.out.println("You have died.");
+
         return game.scoreDice(dArr, card);}
 
 
