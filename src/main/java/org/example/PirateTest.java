@@ -966,5 +966,4 @@ public class PirateTest {
         assertEquals(1000, score);
     }
 
-
 }
