@@ -1,16 +1,14 @@
 package org.example;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Dictionary;
-import java.util.Hashtable;
+import java.util.*;
 
 public class Game implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     boolean captain = false;
+
 
     public Player.Dice[] rollDice(Player.Dice[] dice) {
 
@@ -95,8 +93,6 @@ public class Game implements Serializable {
         return score;
 
     }
-
-
 
     public Dictionary<Faces, Integer> countFaces (Player.Dice[] dice){
         Dictionary<Faces, Integer> dict = new Hashtable();

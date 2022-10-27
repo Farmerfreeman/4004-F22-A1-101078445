@@ -188,10 +188,13 @@ public class Player implements Serializable{
                 if (isPlayerTurn()){
                     System.out.println("It is your turn!");
                     this.score = playTurn();
-                    System.out.println(String.format("You scored %d", score));
+                    if (state != States.SKULL_ISLAND){
+                        System.out.println(String.format("You scored %d", score));
+                        totalScore += score;
+                    }
                     clientConnection.sendState(state);
                     clientConnection.sendScore();
-                    totalScore += score;
+
                 }
             else{
                 if (state == States.PLAYERTURN_1){
@@ -206,8 +209,8 @@ public class Player implements Serializable{
                 else if (state == States.SKULL_ISLAND){
                     System.out.println("A player has reached skull island, oh no!");
                     players = clientConnection.receivePlayer();
-                    System.out.println("You have received a deduction of " + (totalScore - players[playerId].score));
-                    totalScore = players[playerId].score;
+                    System.out.println("You have received a deduction of " + (totalScore - players[playerId - 1].score));
+                    totalScore = players[playerId - 1].score;
 
                 }
             }
@@ -233,14 +236,54 @@ public class Player implements Serializable{
     public int playTurn(){
         Scanner scan = new Scanner(System.in);
         int score = 0;
+
+        //Hardcoded dice if needed.
+        //dice = new Dice[] {new Dice(Faces.SKULL), new Dice(Faces.SKULL), new Dice(Faces.SKULL), new Dice(Faces.SKULL), new Dice(Faces.PARROT), new Dice(Faces.PARROT), new Dice(Faces.PARROT), new Dice(Faces.PARROT)};
+
         dice = game.rollDice(dice);
         draw();
         System.out.println(String.format("You have rolled %s, %s, %s, %s, %s, %s, %s and %s", dice[0].face, dice[1].face, dice[2].face, dice[3].face, dice[4].face, dice[5].face, dice[6].face, dice[7].face));
         System.out.println(String.format("You have drawn the %s fortune card.", card.name()));
         int dead = isDead(true);
         if (dead == 2){
+            //Code for skull island
             sendStateToServer(States.SKULL_ISLAND);
+            state = States.SKULL_ISLAND;
+            Dictionary<Faces, Integer> dict = game.countFaces(dice);
+            dict = game.handleFortuneCard(dict, card);
+            boolean rollSkull=true;
+            System.out.println("Welcome to Skull Island! You can roll as long as you roll at least 1 more skull each time.");
+            System.out.println("Once you don't roll a skull, other players lose 100 points x number of skulls you rolled!");
 
+            int numSkulls = dict.get(Faces.SKULL);
+            while (rollSkull){
+
+                System.out.println("So how bout it, would you like to roll? (You currently have " + numSkulls + " skulls. (Y/N)");
+                String choice = scan.next();
+                switch (choice.toUpperCase()) {
+                    case "Y":
+                        String[] held = {};
+                        dice = game.reRollNotHeld(dice, held);
+                        dict = game.countFaces(dice);
+                        dict = game.handleFortuneCard(dict, card);
+                        if (numSkulls == dict.get(Faces.SKULL)) {
+                            System.out.println("Sorry, you didn't get anymore skulls!");
+                            rollSkull = false;
+                            break;
+                        }
+                        System.out.println("You got another skull, you can keep going.");
+                        numSkulls = dict.get(Faces.SKULL);
+                        break;
+                    case "N":
+                        System.out.println("Have it your way!");
+                        rollSkull = false;
+                        break;
+                    default:
+                        System.out.println("You have to type Y or N to choose, numbskull!");
+                }
+            }
+            System.out.println("You're done here! Other players will lose " + numSkulls * 100 + " points.");
+            return numSkulls * -100;
         }
         else if (dead == 1){
             //This code handles if a player would have died on roll 1, but held a Sorc card.

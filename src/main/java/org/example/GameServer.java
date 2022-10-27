@@ -148,11 +148,13 @@ public class GameServer implements Serializable, Runnable {
                 System.out.println("Received " + pState.name());
                 if (pState == States.SKULL_ISLAND){
                     System.out.println(players[currentPlayer].name + " has reached skull island!");
+                    playerServer[currentPlayer].receiveState();
                     int skullScore = playerServer[currentPlayer].recieveScore();
-                    System.out.println("All players will suffer a deduction of " + skullScore);
-                    for (int i = 0; i >=3; i++){
+                    System.out.println("All other players will suffer a deduction of " + skullScore);
+
+                    for (int i = 0; i <3; i++){
                         if (i != currentPlayer){
-                            players[i].score -= skullScore;
+                            players[i].score += skullScore;
                             if (players[i].score < 0) players[i].score = 0;
                             playerServer[i].sendState(pState);
                             playerServer[i].sendPlayers(players);
@@ -163,16 +165,20 @@ public class GameServer implements Serializable, Runnable {
 
 
                 }
+                else {
+                    players[currentPlayer].setScore(playerServer[currentPlayer].recieveScore() + players[currentPlayer].score);
 
-                players[currentPlayer].setScore(playerServer[currentPlayer].recieveScore() + players[currentPlayer].score);
-
-                System.out.println(String.format("Player %s completed their turn and their score is now %d", players[currentPlayer].name, players[currentPlayer].score));
+                    System.out.println(String.format("Player %s completed their turn and their score is now %d", players[currentPlayer].name, players[currentPlayer].score));
+                }
                 for (Player p : players){
                     if (p.score > highscore) highscore = p.score;
                 }
                 if (highscore >= 3000){
                     countdown--;
                     System.out.println("A player has exceeded 3000 points. The game will end in " + countdown + " turns unless diminished.");
+                }
+                else{
+                    countdown = 3;
                 }
 
                 currentPlayer++;
