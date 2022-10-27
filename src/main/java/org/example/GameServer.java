@@ -143,7 +143,29 @@ public class GameServer implements Serializable, Runnable {
                 playerServer[1].sendState(state);
                 playerServer[2].sendState(state);
 
+                States pState;
+                pState = playerServer[currentPlayer].receiveState();
+                System.out.println("Received " + pState.name());
+                if (pState == States.SKULL_ISLAND){
+                    System.out.println(players[currentPlayer].name + " has reached skull island!");
+                    int skullScore = playerServer[currentPlayer].recieveScore();
+                    System.out.println("All players will suffer a deduction of " + skullScore);
+                    for (int i = 0; i >=3; i++){
+                        if (i != currentPlayer){
+                            players[i].score -= skullScore;
+                            if (players[i].score < 0) players[i].score = 0;
+                            playerServer[i].sendState(pState);
+                            playerServer[i].sendPlayers(players);
+
+                        }
+                        System.out.println(players[i].name + " now has a score of " + players[i].score);
+                    }
+
+
+                }
+
                 players[currentPlayer].setScore(playerServer[currentPlayer].recieveScore() + players[currentPlayer].score);
+
                 System.out.println(String.format("Player %s completed their turn and their score is now %d", players[currentPlayer].name, players[currentPlayer].score));
                 for (Player p : players){
                     if (p.score > highscore) highscore = p.score;
@@ -229,6 +251,8 @@ public class GameServer implements Serializable, Runnable {
 
         }
 
+
+
         public int recieveScore(){
             try{
                 return dIn.readInt();
@@ -263,6 +287,16 @@ public class GameServer implements Serializable, Runnable {
                 System.out.println("Failed to send state.");
                 e.printStackTrace();
             }
+        }
+
+        public States receiveState(){
+            try{
+                return (States) dIn.readObject();
+            }catch (Exception e){
+                System.out.println("Could not receive state");
+                e.printStackTrace();
+            }
+            return States.ERROR;
         }
 
 

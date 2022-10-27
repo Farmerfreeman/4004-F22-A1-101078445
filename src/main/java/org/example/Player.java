@@ -19,6 +19,7 @@ public class Player implements Serializable{
 
     int score = 0;
 
+    int totalScore = 0;
     Game game = new Game();
 
     int playerId = 0;
@@ -87,7 +88,8 @@ public class Player implements Serializable{
         dict = game.handleFortuneCard(dict, card);
         if (dict.get(Faces.SKULL) >= 3){
             if (dict.get(Faces.SKULL) >= 4 && firstRoll){
-                sendStateToServer(States.SKULL_ISLAND);
+
+                System.out.println("You have reached skull island!");
                 return 2;
             }
             System.out.println("You have died.");
@@ -187,7 +189,9 @@ public class Player implements Serializable{
                     System.out.println("It is your turn!");
                     this.score = playTurn();
                     System.out.println(String.format("You scored %d", score));
+                    clientConnection.sendState(state);
                     clientConnection.sendScore();
+                    totalScore += score;
                 }
             else{
                 if (state == States.PLAYERTURN_1){
@@ -198,6 +202,13 @@ public class Player implements Serializable{
                 }
                 else if (state == States.PLAYERTURN_3){
                     System.out.println(String.format("%s is currently playing. Please wait...", players[2].name));
+                }
+                else if (state == States.SKULL_ISLAND){
+                    System.out.println("A player has reached skull island, oh no!");
+                    players = clientConnection.receivePlayer();
+                    System.out.println("You have received a deduction of " + (totalScore - players[playerId].score));
+                    totalScore = players[playerId].score;
+
                 }
             }
         }
@@ -228,7 +239,7 @@ public class Player implements Serializable{
         System.out.println(String.format("You have drawn the %s fortune card.", card.name()));
         int dead = isDead(true);
         if (dead == 2){
-            System.out.println("You have reached skull island!");
+            sendStateToServer(States.SKULL_ISLAND);
 
         }
         else if (dead == 1){
