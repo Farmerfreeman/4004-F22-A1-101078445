@@ -23,10 +23,14 @@ public class Game implements Serializable {
     }
 
     public Player.Dice[] rerollDie(Player.Dice[] dieRoll, int i) {
+        if (dieRoll[i].face == Faces.SKULL || dieRoll[i].inChest == true){
+            return dieRoll;
+        }
         dieRoll[i].face = Faces.values()[(int) (Math.random() * 6)];
         //System.out.println(dieRoll[i].face);
         return dieRoll;
     }
+
 
     public Player.Dice[] reRollNotHeld(Player.Dice[] dieRoll, String[] held) {
         ArrayList<Integer> rolls = new ArrayList<Integer>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7));
@@ -36,6 +40,7 @@ public class Game implements Serializable {
         }
         // remove the index from the ones to be rolled
         for (int s : rolls) {
+
             dieRoll = rerollDie(dieRoll, (s));
         }
         return dieRoll;

@@ -2,8 +2,11 @@ package org.example;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Dictionary;
+import java.util.List;
 import java.util.Scanner;
+import java.util.zip.CheckedInputStream;
 
 
 public class Player implements Serializable{
@@ -24,6 +27,8 @@ public class Player implements Serializable{
 
     Dice[] dice = new Dice[8];
 
+    List<Dice> chest = new ArrayList<>();
+
     Cards card;
 
     boolean sorcUsed = false;
@@ -36,6 +41,8 @@ public class Player implements Serializable{
 
     public class Dice implements Serializable{
         Faces face;
+
+        Boolean inChest = false;
         public Dice(){
             Faces face = Faces.DIAMOND;
         }
@@ -94,6 +101,39 @@ public class Player implements Serializable{
     public int scoreDice(){
         return game.scoreDice(dice, card);
     }
+
+    public void placeInChest(String[] placed){
+        if (card != Cards.TREASURE_CHEST){
+            System.out.println("You don't have the treasure chest card.");
+            return;
+        }
+        ArrayList<Integer> d = new ArrayList<Integer>();
+        for (String s : placed){
+            d.add(Integer.parseInt(s) - 1);
+        }
+
+        for (int s : d){
+            chest.add(dice[s]);
+            this.dice[s].inChest = true;
+            System.out.println(chest);
+        }
+
+    }
+
+    public void removeFromChest(String[] removed){
+        ArrayList<Integer> d = new ArrayList<Integer>();
+        for (String s : removed){
+            d.add(Integer.parseInt(s) - 1);
+        }
+
+        for (int s : d){
+            chest.remove(dice[s]);
+            dice[s].inChest = false;
+
+        }
+    }
+
+
 
     /*
      * ----------Networking Code------------
@@ -185,7 +225,7 @@ public class Player implements Serializable{
                             for (int i = 0; i <= dice.length; i++){
                                 if (dice[i].face == Faces.SKULL){
                                     dice[i] = game.useSorcress(dice[i], card);
-                                    System.out.println("You rerolled a skull into a" + dice[i].face);
+                                    System.out.println("You rerolled a skull into a " + dice[i].face);
                                     break;
                                 }
                             }
@@ -237,6 +277,12 @@ public class Player implements Serializable{
             if (card == Cards.SORCERESS && sorcUsed == false){
                 System.out.println("(3) Reroll a skull using your Sorcress card.");
             }
+            if (card == Cards.TREASURE_CHEST){
+                System.out.println("(3) Place di(c)e into your treasure chest for safekeeping.");
+                if (!chest.isEmpty()){
+                    System.out.println("(4) Remove di(c)e from your treasure chest.");
+                }
+            }
             int act = scan.nextInt();
             switch (act){
                 case 1:
@@ -258,24 +304,37 @@ public class Player implements Serializable{
                     System.out.println(String.format("You have now rolled %s, %s, %s, %s, %s, %s, %s and %s", dice[0].face, dice[1].face, dice[2].face, dice[3].face, dice[4].face, dice[5].face, dice[6].face, dice[7].face));
                     break;
                 case 3:
-
-                    for (int i = 0; i <= dice.length; i++) {
-                        if (dice[i].face == Faces.SKULL) {
-                            dice[i] = game.useSorcress(dice[i], card);
-                            System.out.println("You rerolled a skull into a" + dice[i].face);
-                            sorcUsed = true;
-                            break;
+                    if (card == Cards.SORCERESS) {
+                        for (int i = 0; i <= dice.length; i++) {
+                            if (dice[i].face == Faces.SKULL) {
+                                dice[i] = game.useSorcress(dice[i], card);
+                                System.out.println("You rerolled a skull into a" + dice[i].face);
+                                sorcUsed = true;
+                                break;
+                            }
                         }
+                        if (sorcUsed == false) {
+                            System.out.println("You do not currently have a skull to reroll.");
+                            continue;
+                        }
+                        break;
                     }
-                    if (sorcUsed == false){
-                        System.out.println("You do not currently have a skull to reroll.");
-                        continue;
+                    if (card == Cards.TREASURE_CHEST){
+                        System.out.println("Select which die you wish to place in the chest (1,2,4..)");
+                        String[] die = (scan.next()).replaceAll("\\s", "").split(",");
+                        placeInChest(die);
                     }
-                    break;
+                case 4:
+                    if (card == Cards.TREASURE_CHEST){
+                        System.out.println("Select which die you wish to remove from the chest (1,2,4..)");
+                        String[] die = (scan.next()).replaceAll("\\s", "").split(",");
+                        removeFromChest(die);
+                    }
             }
 
-            return score;
+
         }
+
     }
 
     public int playTurn(Scanner scan){
