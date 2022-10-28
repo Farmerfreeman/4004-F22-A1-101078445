@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.List;
 import java.util.Scanner;
-import java.util.zip.CheckedInputStream;
 
 
 public class Player implements Serializable{
@@ -191,6 +190,8 @@ public class Player implements Serializable{
                     if (state != States.SKULL_ISLAND){
                         System.out.println(String.format("You scored %d", score));
                         totalScore += score;
+                        if (totalScore < 0) totalScore = 0;
+                        System.out.println("Your total score is now " + totalScore);
                     }
                     clientConnection.sendState(state);
                     clientConnection.sendScore();
@@ -269,7 +270,7 @@ public class Player implements Serializable{
                 switch (choice.toUpperCase()) {
                     case "Y":
                         String[] held = {};
-                        dice = game.reRollNotHeld(dice, held);
+                        dice = game.reRollSelected(dice, held);
                         dict = game.countFaces(dice);
                         dict = game.handleFortuneCard(dict, card);
                         if (numSkulls == dict.get(Faces.SKULL)) {
@@ -324,14 +325,18 @@ public class Player implements Serializable{
                                         return scoreDice();
                                     case 2:
                                         while (true) {
-                                            System.out.println("Select which die you wish to hold (Held dice are not rerolled): (1,2,4..)");
+                                            System.out.println("Select which die you wish to roll: (1,2,4..)");
                                             String[] die = (scan.next()).replaceAll("\\s", "").split(",");
                                             if (die.length <= 1) {
+                                                if (die[0] == "0"){
+                                                    dice= game.reRollSelected(dice, die);
+                                                    break;
+                                                }
                                                 System.out.println("You must reroll at least two dice.");
                                                 continue;
                                             }
                                             else{
-                                                dice = game.reRollNotHeld(dice, die);
+                                                dice = game.reRollSelected(dice, die);
                                                 break;
                                             }
                                         }
@@ -392,20 +397,21 @@ public class Player implements Serializable{
                     System.out.println("(4) Remove di(c)e from your treasure chest.");
                 }
             }
-            int act = scan.nextInt();
+            int act = Integer.parseInt(scan.next());
             switch (act){
                 case 1:
                     return scoreDice();
                 case 2:
                     while (true) {
-                        System.out.println("Select which die you wish to hold (Held dice are not rerolled): (1,2,4..)");
+                        System.out.println("Select which dice you wish to roll: (1,2,4..)");
                         String[] die = (scan.next()).replaceAll("\\s", "").split(",");
+
                         if (die.length <= 1) {
                             System.out.println("You must reroll at least two dice.");
                             continue;
                         }
                         else{
-                            dice = game.reRollNotHeld(dice, die);
+                            dice = game.reRollSelected(dice, die);
                             break;
                         }
                     }
@@ -429,18 +435,20 @@ public class Player implements Serializable{
                         break;
                     }
                     if (card == Cards.TREASURE_CHEST){
-                        System.out.println("Select which die you wish to place in the chest (1,2,4..)");
+                        System.out.println("Select which dice you wish to place in the chest (1,2,4..)");
                         String[] die = (scan.next()).replaceAll("\\s", "").split(",");
                         placeInChest(die);
                     }
                     break;
                 case 4:
                     if (card == Cards.TREASURE_CHEST){
-                        System.out.println("Select which die you wish to remove from the chest (1,2,4..)");
+                        System.out.println("Select which dice you wish to remove from the chest (1,2,4..)");
                         String[] die = (scan.next()).replaceAll("\\s", "").split(",");
                         removeFromChest(die);
                     }
                     break;
+                default:
+                    System.out.println("You must enter one of the above options.");
             }
 
 
@@ -477,7 +485,7 @@ public class Player implements Serializable{
                 switch (choice.toUpperCase()) {
                     case "Y":
                         String[] held = {};
-                        dice = game.reRollNotHeld(dice, held);
+                        dice = game.reRollSelected(dice, held);
                         dice = inDice[rollCount];
                         rollCount++;
                         dict = game.countFaces(dice);
@@ -532,14 +540,14 @@ public class Player implements Serializable{
                                         return scoreDice();
                                     case 2:
                                         while (true) {
-                                            System.out.println("Select which die you wish to hold (Held dice are not rerolled): (1,2,4..)");
+                                            System.out.println("Select which dice you wish to roll: (1,2,4..)");
                                             String[] die = (scan.next()).replaceAll("\\s", "").split(",");
                                             if (die.length <= 1) {
                                                 System.out.println("You must reroll at least two dice.");
                                                 continue;
                                             }
                                             else{
-                                                dice = game.reRollNotHeld(dice, die);
+                                                dice = game.reRollSelected(dice, die);
                                                 break;
                                             }
                                         }
@@ -606,14 +614,14 @@ public class Player implements Serializable{
                     return scoreDice();
                 case 2:
                     while (true) {
-                        System.out.println("Select which die you wish to hold (Held dice are not rerolled): (1,2,4..)");
+                        System.out.println("Select which dice you wish to roll: (1,2,4..)");
                         String[] die = (scan.next()).replaceAll("\\s", "").split(",");
                         if (die.length <= 1) {
                             System.out.println("You must reroll at least two dice.");
                             continue;
                         }
                         else{
-                            dice = game.reRollNotHeld(dice, die);
+                            dice = game.reRollSelected(dice, die);
                             dice = inDice[rollCount];
                             rollCount++;
                             break;
@@ -639,14 +647,14 @@ public class Player implements Serializable{
                         break;
                     }
                     if (card == Cards.TREASURE_CHEST){
-                        System.out.println("Select which die you wish to place in the chest (1,2,4..)");
+                        System.out.println("Select which dice you wish to place in the chest (1,2,4..)");
                         String[] die = (scan.next()).replaceAll("\\s", "").split(",");
                         placeInChest(die);
                     }
                     break;
                 case 4:
                     if (card == Cards.TREASURE_CHEST){
-                        System.out.println("Select which die you wish to remove from the chest (1,2,4..)");
+                        System.out.println("Select which dice you wish to remove from the chest (1,2,4..)");
                         String[] die = (scan.next()).replaceAll("\\s", "").split(",");
                         removeFromChest(die);
                     }

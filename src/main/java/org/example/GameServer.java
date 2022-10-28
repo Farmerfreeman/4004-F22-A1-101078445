@@ -167,7 +167,7 @@ public class GameServer implements Serializable, Runnable {
                 }
                 else {
                     players[currentPlayer].setScore(playerServer[currentPlayer].recieveScore() + players[currentPlayer].score);
-
+                    if (players[currentPlayer].score < 0) players[currentPlayer].setScore(0);
                     System.out.println(String.format("Player %s completed their turn and their score is now %d", players[currentPlayer].name, players[currentPlayer].score));
                 }
                 for (Player p : players){

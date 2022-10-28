@@ -30,16 +30,15 @@ public class Game implements Serializable {
     }
 
 
-    public Player.Dice[] reRollNotHeld(Player.Dice[] dieRoll, String[] held) {
-        ArrayList<Integer> rolls = new ArrayList<Integer>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7));
+    public Player.Dice[] reRollSelected(Player.Dice[] dieRoll, String[] held) {
+        ArrayList<Integer> rolls = new ArrayList<Integer>();
         for (String s : held) {
-            int rem = Integer.parseInt(s) - 1;
-            rolls.remove(rolls.indexOf(rem));
+            rolls.add(Integer.parseInt(s));
         }
         // remove the index from the ones to be rolled
         for (int s : rolls) {
 
-            dieRoll = rerollDie(dieRoll, (s));
+            dieRoll = rerollDie(dieRoll, (s - 1));
         }
         return dieRoll;
     }
@@ -83,13 +82,13 @@ public class Game implements Serializable {
         score += dict.get(Faces.DIAMOND) * 100;
         score += dict.get(Faces.COIN) * 100;
 
-        if (isFullChest(dict) && dict.get(Faces.SKULL) == 0 && card != Cards.TREASURE_CHEST){
+        if (isFullChest(dict, card) && dict.get(Faces.SKULL) == 0 && card != Cards.TREASURE_CHEST){
             score += 500;
         }
 
         if (captain) score = score*2;
         if(card != Cards.SEA_BATTLE_2 && card != Cards.SEA_BATTLE_3 & card != Cards.SEA_BATTLE_4) {
-            System.out.println("Player scored " + score);
+            //System.out.println("Player scored " + score);
         }
         captain = false;
         return score;
@@ -112,8 +111,18 @@ public class Game implements Serializable {
         return dict;
     }
 
-    public boolean isFullChest(Dictionary<Faces, Integer> dict){
+    public boolean isFullChest(Dictionary<Faces, Integer> dict, Cards card){
         if (dict.get(Faces.SKULL) > 0) return false;
+
+        if (card == Cards.SEA_BATTLE_2){
+            if (dict.get(Faces.SWORD) == 0 || dict.get(Faces.SWORD) >= 2){
+                if (dict.get(Faces.MONKEY) == 0 || dict.get(Faces.MONKEY) >= 3){
+                    if (dict.get(Faces.PARROT) == 0 || dict.get(Faces.PARROT) >= 3){
+                        return true;
+                    }
+                }
+            }
+        }
 
         if (dict.get(Faces.SWORD) == 0 || dict.get(Faces.SWORD) >= 3){
             if (dict.get(Faces.MONKEY) == 0 || dict.get(Faces.MONKEY) >= 3){
@@ -159,6 +168,8 @@ public class Game implements Serializable {
     public int seaBattle(Player.Dice[] dice, Cards card){
         Scanner scan = new Scanner(System.in);
         Dictionary<Faces, Integer> dict = countFaces(dice);
+        System.out.println(String.format("You have rolled %s, %s, %s, %s, %s, %s, %s and %s", dice[0].face, dice[1].face, dice[2].face, dice[3].face, dice[4].face, dice[5].face, dice[6].face, dice[7].face));
+
         switch (card){
             case SEA_BATTLE_2:
                 System.out.println("Hoist the sails! You need two swords to win. You're fighting for 300 points");
@@ -169,17 +180,18 @@ public class Game implements Serializable {
                     }
                     else{
                         System.out.println("You currently have " + dict.get(Faces.SWORD) + "swords. Would you like to roll? (Y/N)");
-                        String choice = scan.nextLine();
+                        String choice = scan.next();
                         switch (choice.toUpperCase()){
                             case "Y":
-                                System.out.println("Select which die you wish to hold (Held dice are not rerolled): (1,2,4..)");
+                                System.out.println("Select which die you wish to roll: (1,2,4..)");
                                 String[] die = (scan.next()).replaceAll("\\s", "").split(",");
                                 if (die.length <= 1) {
+
                                     System.out.println("You must reroll at least two dice.");
                                     continue;
                                 }
                                 else{
-                                    dice = reRollNotHeld(dice, die);
+                                    dice = reRollSelected(dice, die);
                                     dict = countFaces(dice);
                                 }
                                 System.out.println(String.format("You have now rolled %s, %s, %s, %s, %s, %s, %s and %s", dice[0].face, dice[1].face, dice[2].face, dice[3].face, dice[4].face, dice[5].face, dice[6].face, dice[7].face));
@@ -203,17 +215,18 @@ public class Game implements Serializable {
                     }
                     else{
                         System.out.println("You currently have " + dict.get(Faces.SWORD) + "swords. Would you like to roll? (Y/N)");
-                        String choice = scan.nextLine();
+                        String choice = scan.next();
                         switch (choice.toUpperCase()){
                             case "Y":
-                                System.out.println("Select which die you wish to hold (Held dice are not rerolled): (1,2,4..)");
+                                System.out.println("Select which die you wish to roll: (1,2,4..)");
                                 String[] die = (scan.next()).replaceAll("\\s", "").split(",");
                                 if (die.length <= 1) {
+
                                     System.out.println("You must reroll at least two dice.");
                                     continue;
                                 }
                                 else{
-                                    dice = reRollNotHeld(dice, die);
+                                    dice = reRollSelected(dice, die);
                                     dict = countFaces(dice);
                                 }
                                 System.out.println(String.format("You have now rolled %s, %s, %s, %s, %s, %s, %s and %s", dice[0].face, dice[1].face, dice[2].face, dice[3].face, dice[4].face, dice[5].face, dice[6].face, dice[7].face));
@@ -237,17 +250,18 @@ public class Game implements Serializable {
                     }
                     else{
                         System.out.println("You currently have " + dict.get(Faces.SWORD) + "swords. Would you like to roll? (Y/N)");
-                        String choice = scan.nextLine();
+                        String choice = scan.next();
                         switch (choice.toUpperCase()){
                             case "Y":
-                                System.out.println("Select which die you wish to hold (Held dice are not rerolled): (1,2,4..)");
+                                System.out.println("Select which die you wish to roll: (1,2,4..)");
                                 String[] die = (scan.next()).replaceAll("\\s", "").split(",");
                                 if (die.length <= 1) {
+
                                     System.out.println("You must reroll at least two dice.");
                                     continue;
                                 }
                                 else{
-                                    dice = reRollNotHeld(dice, die);
+                                    dice = reRollSelected(dice, die);
                                     dict = countFaces(dice);
                                 }
                                 System.out.println(String.format("You have now rolled %s, %s, %s, %s, %s, %s, %s and %s", dice[0].face, dice[1].face, dice[2].face, dice[3].face, dice[4].face, dice[5].face, dice[6].face, dice[7].face));
@@ -289,14 +303,14 @@ public class Game implements Serializable {
                         String choice = scan.nextLine();
                         switch (choice.toUpperCase()){
                             case "Y":
-                                //System.out.println("Select which die you wish to hold (Held dice are not rerolled): (1,2,4..)");
+                                //System.out.println("Select which die you wish to roll: (1,2,4..)");
                                 String[] die = (scan.next()).replaceAll("\\s", "").split(",");
                                 if (die.length <= 1) {
                                     //System.out.println("You must reroll at least two dice.");
                                     continue;
                                 }
                                 else{
-                                    dice = reRollNotHeld(dice, die);
+                                    dice = reRollSelected(dice, die);
                                     dice = inDice[rollCount];
                                     rollCount++;
                                     dict = countFaces(dice);
@@ -325,14 +339,14 @@ public class Game implements Serializable {
                         String choice = scan.nextLine();
                         switch (choice.toUpperCase()){
                             case "Y":
-                                //System.out.println("Select which die you wish to hold (Held dice are not rerolled): (1,2,4..)");
+                                //System.out.println("Select which die you wish to roll: (1,2,4..)");
                                 String[] die = (scan.next()).replaceAll("\\s", "").split(",");
                                 if (die.length <= 1) {
                                     System.out.println("You must reroll at least two dice.");
                                     continue;
                                 }
                                 else{
-                                    dice = reRollNotHeld(dice, die);
+                                    dice = reRollSelected(dice, die);
                                     dice = inDice[rollCount];
                                     rollCount++;
                                     dict = countFaces(dice);
@@ -361,14 +375,14 @@ public class Game implements Serializable {
                         String choice = scan.nextLine();
                         switch (choice.toUpperCase()){
                             case "Y":
-                                //System.out.println("Select which die you wish to hold (Held dice are not rerolled): (1,2,4..)");
+                                //System.out.println("Select which die you wish to roll: (1,2,4..)");
                                 String[] die = (scan.next()).replaceAll("\\s", "").split(",");
                                 if (die.length <= 1) {
                                     System.out.println("You must reroll at least two dice.");
                                     continue;
                                 }
                                 else{
-                                    dice = reRollNotHeld(dice, die);
+                                    dice = reRollSelected(dice, die);
                                     dice = inDice[rollCount];
                                     rollCount++;
                                     dict = countFaces(dice);
