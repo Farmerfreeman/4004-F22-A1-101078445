@@ -3,11 +3,8 @@ package org.example;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import org.junit.jupiter.api.Assertions.*;
-
 import java.io.*;
 import java.util.Dictionary;
-import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTimeout;
@@ -37,7 +34,7 @@ public class PirateTest {
         Player p = new Player("Test");
         p.game.rollDice(p.dice);
         String[] held = {"1", "2", "3", "4", "5"};
-        p.game.reRollNotHeld(p.dice, held);
+        p.game.reRollSelected(p.dice, held);
 
         for (Player.Dice die : p.dice){
             for (Faces f : Faces.values()){
@@ -168,7 +165,7 @@ public class PirateTest {
     void row46() {
         Player p = new Player("test");
         p.draw();
-        String[] held = {"1", "2", "3", "4", "5"};
+        String[] held = {"6", "7", "8"};
         p.card = Cards.GOLD;
         p.game.rollDice(p.dice);
         p.dice[0].face = Faces.SKULL;
@@ -179,7 +176,7 @@ public class PirateTest {
         p.dice[5].face = Faces.SWORD;
         p.dice[6].face = Faces.SWORD;
         p.dice[7].face = Faces.SWORD;
-        p.game.reRollNotHeld(p.dice, held);
+        p.game.reRollSelected(p.dice, held);
         p.dice[5].face = Faces.SKULL;
         p.dice[6].face = Faces.SKULL;
         p.dice[7].face = Faces.SWORD;
@@ -187,7 +184,7 @@ public class PirateTest {
         //isDead is a function that takes 1 boolean parameter(firstRoll) and returns 2 if the player reached skull island,
         //1 if the player died, and 0 otherwise. Reaching skull island is only possible when firstRoll is true
         //isDead is used in the normal game loop on every roll to determine if the player is alive or not.
-        assertEquals(1, p.isDead(true));
+        assertEquals(1, p.isDead(false));
         int score = p.scoreDice();
         assertEquals(0, score);
 
@@ -199,7 +196,7 @@ public class PirateTest {
     void row47() {
         Player p = new Player("test");
         p.draw();
-        String[] held = {"1", "2", "3", "4", "5", "6"};
+        String[] held = {"7", "8"};
         p.card = Cards.GOLD;
         p.game.rollDice(p.dice);
         p.dice[0].face = Faces.SKULL;
@@ -210,7 +207,7 @@ public class PirateTest {
         p.dice[5].face = Faces.PARROT;
         p.dice[6].face = Faces.SWORD;
         p.dice[7].face = Faces.SWORD;
-        p.game.reRollNotHeld(p.dice, held);
+        p.game.reRollSelected(p.dice, held);
         p.dice[6].face = Faces.SKULL;
         p.dice[7].face = Faces.SWORD;
 
@@ -227,7 +224,7 @@ public class PirateTest {
     void row48() {
         Player p = new Player("test");
         p.draw();
-        String[] held = {"1", "2", "3", "4", "5"};
+        String[] held = {"6", "7", "8"};
         p.card = Cards.GOLD;
         p.game.rollDice(p.dice);
         p.dice[0].face = Faces.SKULL;
@@ -238,19 +235,19 @@ public class PirateTest {
         p.dice[5].face = Faces.SWORD;
         p.dice[6].face = Faces.SWORD;
         p.dice[7].face = Faces.SWORD;
-        p.game.reRollNotHeld(p.dice, held);
+        p.game.reRollSelected(p.dice, held);
         p.dice[5].face = Faces.SKULL;
         p.dice[6].face = Faces.MONKEY;
         p.dice[7].face = Faces.MONKEY;
-        held = new String[]{"1", "2", "3", "4", "5", "6"};
-        p.game.reRollNotHeld(p.dice, held);
+        held = new String[]{"7", "8"};
+        p.game.reRollSelected(p.dice, held);
         p.dice[6].face = Faces.SKULL;
         p.dice[7].face = Faces.MONKEY;
 
         //isDead is a function that takes 1 boolean parameter(firstRoll) and returns 2 if the player reached skull island,
         //1 if the player died, and 0 otherwise. Reaching skull island is only possible when firstRoll is true
         //isDead is used in the normal game loop on every roll to determine if the player is alive or not.
-        assertEquals(1, p.isDead(true));
+        assertEquals(1, p.isDead(false));
         int score = p.scoreDice();
         assertEquals(0, score);
     }
@@ -260,7 +257,7 @@ public class PirateTest {
     void row50() {
         Player p = new Player("test");
         p.draw();
-        String[] held = {"1", "4", "5", "6", "7", "8"};
+        String[] held = {"2", "3"};
         p.card = Cards.GOLD;
         p.game.rollDice(p.dice);
         p.dice[0].face = Faces.SKULL;
@@ -271,12 +268,12 @@ public class PirateTest {
         p.dice[5].face = Faces.SWORD;
         p.dice[6].face = Faces.COIN;
         p.dice[7].face = Faces.COIN;
-        p.game.reRollNotHeld(p.dice, held);
+        p.game.reRollSelected(p.dice, held);
         p.dice[1].face = Faces.COIN;
         p.dice[2].face = Faces.COIN;
 
-        held = new String[]{"1", "2", "3", "7", "8"};
-        p.game.reRollNotHeld(p.dice, held);
+        held = new String[]{"4", "5", "6"};
+        p.game.reRollSelected(p.dice, held);
         p.dice[3].face = Faces.COIN;
         p.dice[4].face = Faces.COIN;
         p.dice[5].face = Faces.COIN;
@@ -310,7 +307,7 @@ public class PirateTest {
     void row53() {
         Player p = new Player("test");
         p.draw();
-        String[] held = {"1", "2","3","4", "5", "6"};
+        String[] held = {"7", "8"};
         p.card = Cards.GOLD;
         p.game.rollDice(p.dice);
         p.dice[0].face = Faces.MONKEY;
@@ -321,7 +318,7 @@ public class PirateTest {
         p.dice[5].face = Faces.SWORD;
         p.dice[6].face = Faces.PARROT;
         p.dice[7].face = Faces.PARROT;
-        p.game.reRollNotHeld(p.dice, held);
+        p.game.reRollSelected(p.dice, held);
         p.dice[6].face = Faces.SWORD;
         p.dice[7].face = Faces.MONKEY;
 
@@ -418,7 +415,7 @@ public class PirateTest {
     void row58() {
         Player p = new Player("test");
         p.draw();
-        String[] held = {"1", "2", "3", "6", "7", "8"};
+        String[] held = {"4", "5"};
         p.card = Cards.GOLD;
         p.game.rollDice(p.dice);
         p.dice[0].face = Faces.SKULL;
@@ -429,7 +426,7 @@ public class PirateTest {
         p.dice[5].face = Faces.SWORD;
         p.dice[6].face = Faces.SWORD;
         p.dice[7].face = Faces.SWORD;
-        p.game.reRollNotHeld(p.dice, held);
+        p.game.reRollSelected(p.dice, held);
         p.dice[3].face = Faces.COIN;
         p.dice[4].face = Faces.SWORD;
 
@@ -442,7 +439,7 @@ public class PirateTest {
     void row59() {
         Player p = new Player("test");
         p.draw();
-        String[] held = {"1", "2", "3", "6", "7", "8"};
+        String[] held = {"4", "5"};
         p.card = Cards.CAPTAIN;
         p.game.rollDice(p.dice);
         p.dice[0].face = Faces.SKULL;
@@ -453,7 +450,7 @@ public class PirateTest {
         p.dice[5].face = Faces.SWORD;
         p.dice[6].face = Faces.SWORD;
         p.dice[7].face = Faces.SWORD;
-        p.game.reRollNotHeld(p.dice, held);
+        p.game.reRollSelected(p.dice, held);
         p.dice[3].face = Faces.COIN;
         p.dice[4].face = Faces.SWORD;
 
@@ -466,7 +463,7 @@ public class PirateTest {
     void row60() {
         Player p = new Player("test");
         p.draw();
-        String[] held = {"1", "4", "5", "6", "7", "8"};
+        String[] held = {"2", "3"};
         p.card = Cards.GOLD;
         p.game.rollDice(p.dice);
         p.dice[0].face = Faces.SKULL;
@@ -477,11 +474,11 @@ public class PirateTest {
         p.dice[5].face = Faces.SWORD;
         p.dice[6].face = Faces.SWORD;
         p.dice[7].face = Faces.SWORD;
-        p.game.reRollNotHeld(p.dice, held);
+        p.game.reRollSelected(p.dice, held);
         p.dice[1].face = Faces.SKULL;
         p.dice[2].face = Faces.SWORD;
-        held = new String[] {"1", "2", "3", "6", "7", "8"};
-        p.game.reRollNotHeld(p.dice, held);
+        held = new String[] {"4", "5"};
+        p.game.reRollSelected(p.dice, held);
         p.dice[3].face = Faces.SWORD;
         p.dice[4].face = Faces.MONKEY;
 
@@ -599,7 +596,7 @@ public class PirateTest {
     void row67() {
         Player p = new Player("test");
         p.draw();
-        String[] held = {"1","2", "3", "4", "5", "6"};
+        String[] held = {"7", "8"};
 
         p.card = Cards.GOLD;
         p.game.rollDice(p.dice);
@@ -611,7 +608,7 @@ public class PirateTest {
         p.dice[5].face = Faces.MONKEY;
         p.dice[6].face = Faces.SWORD;
         p.dice[7].face = Faces.SWORD;
-        p.game.reRollNotHeld(p.dice, held);
+        p.game.reRollSelected(p.dice, held);
         p.dice[6].face = Faces.MONKEY;
         p.dice[7].face = Faces.MONKEY;
         int score = p.scoreDice();
@@ -623,7 +620,7 @@ public class PirateTest {
     void row68() {
         Player p = new Player("test");
         p.draw();
-        String[] held = {"1","2", "3", "4", "5", "6"};
+        String[] held = {"7","8"};
 
         p.card = Cards.DIAMOND;
         p.game.rollDice(p.dice);
@@ -635,7 +632,7 @@ public class PirateTest {
         p.dice[5].face = Faces.SWORD;
         p.dice[6].face = Faces.PARROT;
         p.dice[7].face = Faces.PARROT;
-        p.game.reRollNotHeld(p.dice, held);
+        p.game.reRollSelected(p.dice, held);
         p.dice[6].face = Faces.DIAMOND;
         p.dice[7].face = Faces.DIAMOND;
         int score = p.scoreDice();
@@ -647,7 +644,7 @@ public class PirateTest {
     void row69() {
         Player p = new Player("test");
         p.draw();
-        String[] held = {"3", "4", "5", "6", "7","8" };
+        String[] held = {"1", "2"};
 
         p.card = Cards.GOLD;
         p.game.rollDice(p.dice);
@@ -659,7 +656,7 @@ public class PirateTest {
         p.dice[5].face = Faces.SWORD;
         p.dice[6].face = Faces.DIAMOND;
         p.dice[7].face = Faces.PARROT;
-        p.game.reRollNotHeld(p.dice, held);
+        p.game.reRollSelected(p.dice, held);
         p.dice[0].face = Faces.DIAMOND;
         p.dice[1].face = Faces.DIAMOND;
         int score = p.scoreDice();
@@ -671,7 +668,7 @@ public class PirateTest {
     void row70() {
         Player p = new Player("test");
         p.draw();
-        String[] held = {"1","2", "3", "4", "5"};
+        String[] held = {"6", "7", "8"};
 
         p.card = Cards.GOLD;
         p.game.rollDice(p.dice);
@@ -683,7 +680,7 @@ public class PirateTest {
         p.dice[5].face = Faces.SWORD;
         p.dice[6].face = Faces.SWORD;
         p.dice[7].face = Faces.SWORD;
-        p.game.reRollNotHeld(p.dice, held);
+        p.game.reRollSelected(p.dice, held);
         p.dice[5].face = Faces.COIN;
         p.dice[6].face = Faces.MONKEY;
         p.dice[7].face = Faces.PARROT;
@@ -696,7 +693,7 @@ public class PirateTest {
     void row71() {
         Player p = new Player("test");
         p.draw();
-        String[] held = {"1","2", "3", "4", "5"};
+        String[] held = {"6","7", "8"};
 
         p.card = Cards.DIAMOND;
         p.game.rollDice(p.dice);
@@ -708,7 +705,7 @@ public class PirateTest {
         p.dice[5].face = Faces.SWORD;
         p.dice[6].face = Faces.SWORD;
         p.dice[7].face = Faces.SWORD;
-        p.game.reRollNotHeld(p.dice, held);
+        p.game.reRollSelected(p.dice, held);
         p.dice[5].face = Faces.COIN;
         p.dice[6].face = Faces.MONKEY;
         p.dice[7].face = Faces.PARROT;
@@ -746,7 +743,7 @@ public class PirateTest {
     void row77() {
         Player p = new Player("test");
         p.draw();
-        String[] held = {"1","2", "3", "4", "5"};
+        String[] held = {"6","7", "8"};
 
         p.card = Cards.SORCERESS;
         p.game.rollDice(p.dice);
@@ -758,7 +755,7 @@ public class PirateTest {
         p.dice[5].face = Faces.PARROT;
         p.dice[6].face = Faces.PARROT;
         p.dice[7].face = Faces.PARROT;
-        p.game.reRollNotHeld(p.dice, held);
+        p.game.reRollSelected(p.dice, held);
         p.dice[5].face = Faces.SKULL;
         p.dice[6].face = Faces.MONKEY;
         p.dice[7].face = Faces.MONKEY;
@@ -773,7 +770,7 @@ public class PirateTest {
     void row78() {
         Player p = new Player("test");
         p.draw();
-        String[] held = {"1","2", "3", "4", "5", "6"};
+        String[] held = {"7","8"};
 
         p.card = Cards.SORCERESS;
         p.game.rollDice(p.dice);
@@ -787,7 +784,7 @@ public class PirateTest {
         p.dice[7].face = Faces.SWORD;
         p.dice[0] = p.game.useSorcress(p.dice[0], p.card);
         p.dice[0].face = Faces.PARROT;
-        p.game.reRollNotHeld(p.dice, held);
+        p.game.reRollSelected(p.dice, held);
         p.dice[6].face = Faces.PARROT;
         p.dice[7].face = Faces.PARROT;
 
@@ -800,7 +797,7 @@ public class PirateTest {
     void row79() {
         Player p = new Player("test");
         p.draw();
-        String[] held = {"1","2", "3", "4", "5"};
+        String[] held = {"6","7", "8"};
 
         p.card = Cards.SORCERESS;
         p.game.rollDice(p.dice);
@@ -812,7 +809,7 @@ public class PirateTest {
         p.dice[5].face = Faces.MONKEY;
         p.dice[6].face = Faces.MONKEY;
         p.dice[7].face = Faces.MONKEY;
-        p.game.reRollNotHeld(p.dice, held);
+        p.game.reRollSelected(p.dice, held);
         p.dice[5].face = Faces.SKULL;
         p.dice[6].face = Faces.PARROT;
         p.dice[7].face = Faces.PARROT;
@@ -851,7 +848,7 @@ public class PirateTest {
     void row83() {
         Player p = new Player("test");
         p.draw();
-        String[] held = {"1","2", "5", "6", "7", "8"};
+        String[] held = {"3","4"};
 
         p.card = Cards.MONKEY_BUSINESS;
         p.game.rollDice(p.dice);
@@ -863,7 +860,7 @@ public class PirateTest {
         p.dice[5].face = Faces.PARROT;
         p.dice[6].face = Faces.COIN;
         p.dice[7].face = Faces.COIN;
-        p.game.reRollNotHeld(p.dice, held);
+        p.game.reRollSelected(p.dice, held);
         p.dice[2].face = Faces.MONKEY;
         p.dice[3].face = Faces.PARROT;
         int score = p.scoreDice();
@@ -901,7 +898,7 @@ public class PirateTest {
         Player p = new Player("test");
         p.draw();
         String[] chest = {"6", "7", "8"};
-        String[] held = {"1","2", "3","6","7", "8"};
+        String[] held = {"4","5"};
 
 
         p.card = Cards.TREASURE_CHEST;
@@ -915,14 +912,14 @@ public class PirateTest {
         p.dice[6].face = Faces.DIAMOND;
         p.dice[7].face = Faces.COIN;
         p.placeInChest(chest);
-        p.game.reRollNotHeld(p.dice, held);
+        p.game.reRollSelected(p.dice, held);
         p.dice[3].face = Faces.PARROT;
         p.dice[4].face = Faces.PARROT;
         p.removeFromChest(chest);
         chest = new String[]{"1", "2", "3", "4", "5"};
         p.placeInChest(chest);
-        held = new String[]{"1", "2", "3", "4", "5"};
-        p.game.reRollNotHeld(p.dice, held);
+        held = new String[]{"6", "7", "8"};
+        p.game.reRollSelected(p.dice, held);
         p.dice[5].face = Faces.SKULL;
         p.dice[6].face = Faces.COIN;
         p.dice[7].face = Faces.PARROT;
@@ -939,7 +936,7 @@ public class PirateTest {
         Player p = new Player("test");
         p.draw();
         String[] chest = {"6", "7", "8"};
-        String[] held = {"1","2", "6","7", "8"};
+        String[] held = {"3","3", "5"};
 
 
         p.card = Cards.TREASURE_CHEST;
@@ -953,22 +950,22 @@ public class PirateTest {
         p.dice[6].face = Faces.COIN;
         p.dice[7].face = Faces.COIN;
         p.placeInChest(chest);
-        p.game.reRollNotHeld(p.dice, held);
+        p.game.reRollSelected(p.dice, held);
         p.dice[2].face = Faces.DIAMOND;
         p.dice[3].face = Faces.DIAMOND;
         p.dice[4].face = Faces.COIN;
         chest = new String[] {"5"};
         p.placeInChest(chest);
-        held = new String[]{"1", "2", "5", "6", "7", "8"};
+        held = new String[]{"3", "4"};
 
-        p.game.reRollNotHeld(p.dice, held);
+        p.game.reRollSelected(p.dice, held);
         p.dice[2].face = Faces.SKULL;
         p.dice[3].face = Faces.DIAMOND;
 
         //isDead is a function that takes 1 boolean parameter(firstRoll) and returns 2 if the player reached skull island,
         //1 if the player died, and 0 otherwise. Reaching skull island is only possible when firstRoll is true
         //isDead is used in the normal game loop on every roll to determine if the player is alive or not.
-        assertEquals(1, p.isDead(true));
+        assertEquals(1, p.isDead(false));
         int score = p.scoreDice(p.chest);
         assertEquals(600, score);
     }
@@ -1034,6 +1031,27 @@ public class PirateTest {
 
         int score = p.scoreDice();
         assertEquals(1000, score);
+    }
+
+    @Test
+    @DisplayName("A-TEST ROW 100")
+    void row100() {
+        byte[] in = "Y\n7,8\n".getBytes();
+        ByteArrayInputStream input = new ByteArrayInputStream(in);
+
+
+        Player p = new Player("Test");
+        Player.Dice[][] diceset = new Player.Dice[2][8];
+        diceset[0] = new Player.Dice[] {new Player.Dice(Faces.MONKEY), new Player.Dice(Faces.MONKEY),
+                new Player.Dice(Faces.MONKEY), new Player.Dice(Faces.MONKEY), new Player.Dice(Faces.SWORD),
+                new Player.Dice(Faces.PARROT), new Player.Dice(Faces.PARROT), new Player.Dice(Faces.COIN)};
+        diceset[1] = new Player.Dice[] {new Player.Dice(Faces.MONKEY), new Player.Dice(Faces.MONKEY),
+                new Player.Dice(Faces.MONKEY), new Player.Dice(Faces.MONKEY), new Player.Dice(Faces.SWORD),
+                new Player.Dice(Faces.COIN), new Player.Dice(Faces.SWORD), new Player.Dice(Faces.COIN)};
+        System.setIn(input);
+
+        p.score = p.game.seaBattle(diceset, Cards.SEA_BATTLE_2, true);
+        assertEquals(1200, p.score);
     }
 
     @Test
@@ -1205,14 +1223,15 @@ public class PirateTest {
         p.dice[6].face = Faces.SKULL;
         p.dice[7].face = Faces.SWORD;
 
-        p.score = p.game.seaBattle(p.dice, p.card);
-        assertEquals(-300, p.score);
+        int deduction = p.game.seaBattle(p.dice, p.card);
+        assertEquals( -300, deduction);
+        assertEquals(0, p.score);
     }
 
     @Test
     @DisplayName("A-TEST ROW 115")
     void row115(){
-        byte[] in = "Y\n1,2,3,4".getBytes();
+        byte[] in = "Y\n5,6,7,8".getBytes();
         ByteArrayInputStream input = new ByteArrayInputStream(in);
 
 
@@ -1226,8 +1245,9 @@ public class PirateTest {
                 new Player.Dice(Faces.SKULL), new Player.Dice(Faces.SKULL), new Player.Dice(Faces.SKULL)};
         System.setIn(input);
 
-        p.score = p.game.seaBattle(diceset, Cards.SEA_BATTLE_3, true);
-        assertEquals(-500, p.score);
+        int deduction = p.game.seaBattle(diceset, Cards.SEA_BATTLE_3, true);
+        assertEquals(-500, deduction);
+        assertEquals(0, p.score);
     }
 
     @Test
@@ -1246,8 +1266,9 @@ public class PirateTest {
         p.dice[6].face = Faces.SWORD;
         p.dice[7].face = Faces.SWORD;
 
-        p.score = p.game.seaBattle(p.dice, p.card);
-        assertEquals(-1000, p.score);
+        int deduction = p.game.seaBattle(p.dice, p.card);
+        assertEquals(-1000, deduction);
+        assertEquals(0, p.score);
     }
 
     @Test
@@ -1273,7 +1294,7 @@ public class PirateTest {
     @Test
     @DisplayName("A-TEST ROW 118")
     void row118(){
-        byte[] in = "Y\n1,2,3,4,5,6".getBytes();
+        byte[] in = "Y\n7,8".getBytes();
         ByteArrayInputStream input = new ByteArrayInputStream(in);
 
 
@@ -1314,7 +1335,7 @@ public class PirateTest {
     @Test
     @DisplayName("A-TEST ROW 121")
     void row121(){
-        byte[] in = "Y\n5,6".getBytes();
+        byte[] in = "Y\n1,2,3,4".getBytes();
         ByteArrayInputStream input = new ByteArrayInputStream(in);
 
 
@@ -1355,7 +1376,7 @@ public class PirateTest {
     @Test
     @DisplayName("A-TEST ROW 124")
     void row124(){
-        byte[] in = "Y\n1,2,3,4,5,6\nY\n4,5,6,7,8".getBytes();
+        byte[] in = "Y\n7,8\nY\n1,2,3".getBytes();
         ByteArrayInputStream input = new ByteArrayInputStream(in);
 
 
