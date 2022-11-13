@@ -2,9 +2,10 @@ Feature: Single PLayer Scoring
 
   Scenario Outline: Die on first roll
     Given player rolls <initroll>
-    Given player card is <card>
+    And player card is <card>
     When player scores
-    Then their score should be <expectedScore>
+    Then player dies
+    Then player score should be <expectedScore>
 
     Examples:
       | row | initroll | card | expectedScore |
