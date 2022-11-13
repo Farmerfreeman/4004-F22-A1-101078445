@@ -12,7 +12,6 @@ public class MyStepdefs {
     Player p = new Player("Test");
    @Given("player rolls {string}")
     public void player_rolls(String string){
-       p = new Player("Test");
        p.game.rollDice(p.dice);
        String[] dice = (string).replaceAll("\\s", "").split(",");
         for (int i = 0; i < 8; i++){
