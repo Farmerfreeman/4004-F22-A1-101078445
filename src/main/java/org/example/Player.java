@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Scanner;
 
 
-public class Player implements Serializable{
+public class Player implements Serializable, Runnable{
 
 
     @Serial
@@ -820,4 +820,11 @@ public class Player implements Serializable{
         p.startGame();
         myObj.close();
     }
+
+    public void run(){
+        initializePlayers();
+        connectToClient();
+        startGame();
+    }
+
 }

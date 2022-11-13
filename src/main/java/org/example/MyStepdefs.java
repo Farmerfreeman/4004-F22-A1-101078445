@@ -8,8 +8,15 @@ import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.example.*;
 
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+
 public class MyStepdefs {
     Player p = new Player("Test");
+    Player p2 = new Player("Test 2");
+    Player p3 = new Player("Test 3");
+    GameServer g = new GameServer();
    @Given("player rolls {string}")
     public void player_rolls(String string){
        p.game.rollDice(p.dice);
@@ -38,6 +45,35 @@ public class MyStepdefs {
         }
 
    }
+
+    @Given("player {int} rolls {string}")
+    public void player_rolls(String string, int player){
+
+        String[] dice = (string).replaceAll("\\s", "").split(",");
+        for (int i = 0; i < 8; i++){
+            switch (dice[i].toUpperCase()){
+                case "SKULL":
+                    p.dice[i].face = Faces.SKULL;
+                    break;
+                case "SWORD":
+                    p.dice[i].face = Faces.SWORD;
+                    break;
+                case "MONKEY":
+                    p.dice[i].face = Faces.MONKEY;
+                    break;
+                case "DIAMOND":
+                    p.dice[i].face = Faces.DIAMOND;
+                    break;
+                case "PARROT":
+                    p.dice[i].face = Faces.PARROT;
+                    break;
+                case "COIN":
+                    p.dice[i].face = Faces.COIN;
+                    break;
+            }
+        }
+
+    }
 
    @Given("player card is {string}")
     public void player_draws(String string){
@@ -78,6 +114,57 @@ public class MyStepdefs {
                break;
        }
    }
+
+    @Given("player {int} card is {string}")
+    public void player_draws(String string, int player){
+        Cards card = Cards.GOLD;
+        switch (string.toUpperCase()){
+            case "SORCERESS":
+                card = Cards.SORCERESS;
+                break;
+            case "TREASURE_CHEST":
+                card = Cards.TREASURE_CHEST;
+                break;
+            case "CAPTAIN":
+                card = Cards.CAPTAIN;
+                break;
+            case "SEA_BATTLE_2":
+                card = Cards.SEA_BATTLE_2;
+                break;
+            case "SEA_BATTLE_3":
+                card = Cards.SEA_BATTLE_3;
+                break;
+            case "SEA_BATTLE_4":
+                card = Cards.SEA_BATTLE_4;
+                break;
+            case "GOLD":
+                card = Cards.GOLD;
+                break;
+            case "DIAMOND":
+                card = Cards.DIAMOND;
+                break;
+            case "MONKEY_BUSINESS":
+                card = Cards.MONKEY_BUSINESS;
+                break;
+            case "SKULL_2":
+                card = Cards.SKULL_2;
+                break;
+            case "SKULL_1":
+                card = Cards.SKULL_1;
+                break;
+        }
+        switch (player){
+            case 1:
+                p.card = card;
+                break;
+            case 2:
+                p2.card = card;
+                break;
+            case 3:
+                p3.card = card;
+                break;
+        }
+    }
 
    @Given("player rerolls {int} to {string} with sorceress")
    public void player_rerolls(int slot, String face){
@@ -145,6 +232,49 @@ public class MyStepdefs {
    }
 
    //Networking
+    @Given("the game server starts")
+    public void start_server(){
+       try {
+           PrintStream ps = new PrintStream(new BufferedOutputStream(new FileOutputStream("out.txt")), true);
+           System.setOut(ps);
+       } catch (Exception e){
+           e.printStackTrace();
+       }
+
+       Thread game = new Thread(g);
+       game.start();
+
+    }
+
+    @Given("player {int} joins the game")
+    public void join_game(int player){
+
+       switch (player){
+           case 1:
+               p = new Player("P1");
+               Thread pt1 = new Thread(p);
+               pt1.start();
+               break;
+           case 2:
+               p2 = new Player("P2");
+               Thread pt2 = new Thread(p2);
+               pt2.start();
+               break;
+           case 3:
+               p3 = new Player("P3");
+               Thread pt3 = new Thread(p3);
+               pt3.start();
+               break;
+       }
+    }
+
+    @Given("WAIT")
+    public void wait_test(){
+       while(true){
+
+       }
+    }
+
 }
 
 

@@ -39,6 +39,7 @@ public class GameServer implements Serializable, Runnable {
     public void run() {
         try {
             acceptConnections();
+            gameLoop();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }

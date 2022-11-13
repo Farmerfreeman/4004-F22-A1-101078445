@@ -3,7 +3,7 @@ package org.example;
 import java.io.Serializable;
 import java.util.*;
 
-public class Game implements Serializable {
+public class Game implements Serializable, Runnable {
 
     private static final long serialVersionUID = 1L;
 
@@ -403,4 +403,9 @@ public class Game implements Serializable {
         }
         return -1;
     }
+
+    public void run(){
+
+    }
+
 }
