@@ -37,7 +37,28 @@ Feature: Single PLayer Scoring
       | row | initroll | rolltwo | rollthree | card | expectedScore |
       | 49  | 'skull, parrot, parrot, parrot, parrot, sword, sword, sword' | 'skull, parrot, parrot, parrot, parrot, skull, monkey, monkey' | 'skull, parrot, parrot, parrot, parrot, skull, skull, monkey'  | 'Gold' | 0 |
 
-  Scenario Outline: Score after three rolls
+  Scenario Outline: Score on first roll
+    Given player rolls <initroll>
+    And player card is <card>
+    When player scores
+    Then player score should be <expectedScore>
+
+    Examples:
+      | row | initroll | card | expectedScore |
+      | 52  | 'monkey, monkey, parrot, parrot, diamond, diamond, coin, coin' | 'Captain' | 800 |
+
+  Scenario Outline: Score on second roll
+    Given player rolls <initroll>
+    And player card is <card>
+    And player rolls <rolltwo>
+    When player scores
+    Then player score should be <expectedScore>
+
+    Examples:
+      | row | initroll | rolltwo | card | expectedScore |
+      | 53  | 'monkey, monkey, skull, skull, sword, sword, parrot, parrot' | 'monkey, monkey, skull, skull, sword, sword, sword, monkey'  | 'Gold' | 300 |
+
+  Scenario Outline: Score on third roll
     Given player rolls <initroll>
     And player card is <card>
     And player rolls <rolltwo>
