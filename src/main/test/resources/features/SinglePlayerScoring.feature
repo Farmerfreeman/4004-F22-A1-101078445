@@ -1,4 +1,4 @@
-Feature: Single PLayer Scoring
+Feature: Part 1 - Single PLayer Scoring
 
   Scenario Outline: Die on first roll
     Given player rolls <initroll>
