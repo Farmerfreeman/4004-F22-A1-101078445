@@ -79,6 +79,33 @@ public class MyStepdefs {
        }
    }
 
+   @When("player rerolls {int} to {string} with sorceress")
+   public void player_rerolls(int slot, String face){
+       switch (face.toUpperCase()){
+           case "SKULL":
+               p.dice[slot - 1].face = Faces.SKULL;
+               break;
+           case "SWORD":
+               p.dice[slot - 1].face = Faces.SWORD;
+               break;
+           case "MONKEY":
+               p.dice[slot - 1].face = Faces.MONKEY;
+               break;
+           case "DIAMOND":
+               p.dice[slot - 1].face = Faces.DIAMOND;
+               break;
+           case "PARROT":
+               p.dice[slot - 1].face = Faces.PARROT;
+               break;
+           case "COIN":
+               p.dice[slot - 1].face = Faces.COIN;
+               break;
+       }
+
+
+   }
+
+
    @When("player scores")
     public void player_scores(){
         p.score = p.scoreDice();
