@@ -145,7 +145,7 @@ public class GameServer implements Serializable, Runnable {
 
                 States pState;
                 pState = playerServer[currentPlayer].receiveState();
-                System.out.println("Received " + pState.name());
+
                 if (pState == States.SKULL_ISLAND){
                     System.out.println(players[currentPlayer].name + " has reached skull island!");
                     playerServer[currentPlayer].receiveState();

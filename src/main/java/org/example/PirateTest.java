@@ -893,8 +893,8 @@ public class PirateTest {
     }
 
     @Test
-    @DisplayName("A-TEST ROW 87")
-    void row87() {
+    @DisplayName("A-TEST ROW 90")
+    void row90() {
         Player p = new Player("test");
         p.draw();
         String[] chest = {"6", "7", "8"};
@@ -931,8 +931,8 @@ public class PirateTest {
     }
 
     @Test
-    @DisplayName("A-TEST ROW 92")
-    void row92() {
+    @DisplayName("A-TEST ROW 94")
+    void row94() {
         Player p = new Player("test");
         p.draw();
         String[] chest = {"6", "7", "8"};
@@ -1034,8 +1034,8 @@ public class PirateTest {
     }
 
     @Test
-    @DisplayName("A-TEST ROW 100")
-    void row100() {
+    @DisplayName("A-TEST ROW 102")
+    void row102() {
         byte[] in = "Y\n7,8\n".getBytes();
         ByteArrayInputStream input = new ByteArrayInputStream(in);
 
@@ -1124,13 +1124,13 @@ public class PirateTest {
     }
 
     @Test
-    @DisplayName("A-TEST ROW 108")
+    @DisplayName("A-TEST ROW 109")
     /*This test involves using the playTurn(Dice[][]) function to test skull island functionality
     This means that the interface will be present but the test will feed input to the scanner on its own, no input user is
     necessary. This is because the Skull Island code is not a function in itself, but essentially a block in the playTurn
     function. I also disabled all flavour text to make this more readable when the full suite is run.
      This involves generating all the dice sets for each roll individually beforehand, and then feeding them into the function.*/
-    void row108(){
+    void row109(){
         byte[] in = "Y\nY\nN".getBytes();
         ByteArrayInputStream input = new ByteArrayInputStream(in);
 
@@ -1292,8 +1292,8 @@ public class PirateTest {
     }
 
     @Test
-    @DisplayName("A-TEST ROW 118")
-    void row118(){
+    @DisplayName("A-TEST ROW 119")
+    void row119(){
         byte[] in = "Y\n7,8".getBytes();
         ByteArrayInputStream input = new ByteArrayInputStream(in);
 
@@ -1333,8 +1333,8 @@ public class PirateTest {
     }
 
     @Test
-    @DisplayName("A-TEST ROW 121")
-    void row121(){
+    @DisplayName("A-TEST ROW 122")
+    void row122(){
         byte[] in = "Y\n1,2,3,4".getBytes();
         ByteArrayInputStream input = new ByteArrayInputStream(in);
 
@@ -1374,8 +1374,8 @@ public class PirateTest {
     }
 
     @Test
-    @DisplayName("A-TEST ROW 124")
-    void row124(){
+    @DisplayName("A-TEST ROW 126")
+    void row126(){
         byte[] in = "Y\n7,8\nY\n1,2,3".getBytes();
         ByteArrayInputStream input = new ByteArrayInputStream(in);
 
