@@ -45,7 +45,8 @@ Feature: Part 2 - Miscellaneous Fortune Cards and Full Chest bonus
       | row | initroll | rolltwo | card | expectedScore |
       | 83  | 'monkey, monkey, coin, coin, sword, sword, parrot, parrot' | 'monkey, monkey, coin, coin, monkey, parrot, parrot, parrot' | 'Monkey_Business' | 1700 |
 
-  Scenario: Treasure Chest - Row 90
+  #Treasure Chest Tests
+  Scenario: Row 90
     Given player rolls 'parrot, parrot, parrot, sword, sword, diamond, diamond, coin'
     And player card is 'Treasure_Chest'
     And player places '6,7,8' in chest
@@ -55,3 +56,14 @@ Feature: Part 2 - Miscellaneous Fortune Cards and Full Chest bonus
     And player rolls 'parrot, parrot, parrot, parrot, parrot, skull, parrot, coin'
     When player scores
     Then player score should be 1100
+
+  Scenario: Row 94
+    Given player rolls 'skull, skull, parrot, parrot, parrot, coin, coin, coin'
+    And player card is 'Treasure_Chest'
+    And player places '6,7,8' in chest
+    And player rolls 'skull, skull, diamond, diamond, coin, coin, coin, coin'
+    And player places '5' in chest
+    And player rolls 'skull, skull, skull, coin, coin, coin, coin, coin'
+    When player scores
+    Then player score should be 600
+    And player dies

@@ -117,10 +117,14 @@ public class MyStepdefs {
        p.removeFromChest(dice);
    }
 
-
    @When("player scores")
     public void player_scores(){
-        p.score = p.scoreDice();
+       if (p.card == Cards.TREASURE_CHEST && p.isDead(false) == 1){
+           p.score = p.scoreDice(p.chest);
+       }
+       else{
+           p.score = p.scoreDice();
+       }
    }
 
    @Then("player dies")
