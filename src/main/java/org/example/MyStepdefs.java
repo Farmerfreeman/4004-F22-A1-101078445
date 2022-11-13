@@ -79,7 +79,7 @@ public class MyStepdefs {
        }
    }
 
-   @When("player rerolls {int} to {string} with sorceress")
+   @Given("player rerolls {int} to {string} with sorceress")
    public void player_rerolls(int slot, String face){
        switch (face.toUpperCase()){
            case "SKULL":
@@ -103,6 +103,18 @@ public class MyStepdefs {
        }
 
 
+   }
+
+   @Given("player places {string} in chest")
+   public void place_in_chest(String string){
+       String[] dice = (string).replaceAll("\\s", "").split(",");
+       p.placeInChest(dice);
+   }
+
+   @Given("player removes {string} from chest")
+   public void remove_from_chest(String string){
+       String[] dice = (string).replaceAll("\\s", "").split(",");
+       p.removeFromChest(dice);
    }
 
 

@@ -48,10 +48,10 @@ Feature: Part 2 - Miscellaneous Fortune Cards and Full Chest bonus
   Scenario: Treasure Chest - Row 90
     Given player rolls 'parrot, parrot, parrot, sword, sword, diamond, diamond, coin'
     And player card is 'Treasure_Chest'
-    And player places 'diamond, diamond, coin' in chest
+    And player places '6,7,8' in chest
     And player rolls 'parrot, parrot, parrot, parrot, parrot, diamond, diamond, coin'
-    And player places 'parrot, parrot, parrot, parrot, parrot' in chest
-    And player removes 'diamond, diamond, coin' from chest
+    And player removes '6,7,8' from chest
+    And player places '1,2,3,4,5' in chest
     And player rolls 'parrot, parrot, parrot, parrot, parrot, skull, parrot, coin'
     When player scores
     Then player score should be 1100
