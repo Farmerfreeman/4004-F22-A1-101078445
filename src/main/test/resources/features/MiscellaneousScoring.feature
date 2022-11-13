@@ -1,70 +1,15 @@
 Feature: Part 2 - Miscellaneous Fortune Cards and Full Chest bonus
 
-  Scenario Outline: Die on first roll
-    Given player rolls <initroll>
-    And player card is <card>
-    When player scores
-    Then player dies
-    Then player score should be <expectedScore>
-
-    Examples:
-      | row | initroll | card | expectedScore |
-
-
-  Scenario Outline: Die on second roll
+  Scenario Outline: Sorceress
     Given player rolls <initroll>
     And player card is <card>
     And player rolls <rolltwo>
-    When player scores
-    Then player dies
-    Then player score should be <expectedScore>
-
-    Examples:
-      | row | initroll | rolltwo | card | expectedScore |
-
-
-  Scenario Outline: Die on third roll
-    Given player rolls <initroll>
-    And player card is <card>
-    And player rolls <rolltwo>
-    And player rolls <rollthree>
-    When player scores
-    Then player dies
-    Then player score should be <expectedScore>
-
-    Examples:
-      | row | initroll | rolltwo | rollthree | card | expectedScore |
-
-
-  Scenario Outline: Score on first roll
-    Given player rolls <initroll>
-    And player card is <card>
+    And player rerolls <slot> to <result> with sorceress
     When player scores
     Then player score should be <expectedScore>
 
-    Examples:
-      | row | initroll | card | expectedScore |
-
-
-
-  Scenario Outline: Score on second roll
-    Given player rolls <initroll>
-    And player card is <card>
-    And player rolls <rolltwo>
-    When player scores
-    Then player score should be <expectedScore>
-
-    Examples:
-      | row | initroll | rolltwo | card | expectedScore |
-
-
-  Scenario Outline: Score on third roll
-    Given player rolls <initroll>
-    And player card is <card>
-    And player rolls <rolltwo>
-    And player rolls <rollthree>
-    When player scores
-    Then player score should be <expectedScore>
-
-    Examples:
-      | row | initroll | rolltwo | rollthree | card | expectedScore |
+  Examples:
+    | row | initroll | rolltwo | slot | result | card | expectedScore |
+    | 77  | 'diamond, diamond, sword, monkey, coin, parrot, parrot, parrot' | 'diamond, diamond, sword, monkey, coin, skull, monkey, monkey'  | 6 | 'monkey' | 'Sorceress' | 500 |
+    | 78  | 'skull, skull, skull, parrot, parrot, parrot, sword, sword' | 'skull, skull, skull, parrot, parrot, parrot, parrot, parrot'  | 1 | 'parrot' | 'Sorceress' | 1000 |
+    | 78  | 'skull, parrot, parrot, parrot, parrot, monkey, monkey, monkey' | 'skull, parrot, parrot, parrot, parrot, skull, parrot, parrot'  | 1 | 'parrot' | 'Sorceress' | 2000 |
