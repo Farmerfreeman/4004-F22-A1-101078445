@@ -74,5 +74,11 @@ Feature: Part 2 - Miscellaneous Fortune Cards and Full Chest bonus
   #This is the first test to leverage the actual networking code
   Scenario: Row 102
     Given the game server starts
-    And player card is 'Sea_Battle_2'
-    And player rolls 'monkey, monkey, monkey, monkey, sword, sword, coin, coin'
+    And player 1 joins the game
+    And player 2 joins the game
+    And player 3 joins the game
+    And player 1 card is 'Sea_Battle_2'
+    And player 1 rolls 'monkey, monkey, monkey, monkey, sword, parrot, parrot, coin'
+    And player 1 chooses to roll again
+    And player 1 rolls 'monkey, monkey, monkey, monkey, sword, sword, coin, coin'
+    And WAIT
