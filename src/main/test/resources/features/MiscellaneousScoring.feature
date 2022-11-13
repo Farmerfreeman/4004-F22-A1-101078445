@@ -33,6 +33,9 @@ Feature: Part 2 - Miscellaneous Fortune Cards and Full Chest bonus
   Examples:
     | row | initroll | card | expectedScore |
     | 82  | 'monkey, monkey, monkey, parrot, parrot, parrot, skull, coin' | 'Monkey_Business' | 1100 |
+    | 97  | 'monkey, monkey, monkey, sword, sword, sword, diamond, parrot' | 'Gold' | 400 |
+    | 98  | 'monkey, monkey, monkey, sword, sword, sword, coin, coin' | 'Captain' | 1800 |
+    | 99  | 'monkey, monkey, monkey, sword, sword, sword, sword, diamond' | 'Gold' | 1000 |
 
   Scenario Outline: Score on second roll
     Given player rolls <initroll>
@@ -67,3 +70,9 @@ Feature: Part 2 - Miscellaneous Fortune Cards and Full Chest bonus
     When player scores
     Then player score should be 600
     And player dies
+
+  #This is the first test to leverage the actual networking code
+  Scenario: Row 102
+    Given the game server starts
+    And player card is 'Sea_Battle_2'
+    And player rolls 'monkey, monkey, monkey, monkey, sword, sword, coin, coin'

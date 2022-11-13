@@ -117,6 +117,11 @@ public class MyStepdefs {
        p.removeFromChest(dice);
    }
 
+   @Given("player engages in a {int} sword sea battle")
+   public void sea_battle(int swords){
+
+   }
+
    @When("player scores")
     public void player_scores(){
        if (p.card == Cards.TREASURE_CHEST && p.isDead(false) == 1){
@@ -126,6 +131,8 @@ public class MyStepdefs {
            p.score = p.scoreDice();
        }
    }
+
+
 
    @Then("player dies")
     public void player_dies(){
@@ -137,8 +144,7 @@ public class MyStepdefs {
        assertEquals(expected, p.score);
    }
 
-   //Helper functions
-
+   //Networking
 }
 
 
