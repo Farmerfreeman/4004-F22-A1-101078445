@@ -50,6 +50,13 @@ Feature: Single PLayer Scoring
       | 55  | 'diamond, diamond, diamond, skull, skull, monkey, sword, parrot' | 'Gold' | 500 |
       | 56  | 'coin, coin, coin, coin, skull, skull, sword, sword' | 'Diamond' | 700          |
       | 57  | 'coin, coin, coin, coin, skull, skull, sword, sword' | 'Diamond' | 700 |
+      | 62  | 'monkey, monkey, monkey, monkey, monkey, monkey, skull, skull' | 'Gold' | 1100 |
+      | 63  | 'parrot, parrot, parrot, parrot, parrot, parrot, parrot, skull' | 'Gold' | 2100 |
+      | 64  | 'coin, coin, coin, coin, coin, coin, coin, coin' | 'Gold' | 5400 |
+      | 65  | 'coin, coin, coin, coin, coin, coin, coin, coin' | 'Diamond' | 5400 |
+      | 66  | 'sword, sword, sword, sword, sword, sword, sword, sword' | 'Captain' | 9000 |
+      | 72  | 'monkey, monkey, monkey, monkey, coin, coin, skull, skull' | 'Gold' | 600 |
+
 
   Scenario Outline: Score on second roll
     Given player rolls <initroll>
@@ -63,6 +70,11 @@ Feature: Single PLayer Scoring
       | 53  | 'monkey, monkey, skull, skull, sword, sword, parrot, parrot' | 'monkey, monkey, skull, skull, sword, sword, sword, monkey'  | 'Gold' | 300 |
       | 58  | 'skull, coin, coin, parrot, parrot, sword, sword, sword' | 'skull, coin, coin, coin, sword, sword, sword, sword'  | 'Gold' | 800 |
       | 59  | 'skull, coin, coin, parrot, parrot, sword, sword, sword' | 'skull, coin, coin, coin, sword, sword, sword, sword'  | 'Captain' | 1200 |
+      | 67  | 'monkey, monkey, monkey, monkey, monkey, monkey, sword, sword' | 'monkey, monkey, monkey, monkey, monkey, monkey, monkey, monkey' | 'Gold' | 4600 |
+      | 68  | 'monkey, monkey, skull, skull, parrot, parrot, sword, sword' | 'monkey, monkey, skull, skull, diamond, diamond, sword, sword' | 'Diamond' | 400 |
+      | 69  | 'monkey, monkey, skull, skull, diamond, parrot, sword, sword' | 'diamond, diamond, skull, skull, diamond, parrot, sword, sword' | 'Gold' | 500 |
+      | 70  | 'skull, coin, coin, monkey, parrot, sword, sword, sword' | 'skull, coin, coin, monkey, parrot, coin, monkey, parrot' | 'Gold' | 600 |
+      | 71  | 'skull, coin, coin, monkey, parrot, sword, sword, sword' | 'skull, coin, coin, monkey, parrot, coin, monkey, parrot' | 'Diamond' | 500 |
 
   Scenario Outline: Score on third roll
     Given player rolls <initroll>
@@ -75,3 +87,4 @@ Feature: Single PLayer Scoring
     Examples:
       | row | initroll | rolltwo | rollthree | card | expectedScore |
       | 51  | 'skull, parrot, parrot, sword, sword, sword, coin, coin' | 'skull, coin, coin, sword, sword, sword, coin, coin' | 'skull, coin, coin, coin, coin, coin, coin, coin'  | 'Gold' | 4800 |
+      | 61  | 'skull, parrot, parrot, monkey, monkey, sword, sword, sword' | 'skull, parrot, parrot, skull, sword, sword, sword, sword'  | 'skull, sword, monkey, skull, sword, sword, sword, sword'  | 'Gold' | 600 |
