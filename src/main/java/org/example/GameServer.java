@@ -81,6 +81,13 @@ public class GameServer implements Serializable, Runnable {
         return "server reset";
     }
 
+    public void closeAll() throws IOException{
+        for (Server p : playerServer){
+            p.terminate();
+        }
+        ss.close();
+    }
+
     synchronized public String [] getPlayerOrder(){
         String [] playerOrder = new String [Config.NUM_OF_PLAYERS];
         for (int i = 0; i < Config.NUM_OF_PLAYERS; i++){
@@ -171,6 +178,14 @@ public class GameServer implements Serializable, Runnable {
                     if (players[currentPlayer].score < 0) players[currentPlayer].setScore(0);
                     System.out.println(String.format("Player %s completed their turn and their score is now %d", players[currentPlayer].name, players[currentPlayer].score));
                 }
+
+                if (pState == States.GAMEOVER){
+                    for (Server p : playerServer){
+                        p.terminate();
+                    }
+                    return;
+                }
+
                 for (Player p : players){
                     if (p.score > highscore) highscore = p.score;
                 }

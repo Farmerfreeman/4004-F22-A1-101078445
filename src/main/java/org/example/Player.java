@@ -31,7 +31,7 @@ public class Player implements Serializable, Runnable{
 
     List<Dice> chest = new ArrayList<>();
 
-    Cards card;
+    Cards card = Cards.GOLD;
 
     boolean sorcUsed = false;
 
@@ -239,6 +239,15 @@ public class Player implements Serializable, Runnable{
                     if (totalScore < 0) totalScore = 0;
                     System.out.println("Your total score is now " + totalScore);
                 }
+                System.out.println("End test?");
+                Scanner scan = new Scanner(System.in);
+                String choice = scan.next();
+
+                if (choice.toUpperCase() == "Y"){
+                    clientConnection.sendState(States.GAMEOVER);
+                    clientConnection.sendScore();
+                    return;
+                }
                 clientConnection.sendState(state);
                 clientConnection.sendScore();
 
@@ -263,7 +272,6 @@ public class Player implements Serializable, Runnable{
             }
         }
 
-        //TODO: temp wins for some reason here, but not in gameserver.
         players = clientConnection.receivePlayer();
         System.out.println("The game is over!");
         Player winner = new Player("temp");
