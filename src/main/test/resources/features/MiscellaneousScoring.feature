@@ -72,6 +72,7 @@ Feature: Part 2 - Miscellaneous Fortune Cards and Full Chest bonus
     And player dies
 
   #This is the first test to leverage the actual networking code
+  @Networked
   Scenario: Row 102
 
     Given player 1 card is 'Sea_Battle_2'
@@ -80,7 +81,7 @@ Feature: Part 2 - Miscellaneous Fortune Cards and Full Chest bonus
     And player 1 chooses to roll again
     Given player 1 rolls 'monkey, monkey, monkey, monkey, sword, sword, coin, coin'
     And player 1 chooses to roll dice '6,7'
-    #And player 1 rolls 'monkey, monkey, monkey, monkey, sword, sword, coin, coin'
-    Then player 1 score should be 1200
 
+    When player 1 scores
+    Then player 1 score should be 1200
     And WAIT

@@ -5,6 +5,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
+
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.example.*;
@@ -225,6 +226,21 @@ public class MyStepdefs {
        }
    }
 
+    @When("player {int} scores")
+    public void playernum_scores(int player){
+        switch (player){
+            case 1:
+                p.score = p.scoreDice();
+                break;
+            case 2:
+                p2.score = p2.scoreDice();
+                break;
+            case 3:
+                p3.score = p3.scoreDice();
+                break;
+        }
+    }
+
 
 
    @Then("player dies")
@@ -237,8 +253,23 @@ public class MyStepdefs {
        assertEquals(expected, p.score);
    }
 
+   @Then("player {int} score should be {int}")
+   public void player_score_is_specific(int player, int expected){
+       switch (player){
+           case 1:
+               assertEquals(expected, p.score);
+               break;
+           case 2:
+               assertEquals(expected, p2.score);
+               break;
+           case 3:
+               assertEquals(expected, p3.score);
+               break;
+       }
+   }
+
    //Networking
-    @Before(order=0)
+    @Before("@Networked")
     public void start_server(){
        try {
            PrintStream ps = new PrintStream(new BufferedOutputStream(new FileOutputStream("out.txt")), true);
@@ -252,7 +283,7 @@ public class MyStepdefs {
 
     }
 
-    @Before(order=1)
+    @Before("@Networked")
     public void p1_join(){
        Thread pt1 = new Thread(p);
 
@@ -264,7 +295,7 @@ public class MyStepdefs {
        }
     }
 
-    @Before(order=2)
+    @Before("@Networked")
     public void p2_join(){
         Thread pt2 = new Thread(p2);
 
@@ -276,7 +307,7 @@ public class MyStepdefs {
         }
     }
 
-    @Before(order=3)
+    @Before("@Networked")
     public void p3_join(){
         Thread pt3 = new Thread(p3);
 
@@ -330,7 +361,6 @@ public class MyStepdefs {
     @Given("WAIT")
     public void wait_test(){
        while(true){
-
        }
     }
 
