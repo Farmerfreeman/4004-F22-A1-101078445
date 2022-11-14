@@ -1,11 +1,14 @@
 package org.example;
 
+import io.cucumber.java.bs.A;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class Player implements Serializable, Runnable{
@@ -16,8 +19,7 @@ public class Player implements Serializable, Runnable{
     public String name;
     public States state;
 
-    public boolean terminate = false;
-
+    AtomicBoolean connected = new AtomicBoolean();
     int score = 0;
 
     int totalScore = 0;
@@ -223,12 +225,13 @@ public class Player implements Serializable, Runnable{
 
     public void startGame(boolean test) {
         players = clientConnection.receivePlayer();
-        System.out.println(String.format("Three players have connected: %s, %s and %s", players[0].name, players[1].name, players[2].name));
+        System.out.println(String.format("PLAYER %d: Three players have connected: %s, %s and %s", playerId, players[0].name, players[1].name, players[2].name));
         System.out.println("The game will now begin.");
 
 
         while (true){
             clientConnection.recieveState();
+
             if (state == States.GAMEOVER) break;
             if (isPlayerTurn()){
                 System.out.println("It is your turn!");
@@ -239,15 +242,15 @@ public class Player implements Serializable, Runnable{
                     if (totalScore < 0) totalScore = 0;
                     System.out.println("Your total score is now " + totalScore);
                 }
-                System.out.println("End test?");
-                Scanner scan = new Scanner(System.in);
-                String choice = scan.next();
+//                System.out.println("End test?");
+//                Scanner scan = new Scanner(System.in);
+//                String choice = scan.next();
 
-                if (choice.toUpperCase() == "Y"){
-                    clientConnection.sendState(States.GAMEOVER);
-                    clientConnection.sendScore();
-                    return;
-                }
+//                if (choice.toUpperCase() == "Y"){
+//                    clientConnection.sendState(States.GAMEOVER);
+//                    clientConnection.sendScore();
+//                    return;
+//                }
                 clientConnection.sendState(state);
                 clientConnection.sendScore();
 
@@ -271,20 +274,6 @@ public class Player implements Serializable, Runnable{
                 }
             }
         }
-
-        players = clientConnection.receivePlayer();
-        System.out.println("The game is over!");
-        Player winner = new Player("temp");
-        winner.score = 0;
-        for (Player p : players){
-            if (p.score > winner.score){
-                winner = p;
-
-            }
-            System.out.println(String.format("Player %s scored %d", p.name, p.score));
-        }
-        System.out.println("Player " + winner.name + " has won!");
-
 
     }
 
@@ -725,8 +714,6 @@ public class Player implements Serializable, Runnable{
         int score = 0;
 
 
-
-
         if (card == Cards.SEA_BATTLE_2 || card == Cards.SEA_BATTLE_3 || card == Cards.SEA_BATTLE_4){
             System.out.println("Avast! Ye have engaged in a sea battle.");
             return game.seaBattle(dice, card);
@@ -881,6 +868,12 @@ public class Player implements Serializable, Runnable{
                 }
             }
             int act = Integer.parseInt(scan.next());
+            try{
+                System.in.reset();
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+
             switch (act){
                 case 1:
                     return scoreDice();
@@ -953,6 +946,7 @@ public class Player implements Serializable, Runnable{
                 playerId = dIn.readInt();
 
                 System.out.println("Connected as " + playerId);
+                connected.set(true);
                 sendPlayer();
 
             } catch (IOException ex) {
