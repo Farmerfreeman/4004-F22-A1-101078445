@@ -7,6 +7,7 @@ import io.cucumber.java.en.When;
 
 
 import io.cucumber.java.zh_cn.假如;
+import org.junit.Assert;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.example.*;
@@ -217,6 +218,27 @@ public class MyStepdefs {
        System.setIn(b);
    }
 
+   @Given("player {int} ends turn")
+   public void player_ends_turn(int player){
+       switch (player){
+           case 1:
+               while (p.state == States.PLAYERTURN_1){
+
+               }
+               break;
+           case 2:
+               while (p.state == States.PLAYERTURN_2){
+
+               }
+               break;
+           case 3:
+               while (p.state == States.PLAYERTURN_3){
+
+               }
+               break;
+       }
+   }
+
    @When("player scores")
     public void player_scores(){
        if (p.card == Cards.TREASURE_CHEST && p.isDead(false) == 1){
@@ -229,17 +251,9 @@ public class MyStepdefs {
 
     @When("player {int} scores")
     public void playernum_scores(int player){
-        switch (player){
-            case 1:
-                p.score = p.scoreDice();
-                break;
-            case 2:
-                p2.score = p2.scoreDice();
-                break;
-            case 3:
-                p3.score = p3.scoreDice();
-                break;
-        }
+        byte[] in = "1".getBytes();
+        ByteArrayInputStream b = new ByteArrayInputStream(in);
+        System.setIn(b);
     }
 
     @When("turn ends")
@@ -279,6 +293,11 @@ public class MyStepdefs {
        }
    }
 
+   @Then("game ends")
+   public void game_ends(){
+       assertEquals(States.GAMEOVER, g.state);
+   }
+
    //Networking
     @Before("@Networked")
     public void start_server(){
@@ -291,11 +310,57 @@ public class MyStepdefs {
         g = new GameServer();
        Thread game = new Thread(g);
        game.start();
+       while (!g.isRunning){
+
+       }
+       //start p1 thread
+        Thread pt1 = new Thread(p);
+
+        try {
+            pt1.start();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        //wait for p1 to connect
+        while (!p.connected) {
+
+        }
+
+        Thread pt2 = new Thread(p2);
+
+
+        try {
+            pt2.start();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        //wait for p2 to connect
+        while (!p2.connected) {
+        }
+
+        Thread pt3 = new Thread(p3);
+        try {
+            pt3.start();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        //wait for p3 to connect
+        while (!p3.connected){
+
+        }
+
 
     }
 
-    @Before("@Networked")
+
     public void p1_join(){
+        while (!g.isRunning){
+
+        }
        Thread pt1 = new Thread(p);
 
        try {
@@ -306,9 +371,12 @@ public class MyStepdefs {
        }
     }
 
-    @Before("@Networked")
+
     public void p2_join(){
         Thread pt2 = new Thread(p2);
+        while (p.clientConnection == null){
+            boolean wtv = true;
+        }
 
         try {
             pt2.start();
@@ -318,10 +386,12 @@ public class MyStepdefs {
         }
     }
 
-    @Before("@Networked")
+
     public void p3_join(){
         Thread pt3 = new Thread(p3);
+        while (p.clientConnection == null && p2.clientConnection == null){
 
+        }
         try {
             pt3.start();
         }
@@ -372,6 +442,13 @@ public class MyStepdefs {
     @Given("WAIT")
     public void wait_test(){
        while(true){
+       }
+    }
+
+    @When("WAIT GAME END")
+    public void wait_game_end(){
+       while(g.state != States.GAMEOVER){
+
        }
     }
 
