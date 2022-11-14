@@ -712,7 +712,7 @@ public class Player implements Serializable, Runnable{
     public int playTurn(Boolean test){
         Scanner scan = new Scanner(System.in);
         int score = 0;
-
+        int count = 1;
 
         if (card == Cards.SEA_BATTLE_2 || card == Cards.SEA_BATTLE_3 || card == Cards.SEA_BATTLE_4){
             System.out.println("Avast! Ye have engaged in a sea battle.");
@@ -876,6 +876,8 @@ public class Player implements Serializable, Runnable{
             int act = Integer.parseInt(scan.next());
             try{
                 System.in.reset();
+                System.in.skipNBytes(count*2);
+                count+=1;
             } catch (Exception e){
                 e.printStackTrace();
             }
