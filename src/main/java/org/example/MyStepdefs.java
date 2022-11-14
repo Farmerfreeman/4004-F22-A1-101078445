@@ -13,13 +13,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.example.*;
 
 import java.io.*;
+import java.util.Scanner;
 
 public class MyStepdefs {
-    Player p = new Player("Test");
-    Player p2 = new Player("Test 2");
-    Player p3 = new Player("Test 3");
+    Player p = new Player("p1");
+    Player p2 = new Player("p2");
+    Player p3 = new Player("p3");
     GameServer g;
 
+    ByteArrayOutputStream output = new ByteArrayOutputStream();
     String input = "";
    @Given("player rolls {string}")
     public void player_rolls(String string){
@@ -304,12 +306,20 @@ public class MyStepdefs {
        assertEquals(States.GAMEOVER, g.state);
    }
 
+   @Then("player {int} won")
+   public void player_won(int player){
+       boolean check = false;
+       if (output.toString().contains("Player p" + player + " has won!")) check = true;
+
+       assertEquals(true, check);
+   }
+
    //Networking
     @Before("@Networked")
     public void start_server(){
        try {
-           PrintStream ps = new PrintStream(new BufferedOutputStream(new FileOutputStream("out.txt")), true);
-           //System.setOut(ps);
+           PrintStream ps = new PrintStream(output);
+           System.setOut(ps);
        } catch (Exception e){
            e.printStackTrace();
        }

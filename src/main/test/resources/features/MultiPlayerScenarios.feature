@@ -21,3 +21,7 @@ Feature: Part 3 - Multi-player Scenarios
     When WAIT GAME END
 
     Then game ends
+    And player 1 won
+    And player 1 score should be 4000
+    And player 2 score should be 2000
+    And player 3 score should be 0
