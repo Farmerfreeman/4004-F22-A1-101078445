@@ -242,6 +242,16 @@ public class MyStepdefs {
         }
     }
 
+    @When("turn ends")
+    public void end_turn(){
+       try{
+           g.closeAll();
+       } catch (Exception e){
+           e.printStackTrace();
+       }
+
+    }
+
 
 
    @Then("player dies")
@@ -274,7 +284,7 @@ public class MyStepdefs {
     public void start_server(){
        try {
            PrintStream ps = new PrintStream(new BufferedOutputStream(new FileOutputStream("out.txt")), true);
-           System.setOut(ps);
+           //System.setOut(ps);
        } catch (Exception e){
            e.printStackTrace();
        }

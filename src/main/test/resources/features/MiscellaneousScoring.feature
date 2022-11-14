@@ -81,7 +81,5 @@ Feature: Part 2 - Miscellaneous Fortune Cards and Full Chest bonus
     And player 1 chooses to roll again
     Given player 1 rolls 'monkey, monkey, monkey, monkey, sword, sword, coin, coin'
     And player 1 chooses to roll dice '6,7'
-
-    When player 1 scores
+    When player
     Then player 1 score should be 1200
-    And WAIT
