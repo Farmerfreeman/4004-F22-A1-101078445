@@ -6,6 +6,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 
+import io.cucumber.java.zh_cn.假如;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.example.*;
@@ -19,7 +20,7 @@ public class MyStepdefs {
     Player p = new Player("Test");
     Player p2 = new Player("Test 2");
     Player p3 = new Player("Test 3");
-    GameServer g = new GameServer();
+    GameServer g;
    @Given("player rolls {string}")
     public void player_rolls(String string){
        p.game.rollDice(p.dice);
@@ -277,7 +278,7 @@ public class MyStepdefs {
        } catch (Exception e){
            e.printStackTrace();
        }
-
+        g = new GameServer();
        Thread game = new Thread(g);
        game.start();
 

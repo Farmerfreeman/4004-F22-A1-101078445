@@ -16,6 +16,8 @@ public class Player implements Serializable, Runnable{
     public String name;
     public States state;
 
+    public boolean terminate = false;
+
     int score = 0;
 
     int totalScore = 0;
@@ -44,7 +46,7 @@ public class Player implements Serializable, Runnable{
 
         Boolean inChest = false;
         public Dice(){
-            Faces face = Faces.DIAMOND;
+            face = Faces.DIAMOND;
         }
 
         public Dice(Faces i){
@@ -54,32 +56,17 @@ public class Player implements Serializable, Runnable{
 
     }
 
-    public void roll(String roll){
-        for (int i = 0; i < roll.length(); i++){
-            int d = roll.charAt(i);
-            dice[i].face = Faces.values()[(int) (Math.random() * 6)];
-            System.out.println(dice[i].face);
-        }
-
-    }
-
     public void draw(){
         card = Cards.values()[(int) (Math.random() * 11)];
     }
 
     public boolean isPlayerTurn(){
-        switch (playerId){
-            case 1:
-                if (state == States.PLAYERTURN_1) return true;
-                else return false;
-            case 2:
-                if (state == States.PLAYERTURN_2) return true;
-                else return false;
-            case 3:
-                if (state == States.PLAYERTURN_3) return true;
-                else return false;
-        }
-        return false;
+        return switch (playerId) {
+            case 1 -> state == States.PLAYERTURN_1;
+            case 2 -> state == States.PLAYERTURN_2;
+            case 3 -> state == States.PLAYERTURN_3;
+            default -> false;
+        };
     }
 
     public int isDead(boolean firstRoll){
@@ -112,7 +99,7 @@ public class Player implements Serializable, Runnable{
             System.out.println("You don't have the treasure chest card.");
             return;
         }
-        ArrayList<Integer> d = new ArrayList<Integer>();
+        ArrayList<Integer> d = new ArrayList<>();
         for (String s : placed){
             d.add(Integer.parseInt(s) - 1);
         }
@@ -125,7 +112,7 @@ public class Player implements Serializable, Runnable{
     }
 
     public void removeFromChest(String[] removed){
-        ArrayList<Integer> d = new ArrayList<Integer>();
+        ArrayList<Integer> d = new ArrayList<>();
         for (String s : removed){
             d.add(Integer.parseInt(s) - 1);
         }
@@ -177,7 +164,7 @@ public class Player implements Serializable, Runnable{
 
     public void startGame() {
         players = clientConnection.receivePlayer();
-        System.out.println(String.format("Three players have connected: %s, %s and %s", players[0].name, players[1].name, players[2].name));
+        System.out.printf("Three players have connected: %s, %s and %s%n", players[0].name, players[1].name, players[2].name);
         System.out.println("The game will now begin.");
 
 
@@ -188,7 +175,7 @@ public class Player implements Serializable, Runnable{
                     System.out.println("It is your turn!");
                     this.score = playTurn();
                     if (state != States.SKULL_ISLAND){
-                        System.out.println(String.format("You scored %d", score));
+                        System.out.printf("You scored %d%n", score);
                         totalScore += score;
                         if (totalScore < 0) totalScore = 0;
                         System.out.println("Your total score is now " + totalScore);
@@ -199,13 +186,13 @@ public class Player implements Serializable, Runnable{
                 }
             else{
                 if (state == States.PLAYERTURN_1){
-                    System.out.println(String.format("%s is currently playing. Please wait...", players[0].name));
+                    System.out.printf("%s is currently playing. Please wait...%n", players[0].name);
                 }
                 else if (state == States.PLAYERTURN_2){
-                    System.out.println(String.format("%s is currently playing. Please wait...", players[1].name));
+                    System.out.printf("%s is currently playing. Please wait...%n", players[1].name);
                 }
                 else if (state == States.PLAYERTURN_3){
-                    System.out.println(String.format("%s is currently playing. Please wait...", players[2].name));
+                    System.out.printf("%s is currently playing. Please wait...%n", players[2].name);
                 }
                 else if (state == States.SKULL_ISLAND){
                     System.out.println("A player has reached skull island, oh no!");
@@ -258,13 +245,13 @@ public class Player implements Serializable, Runnable{
             }
             else{
                 if (state == States.PLAYERTURN_1){
-                    System.out.println(String.format("%s is currently playing. Please wait...", players[0].name));
+                    System.out.printf("%s is currently playing. Please wait...%n", players[0].name);
                 }
                 else if (state == States.PLAYERTURN_2){
-                    System.out.println(String.format("%s is currently playing. Please wait...", players[1].name));
+                    System.out.printf("%s is currently playing. Please wait...%n", players[1].name);
                 }
                 else if (state == States.PLAYERTURN_3){
-                    System.out.println(String.format("%s is currently playing. Please wait...", players[2].name));
+                    System.out.printf("%s is currently playing. Please wait...%n", players[2].name);
                 }
                 else if (state == States.SKULL_ISLAND){
                     System.out.println("A player has reached skull island, oh no!");
