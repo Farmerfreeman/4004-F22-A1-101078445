@@ -12,16 +12,15 @@ import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.example.*;
 
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
+import java.io.*;
 
 public class MyStepdefs {
     Player p = new Player("Test");
     Player p2 = new Player("Test 2");
     Player p3 = new Player("Test 3");
     GameServer g;
+
+    String input = "";
    @Given("player rolls {string}")
     public void player_rolls(String string){
        p.game.rollDice(p.dice);
@@ -251,10 +250,17 @@ public class MyStepdefs {
 
     @When("player {int} scores")
     public void playernum_scores(int player){
-        byte[] in = "1".getBytes();
-        ByteArrayInputStream b = new ByteArrayInputStream(in);
-        System.setIn(b);
+        //input += "1\n";
     }
+
+    @When("set input {string}")
+    public void set_input(String string){
+       byte[] b = string.getBytes();
+        ByteArrayInputStream s = new ByteArrayInputStream(b);
+
+        System.setIn(s);
+    }
+
 
     @When("turn ends")
     public void end_turn(){
@@ -318,86 +324,40 @@ public class MyStepdefs {
 
         try {
             pt1.start();
+            while (!p.connected.compareAndSet(true, false));
         }
         catch (Exception e){
             e.printStackTrace();
         }
         //wait for p1 to connect
-        while (!p.connected) {
 
-        }
 
         Thread pt2 = new Thread(p2);
 
 
         try {
             pt2.start();
+            //wait for p2 to connect
+            while (!p2.connected.compareAndSet(true, false));
         }
         catch (Exception e){
             e.printStackTrace();
         }
 
-        //wait for p2 to connect
-        while (!p2.connected) {
-        }
+
 
         Thread pt3 = new Thread(p3);
         try {
             pt3.start();
+            while (!p3.connected.compareAndSet(true, false));
         }
         catch (Exception e){
             e.printStackTrace();
         }
         //wait for p3 to connect
-        while (!p3.connected){
-
-        }
 
 
-    }
 
-
-    public void p1_join(){
-        while (!g.isRunning){
-
-        }
-       Thread pt1 = new Thread(p);
-
-       try {
-           pt1.start();
-       }
-       catch (Exception e){
-           e.printStackTrace();
-       }
-    }
-
-
-    public void p2_join(){
-        Thread pt2 = new Thread(p2);
-        while (p.clientConnection == null){
-            boolean wtv = true;
-        }
-
-        try {
-            pt2.start();
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-
-    public void p3_join(){
-        Thread pt3 = new Thread(p3);
-        while (p.clientConnection == null && p2.clientConnection == null){
-
-        }
-        try {
-            pt3.start();
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
     }
 
     @Given("player {int} joins the game")
