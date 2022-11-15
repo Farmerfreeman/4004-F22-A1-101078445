@@ -3,6 +3,7 @@ package org.example;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class GameServer implements Serializable, Runnable {
@@ -17,6 +18,8 @@ public class GameServer implements Serializable, Runnable {
     private int countdown = 3;
 
     boolean test = false;
+
+    AtomicBoolean gameOver = new AtomicBoolean();
 
     Server[] playerServer = new Server[3];
     Player[] players = new Player[3];
@@ -40,7 +43,7 @@ public class GameServer implements Serializable, Runnable {
         if (test){
             try {
                 acceptConnections(true);
-                gameLoop();
+                gameLoop(true);
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
@@ -263,6 +266,7 @@ public class GameServer implements Serializable, Runnable {
 
                 if (countdown == 0){
                     state = States.GAMEOVER;
+                    gameOver.set(true);
                     playerServer[0].sendState(state);
                     playerServer[1].sendState(state);
                     playerServer[2].sendState(state);
@@ -282,6 +286,60 @@ public class GameServer implements Serializable, Runnable {
                 System.out.println(String.format("Player %s scored %d", p.name, p.score));
             }
             System.out.println("Player " + winner.name + " has won!");
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+    }
+
+    synchronized public void gameLoop(boolean test) {
+        System.out.println("Inside of gameloop");
+
+        int highscore = 0;
+        try {
+            playerServer[0].sendPlayers(players);
+
+            state = States.PLAYERTURN_1;
+            while (state != States.GAMEOVER){
+
+
+                playerServer[0].sendState(state);
+
+
+                States pState;
+                pState = playerServer[currentPlayer].receiveState();
+
+                if (pState == States.SKULL_ISLAND){
+                    System.out.println(players[currentPlayer].name + " has reached skull island!");
+                    playerServer[currentPlayer].receiveState();
+                    int skullScore = playerServer[currentPlayer].recieveScore();
+                    System.out.println("All other players will suffer a deduction of " + skullScore);
+
+                    for (int i = 0; i <3; i++){
+                        if (i != currentPlayer){
+                            players[i].score += skullScore;
+                            if (players[i].score < 0) players[i].score = 0;
+                            playerServer[i].sendState(pState);
+                            playerServer[i].sendPlayers(players);
+
+                        }
+                        System.out.println(players[i].name + " now has a score of " + players[i].score);
+                    }
+
+
+                }
+                else {
+                    players[currentPlayer].setScore(playerServer[currentPlayer].recieveScore() + players[currentPlayer].score);
+                    if (players[currentPlayer].score < 0) players[currentPlayer].setScore(0);
+                    System.out.println(String.format("Player %s completed their turn and their score is now %d", players[currentPlayer].name, players[currentPlayer].score));
+                }
+                state = States.GAMEOVER;
+                gameOver.set(true);
+
+            }
+
 
         } catch (Exception e){
             e.printStackTrace();
