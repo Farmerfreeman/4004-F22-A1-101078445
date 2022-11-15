@@ -16,7 +16,7 @@ public class GameServer implements Serializable, Runnable {
 
     private int countdown = 3;
 
-
+    boolean test = false;
 
     Server[] playerServer = new Server[3];
     Player[] players = new Player[3];
@@ -37,16 +37,31 @@ public class GameServer implements Serializable, Runnable {
 
     @Override
     public void run() {
-        try {
-            acceptConnections();
-            gameLoop();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        while(isRunning){
+        if (test){
+            try {
+                acceptConnections(true);
+                gameLoop();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            while(isRunning){
 
+            }
+        }
+        else {
+            try {
+                acceptConnections();
+                gameLoop();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            while (isRunning) {
+
+            }
         }
     }
+
+
 
     public GameServer() {
         System.out.println("Starting game server");
@@ -104,6 +119,41 @@ public class GameServer implements Serializable, Runnable {
         try {
             System.out.println("Waiting for players...");
             while (numPlayers < 3) {
+                isAcceptingConnections = true;
+                Socket s = ss.accept();
+                numPlayers++;
+
+                Server server = new Server(s, numPlayers);
+
+                // send the player number
+                server.dOut.writeInt(server.playerId);
+                server.dOut.flush();
+
+                // get the player name
+                Player in = (Player) server.dIn.readObject();
+                System.out.println("Player " + server.playerId + " ~ " + in.name + " ~ has joined");
+                // add the player to the player list
+                players[server.playerId - 1] = in;
+                playerServer[numPlayers - 1] = server;
+            }
+            System.out.println("Three players have joined the game");
+
+            // start the server threads
+            for (int i = 0; i < playerServer.length; i++) {
+                Thread t = new Thread(playerServer[i]);
+                t.start();
+            }
+            // start their threads
+        } catch (IOException ex) {
+            System.out.println("Could not connect 3 players");
+        }
+        isAcceptingConnections = false;
+    }
+
+    synchronized public void acceptConnections(boolean test) throws ClassNotFoundException {
+        try {
+            System.out.println("Waiting for players...");
+            while (numPlayers < 1) {
                 isAcceptingConnections = true;
                 Socket s = ss.accept();
                 numPlayers++;
