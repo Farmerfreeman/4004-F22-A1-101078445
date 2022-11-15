@@ -1,6 +1,6 @@
 Feature: Part 2 - Miscellaneous Fortune Cards and Full Chest bonus
 
-  Scenario Outline: Sorceress
+  Scenario Outline: Row77,78,79
     Given player rolls <initroll>
     And player card is <card>
     And player rolls <rolltwo>
@@ -12,9 +12,9 @@ Feature: Part 2 - Miscellaneous Fortune Cards and Full Chest bonus
     | row | initroll | rolltwo | slot | result | card | expectedScore |
     | 77  | 'diamond, diamond, sword, monkey, coin, parrot, parrot, parrot' | 'diamond, diamond, sword, monkey, coin, skull, monkey, monkey'  | 6 | 'monkey' | 'Sorceress' | 500 |
     | 78  | 'skull, skull, skull, parrot, parrot, parrot, sword, sword' | 'skull, skull, skull, parrot, parrot, parrot, parrot, parrot'  | 1 | 'parrot' | 'Sorceress' | 1000 |
-    | 78  | 'skull, parrot, parrot, parrot, parrot, monkey, monkey, monkey' | 'skull, parrot, parrot, parrot, parrot, skull, parrot, parrot'  | 1 | 'parrot' | 'Sorceress' | 2000 |
+    | 79  | 'skull, parrot, parrot, parrot, parrot, monkey, monkey, monkey' | 'skull, parrot, parrot, parrot, parrot, skull, parrot, parrot'  | 1 | 'parrot' | 'Sorceress' | 2000 |
 
-  Scenario Outline: Die on first roll
+  Scenario Outline: Row84
     Given player rolls <initroll>
     And player card is <card>
     When player scores
@@ -25,7 +25,7 @@ Feature: Part 2 - Miscellaneous Fortune Cards and Full Chest bonus
       | row | initroll | card | expectedScore |
       | 84  | 'Skull, Skull, Skull, Monkey, Monkey, Monkey, parrot, parrot' | 'Monkey_Business' | 0 |
 
-  Scenario Outline: Score on first roll
+  Scenario Outline: Row82,97,98,99
     Given player rolls <initroll>
     And player card is <card>
     When player scores
@@ -37,7 +37,7 @@ Feature: Part 2 - Miscellaneous Fortune Cards and Full Chest bonus
     | 98  | 'monkey, monkey, monkey, sword, sword, sword, coin, coin' | 'Captain' | 1800 |
     | 99  | 'monkey, monkey, monkey, sword, sword, sword, sword, diamond' | 'Gold' | 1000 |
 
-  Scenario Outline: Score on second roll
+  Scenario Outline: Row83
     Given player rolls <initroll>
     And player card is <card>
     And player rolls <rolltwo>
@@ -49,7 +49,7 @@ Feature: Part 2 - Miscellaneous Fortune Cards and Full Chest bonus
       | 83  | 'monkey, monkey, coin, coin, sword, sword, parrot, parrot' | 'monkey, monkey, coin, coin, monkey, parrot, parrot, parrot' | 'Monkey_Business' | 1700 |
 
   #Treasure Chest Tests
-  Scenario: Row 90
+  Scenario: Row90
     Given player rolls 'parrot, parrot, parrot, sword, sword, diamond, diamond, coin'
     And player card is 'Treasure_Chest'
     And player places '6,7,8' in chest
@@ -60,7 +60,7 @@ Feature: Part 2 - Miscellaneous Fortune Cards and Full Chest bonus
     When player scores
     Then player score should be 1100
 
-  Scenario: Row 94
+  Scenario: Row94
     Given player rolls 'skull, skull, parrot, parrot, parrot, coin, coin, coin'
     And player card is 'Treasure_Chest'
     And player places '6,7,8' in chest
@@ -72,14 +72,31 @@ Feature: Part 2 - Miscellaneous Fortune Cards and Full Chest bonus
     And player dies
 
   #This is the first test to leverage the actual networking code
-  @Networked
-  Scenario: Row 102
+  @Networked_sp
+  Scenario: Row102
 
     Given player 1 card is 'Sea_Battle_2'
 
     Given player 1 rolls 'monkey, monkey, monkey, monkey, sword, parrot, parrot, coin'
-    And player 1 chooses to roll again
+    And set input 'Y 6,7'
+
     Given player 1 rolls 'monkey, monkey, monkey, monkey, sword, sword, coin, coin'
-    And player 1 chooses to roll dice '6,7'
-    When player
+
+
+    When turn 1 ends
+
     Then player 1 score should be 1200
+
+  @Networked_sp
+  Scenario: Row106
+    Given player 1 card is 'Skull_2'
+    And player 1 rolls 'Skull, sword, sword, sword, sword, sword, sword, sword'
+
+    When turn 1 ends
+
+    Then player 1 dies
+    Then player 1 score should be 0
+
+
+
+

@@ -15,7 +15,7 @@ Feature: Part 3 - Multi-player Scenarios
 
     And set input '1 1'
 
-    When WAIT GAME END
+    When turn ends
 
     Then game ends
     And player 1 won

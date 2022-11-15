@@ -1,5 +1,6 @@
 package org.example;
 
+import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -267,6 +268,9 @@ public class MyStepdefs {
     @When("turn ends")
     public void end_turn(){
        try{
+           p.killClient();
+           p2.killClient();
+           p3.killClient();
            g.closeAll();
        } catch (Exception e){
            e.printStackTrace();
@@ -279,6 +283,21 @@ public class MyStepdefs {
    @Then("player dies")
     public void player_dies(){
        assertEquals(1, p.isDead(false));
+   }
+
+   @Then("player {int} dies")
+   public void playerint_dies(int player){
+       switch (player){
+           case 1:
+               assertEquals(1, p.isDead(false));
+               break;
+           case 2:
+               assertEquals(1, p2.isDead(false));
+               break;
+           case 3:
+               assertEquals(1, p3.isDead(false));
+               break;
+       }
    }
 
    @Then("player score should be {int}")
@@ -370,6 +389,30 @@ public class MyStepdefs {
 
     }
 
+    @Before("@Networked_sp")
+    public void start_server_sp() {
+        try {
+            PrintStream ps = new PrintStream(output);
+            //System.setOut(ps);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        g = new GameServer();
+        Thread game = new Thread(g);
+        g.test = true;
+        game.start();
+
+        //start p1 thread
+        Thread pt1 = new Thread(p);
+
+        try {
+            pt1.start();
+            while (!p.connected.compareAndSet(true, false)) ;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Given("player {int} joins the game")
     public void join_game(int player){
 
@@ -415,9 +458,24 @@ public class MyStepdefs {
        }
     }
 
-    @When("WAIT GAME END")
-    public void wait_game_end(){
-       while(g.state != States.GAMEOVER){
+    @Given("WAIT PLAYER {int} TURN")
+    public void wait_player_turn(int player){
+       switch (player){
+           case 1:
+               while(g.state != States.PLAYERTURN_1);
+               break;
+           case 2:
+               while(g.state != States.PLAYERTURN_2);
+               break;
+           case 3:
+               while(g.state != States.PLAYERTURN_3);
+               break;
+       }
+    }
+
+    @When("turn {int} ends")
+    public void wait_game_end(int player){
+       while(!g.gameOver.compareAndSet(true, false)){
 
        }
     }
