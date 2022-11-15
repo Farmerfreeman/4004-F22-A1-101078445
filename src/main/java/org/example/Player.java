@@ -759,8 +759,14 @@ public class Player implements Serializable, Runnable{
                         System.out.println("You have to type Y or N to choose, numbskull!");
                 }
             }
-            System.out.println("You're done here! Other players will lose " + numSkulls * 100 + " points.");
-            return numSkulls * -100;
+            if (card == Cards.CAPTAIN) {
+                System.out.println("You're done here! Other players will lose " + numSkulls * 200 + " points.");
+                return numSkulls * -200;
+            }
+            else{
+                System.out.println("You're done here! Other players will lose " + numSkulls * 100 + " points.");
+                return numSkulls * -100;
+            }
         }
         else if (dead == 1){
             //This code handles if a player would have died on roll 1, but held a Sorc card.
