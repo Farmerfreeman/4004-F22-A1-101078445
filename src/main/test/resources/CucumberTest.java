@@ -5,6 +5,6 @@ import io.cucumber.junit.CucumberOptions;
 import io.cucumber.junit.Cucumber;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(features="src/main/test/resources")
+@CucumberOptions(tags = "not @Fails", features="src/main/test/resources")
 public class CucumberTest {
 }

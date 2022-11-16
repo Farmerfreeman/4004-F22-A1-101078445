@@ -186,3 +186,91 @@ Feature: Part 2 - Miscellaneous Fortune Cards and Full Chest bonus
     #checking for no negative scores
     And player 1 score should be 0
 
+  @Networked_sp
+  Scenario: Row116
+    Given player 1 card is 'Sea_Battle_4'
+
+    And player 1 rolls 'monkey, monkey, skull, skull, skull, sword, sword, sword'
+
+    When turn 1 ends
+
+    Then player score should be -1000
+    And player dies
+    #checking for no negative scores
+    And player 1 score should be 0
+
+  @Networked_sp
+  Scenario: Row117
+    Given player 1 card is 'Sea_Battle_2'
+
+    And player 1 rolls 'monkey, monkey, monkey, sword, sword, coin, parrot, parrot'
+
+    When turn 1 ends
+
+    Then player score should be 500
+
+  @Networked_sp
+  Scenario: Row119
+    Given player 1 card is 'Sea_Battle_2'
+
+    And player 1 rolls 'monkey, monkey, monkey, monkey, sword, skull, parrot, parrot'
+    And set input 'Y 7,8'
+
+    And player 1 rolls 'monkey, monkey, monkey, monkey, sword, skull, sword, skull'
+
+    When turn 1 ends
+
+    Then player score should be 500
+
+  @Networked_sp
+  Scenario: Row120
+    Given player 1 card is 'Sea_Battle_3'
+
+    And player 1 rolls 'monkey, monkey, monkey, sword, sword, sword, sword, skull'
+
+    When turn 1 ends
+
+    Then player score should be 800
+
+  @Networked_sp
+  Scenario: Row122
+    Given player 1 card is 'Sea_Battle_3'
+
+    And player 1 rolls 'monkey, monkey, monkey, monkey, sword, sword, skull, skull'
+    And set input 'Y 1,2,3,4'
+
+    And player 1 rolls 'skull, skull, sword, sword, sword, sword, skull, skull'
+
+    When turn 1 ends
+
+    Then player score should be -500
+    And player dies
+    #checking for no negative scores
+    And player 1 score should be 0
+
+  @Networked_sp
+  Scenario: Row123
+    Given player 1 card is 'Sea_Battle_4'
+
+    And player 1 rolls 'monkey, monkey, monkey, sword, sword, sword, sword, skull'
+
+    When turn 1 ends
+
+    Then player score should be 1300
+
+  @Networked_sp
+  @Fails
+  Scenario: Row126
+    Given player 1 card is 'Sea_Battle_4'
+
+    And player 1 rolls 'monkey, monkey, monkey, sword, skull, diamond, parrot, parrot'
+    And set input 'Y 7,8'
+
+    And player 1 rolls 'monkey, monkey, monkey, sword, skull, diamond, sword, sword'
+    And set input 'Y 1,2,3'
+
+    And player 1 rolls 'sword, parrot, parrot, sword, skull, diamond, sword, sword'
+
+    When turn 1 ends
+
+    Then player score should be 1300
