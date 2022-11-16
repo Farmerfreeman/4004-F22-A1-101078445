@@ -242,15 +242,7 @@ public class Player implements Serializable, Runnable{
                     if (totalScore < 0) totalScore = 0;
                     System.out.println("Your total score is now " + totalScore);
                 }
-//                System.out.println("End test?");
-//                Scanner scan = new Scanner(System.in);
-//                String choice = scan.next();
 
-//                if (choice.toUpperCase() == "Y"){
-//                    clientConnection.sendState(States.GAMEOVER);
-//                    clientConnection.sendScore();
-//                    return;
-//                }
                 clientConnection.sendState(state);
                 clientConnection.sendScore();
 
@@ -267,9 +259,9 @@ public class Player implements Serializable, Runnable{
                 }
                 else if (state == States.SKULL_ISLAND){
                     System.out.println("A player has reached skull island, oh no!");
-                    players = clientConnection.receivePlayer();
-                    System.out.println("You have received a deduction of " + (totalScore - players[playerId - 1].score));
-                    totalScore = players[playerId - 1].score;
+                    int[] scores = clientConnection.receiveScore();
+                    System.out.println("You have received a deduction of " + (totalScore - scores[playerId - 1]));
+                    totalScore = scores[playerId - 1];
 
                 }
             }
@@ -1008,6 +1000,21 @@ public class Player implements Serializable, Runnable{
                 e.printStackTrace();
             }
             return pl;
+        }
+
+        public int[] receiveScore(){
+            int[] scores = new int[3];
+            try{
+                int s = dIn.readInt();
+                scores[0] = s;
+                s = dIn.readInt();
+                scores[1] = s;
+                s = dIn.readInt();
+                scores[2] = s;
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+            return scores;
         }
 
 

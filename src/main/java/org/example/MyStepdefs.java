@@ -1,6 +1,8 @@
 package org.example;
 
+import io.cucumber.java.After;
 import io.cucumber.java.Before;
+import io.cucumber.java.bs.A;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -20,6 +22,8 @@ public class MyStepdefs {
     Player p2 = new Player("p2");
     Player p3 = new Player("p3");
     GameServer g;
+
+    static InputStream in = System.in;
 
     ByteArrayOutputStream output = new ByteArrayOutputStream();
     String input = "";
@@ -290,13 +294,13 @@ public class MyStepdefs {
     public void player_score_is_specific(int player, int expected){
         switch (player){
             case 1:
-                assertEquals(expected, p.score);
+                assertEquals(expected, p.totalScore);
                 break;
             case 2:
-                assertEquals(expected, p2.score);
+                assertEquals(expected, p2.totalScore);
                 break;
             case 3:
-                assertEquals(expected, p3.score);
+                assertEquals(expected, p3.totalScore);
                 break;
         }
     }
@@ -369,6 +373,16 @@ public class MyStepdefs {
 
 
     }
+
+    @After("@Networked")
+    public void saveOutput(){
+        try(OutputStream out = new FileOutputStream("Output.txt")){
+            output.writeTo(out);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
 
     @Given("player {int} joins the game")
     public void join_game(int player){

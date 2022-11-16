@@ -217,16 +217,25 @@ public class GameServer implements Serializable, Runnable {
                     int skullScore = playerServer[currentPlayer].recieveScore();
                     System.out.println("All other players will suffer a deduction of " + skullScore);
 
+                    int[] scores = new int[3];
+
+
+
                     for (int i = 0; i <3; i++){
                         if (i != currentPlayer){
                             players[i].score += skullScore;
                             if (players[i].score < 0) players[i].score = 0;
                             playerServer[i].sendState(pState);
-                            playerServer[i].sendPlayers(players);
+                            for (int j = 0; j<3; j++){
+                                scores[i] = players[i].score;
+                            }
+                            playerServer[i].sendScore(scores);
 
                         }
                         System.out.println(players[i].name + " now has a score of " + players[i].score);
                     }
+
+
 
 
                 }
@@ -326,12 +335,19 @@ public class GameServer implements Serializable, Runnable {
                     int skullScore = playerServer[currentPlayer].recieveScore();
                     System.out.println("All other players will suffer a deduction of " + skullScore);
 
+                    int[] scores = new int[3];
+
+                    for (int i = 0; i<3; i++){
+                        scores[i] = players[i].score;
+                    }
+
                     for (int i = 0; i <3; i++){
                         if (i != currentPlayer){
                             players[i].score += skullScore;
                             if (players[i].score < 0) players[i].score = 0;
                             playerServer[i].sendState(pState);
-                            playerServer[i].sendPlayers(players);
+
+                            playerServer[i].sendScore(scores);
 
                         }
                         System.out.println(players[i].name + " now has a score of " + players[i].score);
@@ -425,6 +441,19 @@ public class GameServer implements Serializable, Runnable {
             } catch (Exception e){
                 System.out.println("Failed to send state.");
                 e.printStackTrace();
+            }
+        }
+
+        public void sendScore(int[] score){
+            try {
+                for (int s: score){
+                    dOut.writeInt(s);
+                    dOut.flush();
+                }
+
+            } catch (IOException ex) {
+                System.out.println("Score sheet not sent");
+                ex.printStackTrace();
             }
         }
 
