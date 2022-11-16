@@ -223,6 +223,7 @@ Feature: Part 2 - Miscellaneous Fortune Cards and Full Chest bonus
     Then player score should be 500
 
   @Networked_sp
+  @Fails
   Scenario: Row120
     Given player 1 card is 'Sea_Battle_3'
 
