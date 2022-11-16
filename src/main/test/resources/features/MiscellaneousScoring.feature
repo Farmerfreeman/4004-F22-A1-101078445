@@ -1,5 +1,6 @@
 Feature: Part 2 - Miscellaneous Fortune Cards and Full Chest bonus
 
+  #Scenario Outline: Player rerolls using the sorceress
   Scenario Outline: Row77,78,79
     Given player rolls <initroll>
     And player card is <card>
@@ -14,18 +15,22 @@ Feature: Part 2 - Miscellaneous Fortune Cards and Full Chest bonus
     | 78  | 'skull, skull, skull, parrot, parrot, parrot, sword, sword' | 'skull, skull, skull, parrot, parrot, parrot, parrot, parrot'  | 1 | 'parrot' | 'Sorceress' | 1000 |
     | 79  | 'skull, parrot, parrot, parrot, parrot, monkey, monkey, monkey' | 'skull, parrot, parrot, parrot, parrot, skull, parrot, parrot'  | 1 | 'parrot' | 'Sorceress' | 2000 |
 
-  Scenario Outline: Row84
+  #Scenario Outline: Player dies on the first roll
+  Scenario Outline: Row84,106
     Given player rolls <initroll>
     And player card is <card>
     When player scores
     Then player dies
-    Then player score should be <expectedScore>
+    And player score should be <expectedScore>
 
     Examples:
       | row | initroll | card | expectedScore |
       | 84  | 'Skull, Skull, Skull, Monkey, Monkey, Monkey, parrot, parrot' | 'Monkey_Business' | 0 |
+      | 106  | 'Skull, sword, sword, sword, sword, sword, sword, sword' | 'Skull_2' | 0 |
+      | 107  | 'Skull, Skull, sword, sword, sword, sword, sword, sword' | 'Skull_1' | 0 |
 
-  Scenario Outline: Row82,97,98,99
+  #Scenario Outline: Player scores on the first roll
+  Scenario Outline: Row82,97,98,99,103
     Given player rolls <initroll>
     And player card is <card>
     When player scores
@@ -36,7 +41,9 @@ Feature: Part 2 - Miscellaneous Fortune Cards and Full Chest bonus
     | 97  | 'monkey, monkey, monkey, sword, sword, sword, diamond, parrot' | 'Gold' | 400 |
     | 98  | 'monkey, monkey, monkey, sword, sword, sword, coin, coin' | 'Captain' | 1800 |
     | 99  | 'monkey, monkey, monkey, sword, sword, sword, sword, diamond' | 'Gold' | 1000 |
+    | 103  | 'monkey, monkey, parrot, coin, coin, diamond, diamond, diamond' | 'Monkey_Business' | 1200 |
 
+  #Scenario Outline: Player scores on the second roll
   Scenario Outline: Row83
     Given player rolls <initroll>
     And player card is <card>
@@ -71,32 +78,111 @@ Feature: Part 2 - Miscellaneous Fortune Cards and Full Chest bonus
     Then player score should be 600
     And player dies
 
-  #This is the first test to leverage the actual networking code
+  #All tests below are single player networked tests. These tests leverage the actual networking code via threads,
+  #however the game is ended after a single turn and the score is asserted against.
+  #Only a single player thread is created in these tests, and the game server is modified slightly to allow a
+  #single player to play.
   @Networked_sp
   Scenario: Row102
 
     Given player 1 card is 'Sea_Battle_2'
 
-    Given player 1 rolls 'monkey, monkey, monkey, monkey, sword, parrot, parrot, coin'
+    And player 1 rolls 'monkey, monkey, monkey, monkey, sword, parrot, parrot, coin'
     And set input 'Y 6,7'
 
-    Given player 1 rolls 'monkey, monkey, monkey, monkey, sword, sword, coin, coin'
+    And player 1 rolls 'monkey, monkey, monkey, monkey, sword, sword, coin, coin'
 
 
     When turn 1 ends
 
     Then player 1 score should be 1200
 
+
   @Networked_sp
-  Scenario: Row106
+  Scenario: Row109
     Given player 1 card is 'Skull_2'
-    And player 1 rolls 'Skull, sword, sword, sword, sword, sword, sword, sword'
+
+    And player 1 rolls 'skull, skull, parrot, parrot, parrot, monkey, monkey, monkey'
+    And set input 'Y 3,4,5'
+
+    And player 1 rolls 'skull, skull, skull, skull, sword, monkey, monkey, monkey'
+    And set input 'Y 5,6,7,8'
+
+    And player 1 rolls 'skull, skull, skull, skull, sword, skull, skull, skull'
+    And set input 'N'
 
     When turn 1 ends
 
-    Then player 1 dies
-    Then player 1 score should be 0
+    #Player score without player number checks player score for the turn(in this case deduction)
+    Then player score should be -900
+
+    #Player {int} score checks total_score. A representation of the players actual current score
+    And player 1 score should be 0
+    And player 2 score should be 0
+    And player 3 score should be 0
+
+  @Networked_sp
+  Scenario: Row110
+    Given player 1 card is 'Captain'
+
+    And player 1 rolls 'skull, skull, skull, skull, skull, monkey, monkey, monkey'
+    And set input 'Y 6,7,8'
+
+    And player 1 rolls 'skull, skull, skull, skull, skull, skull, skull, coin'
+    And set input 'N'
+
+    When turn 1 ends
+
+    Then player score should be -1400
+
+    And player 1 score should be 0
+    And player 2 score should be 0
+    And player 3 score should be 0
+
+  @Networked_sp
+  Scenario: Row111
+    Given player 1 card is 'Skull_2'
+
+    And player 1 rolls 'skull, skull, skull, sword, sword, sword, sword, sword'
+    And set input 'Y 4,5,6,7,8'
+
+    And player 1 rolls 'skull, skull, skull, coin, coin, coin, coin, coin'
 
 
+    When turn 1 ends
 
+    Then player score should be -500
+
+    And player 1 score should be 0
+    And player 2 score should be 0
+    And player 3 score should be 0
+
+  @Networked_sp
+  Scenario: Row114
+    Given player 1 card is 'Sea_Battle_2'
+
+    And player 1 rolls 'skull, skull, skull, sword, monkey, monkey, monkey, monkey'
+
+    When turn 1 ends
+
+    Then player score should be -300
+    And player dies
+    #checking for no negative scores
+    And player 1 score should be 0
+
+  @Networked_sp
+  Scenario: Row115
+    Given player 1 card is 'Sea_Battle_3'
+
+    And player 1 rolls 'sword, sword, skull, skull, parrot, parrot, parrot, parrot'
+    And set input 'Y 5,6,7,8'
+
+    And player 1 rolls 'sword, sword, skull, skull, skull, skull, skull, skull'
+
+    When turn 1 ends
+
+    Then player score should be -500
+    And player dies
+    #checking for no negative scores
+    And player 1 score should be 0
 
