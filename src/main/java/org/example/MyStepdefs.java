@@ -417,9 +417,27 @@ public class MyStepdefs {
 
     @When("WAIT GAME END")
     public void wait_game_end(){
-        while(g.state != States.GAMEOVER){
+        while(!g.gameOver.compareAndSet(true, true)){
 
         }
+    }
+
+    @When("WAIT P {int} TURN")
+    public void wait_player_turn(int player){
+        switch (player){
+            case 1:
+                while(!g.playerTurn.compareAndSet(1, 1));
+                break;
+            case 2:
+                while(!g.playerTurn.compareAndSet(2, 2));
+                break;
+            case 3:
+                while(!g.playerTurn.compareAndSet(3, 3));
+                break;
+        }
+
+
+
     }
 
     //Helper Functions
