@@ -876,7 +876,7 @@ public class Player implements Serializable, Runnable{
             int act = Integer.parseInt(scan.next());
             try{
                 System.in.reset();
-                System.in.skipNBytes(count*2);
+                //System.in.skipNBytes(count*2);
                 count+=1;
             } catch (Exception e){
                 e.printStackTrace();

@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class GameServer implements Serializable, Runnable {
@@ -12,6 +13,8 @@ public class GameServer implements Serializable, Runnable {
     private static final long serialVersionUID = 1L;
     public boolean isAcceptingConnections;
     public States state;
+
+    AtomicInteger playerTurn =new AtomicInteger(0);
 
     private int currentPlayer = 0;
 
@@ -197,6 +200,7 @@ public class GameServer implements Serializable, Runnable {
             playerServer[1].sendPlayers(players);
             playerServer[2].sendPlayers(players);
             state = States.PLAYERTURN_1;
+            playerTurn.set(1);
             while (state != States.GAMEOVER){
 
 
@@ -244,6 +248,7 @@ public class GameServer implements Serializable, Runnable {
                 }
                 if (highscore >= 3000){
                     countdown--;
+                    highscore = 0;
                     System.out.println("A player has exceeded 3000 points. The game will end in " + countdown + " turns unless diminished.");
                 }
                 else{
@@ -254,14 +259,17 @@ public class GameServer implements Serializable, Runnable {
                 switch (state){
                     case PLAYERTURN_1:
                         state = States.PLAYERTURN_2;
+                        playerTurn.set(2);
                         break;
                     case PLAYERTURN_2:
                         state = States.PLAYERTURN_3;
+                        playerTurn.set(3);
                         break;
                 }
                 if (currentPlayer == 3) {
                     currentPlayer = 0;
                     state = States.PLAYERTURN_1;
+                    playerTurn.set(1);
                 }
 
                 if (countdown == 0){
@@ -286,6 +294,7 @@ public class GameServer implements Serializable, Runnable {
                 System.out.println(String.format("Player %s scored %d", p.name, p.score));
             }
             System.out.println("Player " + winner.name + " has won!");
+            ss.close();
 
         } catch (Exception e){
             e.printStackTrace();
