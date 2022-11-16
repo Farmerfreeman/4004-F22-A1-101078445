@@ -1,6 +1,6 @@
 Feature: Part 1 - Single PLayer Scoring
 
-  Scenario Outline: Die on first roll
+  Scenario Outline: Row45
     Given player rolls <initroll>
     And player card is <card>
     When player scores
@@ -11,7 +11,7 @@ Feature: Part 1 - Single PLayer Scoring
       | row | initroll | card | expectedScore |
       | 45  | 'Skull, Skull, Skull, Sword, Sword, Sword, Sword, Sword' | 'Gold' | 0 |
 
-  Scenario Outline: Die on second roll
+  Scenario Outline: Row46,47
     Given player rolls <initroll>
     And player card is <card>
     And player rolls <rolltwo>
@@ -24,7 +24,7 @@ Feature: Part 1 - Single PLayer Scoring
     | 46  | 'skull, parrot, parrot, parrot, parrot, sword, sword, sword' | 'skull, parrot, parrot, parrot, parrot, skull, skull, sword'  | 'Gold' | 0 |
     | 47  | 'skull, skull, parrot, parrot, parrot, parrot, sword, sword' | 'skull, skull, parrot, parrot, parrot, parrot, skull, sword'  | 'Gold' | 0 |
 
-  Scenario Outline: Die on third roll
+  Scenario Outline: Row49
     Given player rolls <initroll>
     And player card is <card>
     And player rolls <rolltwo>
@@ -37,7 +37,7 @@ Feature: Part 1 - Single PLayer Scoring
       | row | initroll | rolltwo | rollthree | card | expectedScore |
       | 49  | 'skull, parrot, parrot, parrot, parrot, sword, sword, sword' | 'skull, parrot, parrot, parrot, parrot, skull, monkey, monkey' | 'skull, parrot, parrot, parrot, parrot, skull, skull, monkey'  | 'Gold' | 0 |
 
-  Scenario Outline: Score on first roll
+  Scenario Outline: Row52,54,55,56,57,62,63,64,65,66,72
     Given player rolls <initroll>
     And player card is <card>
     When player scores
@@ -58,7 +58,7 @@ Feature: Part 1 - Single PLayer Scoring
       | 72  | 'monkey, monkey, monkey, monkey, coin, coin, skull, skull' | 'Gold' | 600 |
 
 
-  Scenario Outline: Score on second roll
+  Scenario Outline: Row53,58,59,67,68,69,70,71
     Given player rolls <initroll>
     And player card is <card>
     And player rolls <rolltwo>
@@ -76,7 +76,7 @@ Feature: Part 1 - Single PLayer Scoring
       | 70  | 'skull, coin, coin, monkey, parrot, sword, sword, sword' | 'skull, coin, coin, monkey, parrot, coin, monkey, parrot' | 'Gold' | 600 |
       | 71  | 'skull, coin, coin, monkey, parrot, sword, sword, sword' | 'skull, coin, coin, monkey, parrot, coin, monkey, parrot' | 'Diamond' | 500 |
 
-  Scenario Outline: Score on third roll
+  Scenario Outline: Row51,61
     Given player rolls <initroll>
     And player card is <card>
     And player rolls <rolltwo>

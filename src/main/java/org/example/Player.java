@@ -209,7 +209,6 @@ public class Player implements Serializable, Runnable{
             }
         }
 
-        //TODO: temp wins for some reason here, but not in gameserver.
         players = clientConnection.receivePlayer();
         System.out.println("The game is over!");
         Player winner = new Player("temp");
