@@ -2,13 +2,10 @@ package org.example;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
-import io.cucumber.java.bs.A;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-
-import io.cucumber.java.zh_cn.假如;
 import org.junit.Assert;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -319,7 +316,7 @@ public class MyStepdefs {
     public void player_won(int player){
         boolean check = false;
         try{
-            Thread.sleep(2000);
+            Thread.sleep(500);
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -349,6 +346,7 @@ public class MyStepdefs {
 
 
         try {
+            Thread.sleep(200);
             pt1.start();
             while (!p.connected.compareAndSet(true, false));
         }
@@ -384,8 +382,39 @@ public class MyStepdefs {
 
     }
 
+    @Before("@Networked_sp")
+    public void start_server_sp() {
+        try {
+            PrintStream ps = new PrintStream(output);
+            System.setOut(ps);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        g.test = true;
+        game.start();
+
+        //start p1 thread
+        Thread pt1 = new Thread(p);
+
+        try {
+            Thread.sleep(200);
+            pt1.start();
+            while (!p.connected.compareAndSet(true, false)) ;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @When("turn {int} ends")
+    public void wait_game_end(int player){
+        while(!g.gameOver.compareAndSet(true, false)){
+
+        }
+    }
+
     @After("@Networked")
-    public void saveOutput(){
+    public void close(){
         try(OutputStream out = new FileOutputStream("Output.txt")){
             output.writeTo(out);
         } catch (Exception e){
@@ -401,10 +430,45 @@ public class MyStepdefs {
             pt2.stop();
             pt2.stop();
             game.stop();
+            Thread.sleep(200);
         } catch (Exception e){
             e.printStackTrace();
         }
 
+    }
+
+    @After("@Networked_sp")
+    public void close_sp(){
+        p = new Player("p1");
+        p2 = new Player("p2");
+        p3 = new Player("p3");
+        try {
+            g.ss.close();
+            g.playerTurn.set(0);
+            pt1.stop();
+            pt2.stop();
+            pt2.stop();
+            game.stop();
+            Thread.sleep(200);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    @Given("WAIT P {int} REROLL {int}")
+    public void wait_reroll(int player, int roll){
+        switch (player){
+            case 1:
+                while(!p.roll.compareAndSet(roll, roll));
+                break;
+            case 2:
+                while(!p2.roll.compareAndSet(roll, roll));
+                break;
+            case 3:
+                while(!p3.roll.compareAndSet(roll, roll));
+                break;
+        }
     }
 
 
@@ -480,8 +544,16 @@ public class MyStepdefs {
 
     @Then("end test")
     public void end_test(){
-        try{
-            Thread.sleep(2000);
+        p = new Player("p1");
+        p2 = new Player("p2");
+        p3 = new Player("p3");
+        try {
+            g.ss.close();
+            g.playerTurn.set(0);
+            pt1.stop();
+            pt2.stop();
+            pt2.stop();
+            game.stop();
         } catch (Exception e){
             e.printStackTrace();
         }

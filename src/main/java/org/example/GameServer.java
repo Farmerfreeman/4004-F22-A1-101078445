@@ -347,9 +347,9 @@ public class GameServer implements Serializable, Runnable {
                         if (i != currentPlayer){
                             players[i].score += skullScore;
                             if (players[i].score < 0) players[i].score = 0;
-                            playerServer[i].sendState(pState);
+                            //playerServer[i].sendState(pState);
 
-                            playerServer[i].sendScore(scores);
+                            //playerServer[i].sendScore(scores);
 
                         }
                         System.out.println(players[i].name + " now has a score of " + players[i].score);

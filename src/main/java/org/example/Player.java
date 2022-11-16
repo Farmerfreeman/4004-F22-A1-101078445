@@ -9,6 +9,7 @@ import java.util.Dictionary;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class Player implements Serializable, Runnable{
@@ -20,6 +21,8 @@ public class Player implements Serializable, Runnable{
     public States state;
 
     AtomicBoolean connected = new AtomicBoolean();
+
+    AtomicInteger roll = new AtomicInteger(0);
     int score = 0;
 
     int totalScore = 0;
@@ -286,6 +289,7 @@ public class Player implements Serializable, Runnable{
 
         System.out.println(String.format("You have rolled %s, %s, %s, %s, %s, %s, %s and %s", dice[0].face, dice[1].face, dice[2].face, dice[3].face, dice[4].face, dice[5].face, dice[6].face, dice[7].face));
         System.out.println(String.format("You have drawn the %s fortune card.", card.name()));
+
         int dead = isDead(true);
         if (dead == 2){
             //Code for skull island
@@ -713,6 +717,7 @@ public class Player implements Serializable, Runnable{
 
         System.out.println(String.format("You have rolled %s, %s, %s, %s, %s, %s, %s and %s", dice[0].face, dice[1].face, dice[2].face, dice[3].face, dice[4].face, dice[5].face, dice[6].face, dice[7].face));
         System.out.println(String.format("You have drawn the %s fortune card.", card.name()));
+        roll.set(roll.get() + 1);
         int dead = isDead(true);
         if (dead == 2){
             //Code for skull island
@@ -751,6 +756,7 @@ public class Player implements Serializable, Runnable{
                         }
                         System.out.println("You got another skull, you can keep going.");
                         numSkulls = dict.get(Faces.SKULL);
+                        roll.set(roll.get() + 1);
                         break;
                     case "N":
                         System.out.println("Have it your way!");
@@ -819,6 +825,7 @@ public class Player implements Serializable, Runnable{
                                         }
 
                                         System.out.println(String.format("You have now rolled %s, %s, %s, %s, %s, %s, %s and %s", dice[0].face, dice[1].face, dice[2].face, dice[3].face, dice[4].face, dice[5].face, dice[6].face, dice[7].face));
+                                        roll.set(roll.get() + 1);
                                 }
 
                                 return score;
@@ -874,7 +881,7 @@ public class Player implements Serializable, Runnable{
                     System.out.println("(4) Remove di(c)e from your treasure chest.");
                 }
             }
-            int act = Integer.parseInt(scan.next());
+            String act = (scan.next());
             try{
                 System.in.reset();
                 //System.in.skipNBytes(count*2);
@@ -884,9 +891,9 @@ public class Player implements Serializable, Runnable{
             }
 
             switch (act){
-                case 1:
+                case "1":
                     return scoreDice();
-                case 2:
+                case "2":
                     while (true) {
                         System.out.println("Select which dice you wish to roll: (1,2,4..)");
                         String[] die = (scan.next()).replaceAll("\\s", "").split(",");
@@ -902,8 +909,9 @@ public class Player implements Serializable, Runnable{
                     }
 
                     System.out.println(String.format("You have now rolled %s, %s, %s, %s, %s, %s, %s and %s", dice[0].face, dice[1].face, dice[2].face, dice[3].face, dice[4].face, dice[5].face, dice[6].face, dice[7].face));
+                    roll.set(roll.get() + 1);
                     break;
-                case 3:
+                case "3":
                     if (card == Cards.SORCERESS) {
                         for (int i = 0; i <= dice.length; i++) {
                             if (dice[i].face == Faces.SKULL) {
@@ -925,7 +933,7 @@ public class Player implements Serializable, Runnable{
                         placeInChest(die);
                     }
                     break;
-                case 4:
+                case "4":
                     if (card == Cards.TREASURE_CHEST){
                         System.out.println("Select which dice you wish to remove from the chest (1,2,4..)");
                         String[] die = (scan.next()).replaceAll("\\s", "").split(",");
