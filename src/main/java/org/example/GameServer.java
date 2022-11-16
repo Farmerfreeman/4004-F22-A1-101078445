@@ -43,6 +43,12 @@ public class GameServer implements Serializable, Runnable {
 
     @Override
     public void run() {
+        System.out.println("Starting game server");
+        try {
+            ss = new ServerSocket(Config.GAME_SERVER_PORT_NUMBER);
+        } catch (IOException ex) {
+            System.out.println("Server Failed to open");
+        }
         if (test){
             try {
                 acceptConnections(true);
@@ -70,7 +76,7 @@ public class GameServer implements Serializable, Runnable {
 
 
     public GameServer() {
-        System.out.println("Starting game server");
+
         numPlayers = 0;
 
         // initialize the players list with new players
@@ -78,11 +84,7 @@ public class GameServer implements Serializable, Runnable {
             players[i] = new Player(" ");
         }
 
-        try {
-            ss = new ServerSocket(Config.GAME_SERVER_PORT_NUMBER);
-        } catch (IOException ex) {
-            System.out.println("Server Failed to open");
-        }
+
 
     }
 

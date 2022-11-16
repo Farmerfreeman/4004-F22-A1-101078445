@@ -729,6 +729,15 @@ public class Player implements Serializable, Runnable{
 
                 System.out.println("So how bout it, would you like to roll? (You currently have " + numSkulls + " skulls. (Y/N)");
                 String choice = scan.next();
+
+                try{
+                    //System.in.reset();
+                    //System.in.skipNBytes(count*2);
+                    count+=1;
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+                if (choice.equals("1"))choice="N";
                 switch (choice.toUpperCase()) {
                     case "Y":
                         String[] held = {};
