@@ -21,9 +21,14 @@ public class MyStepdefs {
     Player p = new Player("p1");
     Player p2 = new Player("p2");
     Player p3 = new Player("p3");
-    GameServer g;
+    GameServer g = new GameServer();
 
     static InputStream in = System.in;
+
+    Thread pt1 = new Thread(p);
+    Thread pt2 = new Thread(p2);
+    Thread pt3 = new Thread(p3);
+    Thread game = new Thread(g);
 
     ByteArrayOutputStream output = new ByteArrayOutputStream();
     String input = "";
@@ -313,28 +318,35 @@ public class MyStepdefs {
     @Then("player {int} won")
     public void player_won(int player){
         boolean check = false;
+        try{
+            Thread.sleep(2000);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
         if (output.toString().contains("Player p" + player + " has won!")) check = true;
 
         assertEquals(true, check);
+
     }
 
     //Networking
     @Before("@Networked")
     public void start_server(){
         try {
+            output = new ByteArrayOutputStream();
             PrintStream ps = new PrintStream(output);
             System.setOut(ps);
         } catch (Exception e){
             e.printStackTrace();
         }
-        g = new GameServer();
-        Thread game = new Thread(g);
+
+
         game.start();
         while (!g.isRunning){
 
         }
         //start p1 thread
-        Thread pt1 = new Thread(p);
+
 
         try {
             pt1.start();
@@ -346,7 +358,6 @@ public class MyStepdefs {
         //wait for p1 to connect
 
 
-        Thread pt2 = new Thread(p2);
 
 
         try {
@@ -360,7 +371,6 @@ public class MyStepdefs {
 
 
 
-        Thread pt3 = new Thread(p3);
         try {
             pt3.start();
             while (!p3.connected.compareAndSet(true, false));
@@ -381,6 +391,20 @@ public class MyStepdefs {
         } catch (Exception e){
             e.printStackTrace();
         }
+        p = new Player("p1");
+        p2 = new Player("p2");
+        p3 = new Player("p3");
+        try {
+            g.ss.close();
+            g.playerTurn.set(0);
+            pt1.stop();
+            pt2.stop();
+            pt2.stop();
+            game.stop();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
 
@@ -453,6 +477,18 @@ public class MyStepdefs {
 
 
     }
+
+    @Then("end test")
+    public void end_test(){
+        try{
+            Thread.sleep(2000);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+    }
+
 
     //Helper Functions
     public void setDice(String[] dice, Player p){

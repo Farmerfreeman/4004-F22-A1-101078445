@@ -5,7 +5,7 @@ Feature: Row140
   And player 1 rolls 'sword, sword, sword, sword, sword, sword, sword, skull'
   And player 1 scores
 
-  And set input '1'
+  And set input "1 N"
 
   And player 2 card is 'Gold'
   And player 2 rolls 'skull, skull, skull, monkey, monkey, monkey, monkey, monkey'
@@ -15,22 +15,29 @@ Feature: Row140
   And player 3 rolls 'skull, skull, skull, skull, skull, skull, parrot, parrot'
   And player 3 scores
 
+
   And WAIT P 2 TURN
 
-  And set input 'N'
+
 
   And WAIT P 3 TURN
 
   And set input '1'
 
+  
+
   Given player 1 card is 'Gold'
   And player 1 rolls 'monkey, monkey, monkey, monkey, parrot, parrot, parrot, parrot'
   And player 1 scores
 
+  And WAIT P 1 TURN
 
+  And set input "1"
+    
   And player 2 card is 'Captain'
   And player 2 rolls 'skull, skull, skull, monkey, monkey, monkey, monkey, monkey'
 
+    
   And player 3 card is 'Skull_1'
   And player 3 rolls 'skull, skull, monkey, monkey, monkey, monkey, monkey, monkey'
 

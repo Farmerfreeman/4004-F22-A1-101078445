@@ -22,6 +22,7 @@ Feature: Row132
     And player 1 score should be 4000
     And player 2 score should be 2000
     And player 3 score should be 0
+    And end test
 
 
 
