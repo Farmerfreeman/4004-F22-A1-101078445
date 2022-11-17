@@ -36,6 +36,7 @@ public class GameServer implements Serializable, Runnable {
     public static void main(String[] args) throws Exception {
         GameServer sr = new GameServer();
 
+
         sr.acceptConnections();
         sr.gameLoop();
 
@@ -43,12 +44,7 @@ public class GameServer implements Serializable, Runnable {
 
     @Override
     public void run() {
-        System.out.println("Starting game server");
-        try {
-            ss = new ServerSocket(Config.GAME_SERVER_PORT_NUMBER);
-        } catch (IOException ex) {
-            System.out.println("Server Failed to open");
-        }
+
         if (test){
             try {
                 acceptConnections(true);
@@ -124,6 +120,12 @@ public class GameServer implements Serializable, Runnable {
      *
      */
     synchronized public void acceptConnections() throws ClassNotFoundException {
+        System.out.println("Starting game server");
+        try {
+            ss = new ServerSocket(Config.GAME_SERVER_PORT_NUMBER);
+        } catch (IOException ex) {
+            System.out.println("Server Failed to open");
+        }
         try {
             System.out.println("Waiting for players...");
             while (numPlayers < 3) {
@@ -159,6 +161,12 @@ public class GameServer implements Serializable, Runnable {
     }
 
     synchronized public void acceptConnections(boolean test) throws ClassNotFoundException {
+        System.out.println("Starting game server");
+        try {
+            ss = new ServerSocket(Config.GAME_SERVER_PORT_NUMBER);
+        } catch (IOException ex) {
+            System.out.println("Server Failed to open");
+        }
         try {
             System.out.println("Waiting for players...");
             while (numPlayers < 1) {

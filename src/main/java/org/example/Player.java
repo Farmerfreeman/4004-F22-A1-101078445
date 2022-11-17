@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 public class Player implements Serializable, Runnable{
@@ -276,9 +278,9 @@ public class Player implements Serializable, Runnable{
         int score = 0;
 
         //Hardcoded dice if needed.
-        //dice = new Dice[] {new Dice(Faces.SKULL), new Dice(Faces.SKULL), new Dice(Faces.SKULL), new Dice(Faces.SKULL), new Dice(Faces.PARROT), new Dice(Faces.PARROT), new Dice(Faces.PARROT), new Dice(Faces.PARROT)};
+        dice = new Dice[] {new Dice(Faces.SKULL), new Dice(Faces.COIN), new Dice(Faces.COIN), new Dice(Faces.COIN), new Dice(Faces.PARROT), new Dice(Faces.PARROT), new Dice(Faces.PARROT), new Dice(Faces.PARROT)};
 
-        dice = game.rollDice(dice);
+        //dice = game.rollDice(dice);
         draw();
 
         if (card == Cards.SEA_BATTLE_2 || card == Cards.SEA_BATTLE_3 || card == Cards.SEA_BATTLE_4){
@@ -444,8 +446,21 @@ public class Player implements Serializable, Runnable{
                         System.out.println("Select which dice you wish to roll: (1,2,4..)");
                         String[] die = (scan.next()).replaceAll("\\s", "").split(",");
 
+                        for (int i = 0; i<die.length; i++){
+                            if (dice[Integer.parseInt(die[i]) - 1].face == Faces.SKULL){
+                                String[] temp = new String[die.length - 1];
+                                for (int j = 0, k = 0; j<die.length; j++){
+                                    if(j != i){
+                                        temp[k++] = die[i];
+                                    }
+
+                                }
+                                die = temp;
+                            }
+                        }
+
                         if (die.length <= 1) {
-                            System.out.println("You must reroll at least two dice.");
+                            System.out.println("You must reroll at least two dice that aren't skulls.");
                             continue;
                         }
                         else{
