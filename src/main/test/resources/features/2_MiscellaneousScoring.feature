@@ -250,6 +250,7 @@ Feature: Part 2 - Miscellaneous Fortune Cards and Full Chest bonus
     And player 1 score should be 0
 
   @Networked_sp
+  @Fails
   Scenario: Row123
     Given player 1 card is 'Sea_Battle_4'
 

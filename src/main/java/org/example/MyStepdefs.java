@@ -296,13 +296,13 @@ public class MyStepdefs {
     public void player_score_is_specific(int player, int expected){
         switch (player){
             case 1:
-                assertEquals(expected, p.totalScore);
+                assertEquals(expected, g.players[0].score);
                 break;
             case 2:
-                assertEquals(expected, p2.totalScore);
+                assertEquals(expected, g.players[1].score);
                 break;
             case 3:
-                assertEquals(expected, p3.totalScore);
+                assertEquals(expected, g.players[2].score);
                 break;
         }
     }
@@ -430,7 +430,7 @@ public class MyStepdefs {
             pt2.stop();
             pt2.stop();
             game.stop();
-            Thread.sleep(200);
+            Thread.sleep(400);
         } catch (Exception e){
             e.printStackTrace();
         }

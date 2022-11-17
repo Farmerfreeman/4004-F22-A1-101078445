@@ -18,7 +18,7 @@ Feature: Row145
 
 
 
-  Given player 1 card is 'Captain'
+  And player 1 card is 'Captain'
   And player 1 rolls 'sword, sword, sword, sword, sword, sword, sword, sword'
   And player 1 scores
 

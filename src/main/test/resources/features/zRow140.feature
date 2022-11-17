@@ -23,7 +23,7 @@ Feature: Row140
 
     And set input '1'
 
-    Given player 1 card is 'Gold'
+    And player 1 card is 'Gold'
     And player 1 rolls 'monkey, monkey, monkey, monkey, parrot, parrot, parrot, parrot'
     And player 1 scores
 

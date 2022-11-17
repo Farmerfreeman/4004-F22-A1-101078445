@@ -5,7 +5,7 @@ Feature: Part 1 - Single PLayer Scoring
     And player card is <card>
     When player scores
     Then player dies
-    Then player score should be <expectedScore>
+    And player score should be <expectedScore>
 
     Examples:
       | row | initroll | card | expectedScore |
@@ -17,7 +17,7 @@ Feature: Part 1 - Single PLayer Scoring
     And player rolls <rolltwo>
     When player scores
     Then player dies
-    Then player score should be <expectedScore>
+    And player score should be <expectedScore>
 
   Examples:
     | row | initroll | rolltwo | card | expectedScore |
@@ -31,7 +31,7 @@ Feature: Part 1 - Single PLayer Scoring
     And player rolls <rollthree>
     When player scores
     Then player dies
-    Then player score should be <expectedScore>
+    And player score should be <expectedScore>
 
     Examples:
       | row | initroll | rolltwo | rollthree | card | expectedScore |
