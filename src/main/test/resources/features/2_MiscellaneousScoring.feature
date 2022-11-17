@@ -16,7 +16,7 @@ Feature: Part 2 - Miscellaneous Fortune Cards and Full Chest bonus
     | 79  | 'skull, parrot, parrot, parrot, parrot, monkey, monkey, monkey' | 'skull, parrot, parrot, parrot, parrot, skull, parrot, parrot'  | 1 | 'parrot' | 'Sorceress' | 2000 |
 
   #Scenario Outline: Player dies on the first roll
-  Scenario Outline: Row84,106
+  Scenario Outline: Row84,106,107
     Given player rolls <initroll>
     And player card is <card>
     When player scores

@@ -1,7 +1,7 @@
 Feature: Row132
 
   @Networked
-  Scenario: row132
+  Scenario: Row132
     Given player 1 card is 'Captain'
     And player 1 rolls 'sword, sword, sword, sword, sword, sword, sword, skull'
     And player 1 scores
