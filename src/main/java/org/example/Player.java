@@ -278,9 +278,9 @@ public class Player implements Serializable, Runnable{
         int score = 0;
 
         //Hardcoded dice if needed.
-        dice = new Dice[] {new Dice(Faces.SKULL), new Dice(Faces.COIN), new Dice(Faces.COIN), new Dice(Faces.COIN), new Dice(Faces.PARROT), new Dice(Faces.PARROT), new Dice(Faces.PARROT), new Dice(Faces.PARROT)};
+        //dice = new Dice[] {new Dice(Faces.SKULL), new Dice(Faces.COIN), new Dice(Faces.COIN), new Dice(Faces.COIN), new Dice(Faces.PARROT), new Dice(Faces.PARROT), new Dice(Faces.PARROT), new Dice(Faces.PARROT)};
 
-        //dice = game.rollDice(dice);
+        dice = game.rollDice(dice);
         draw();
 
         if (card == Cards.SEA_BATTLE_2 || card == Cards.SEA_BATTLE_3 || card == Cards.SEA_BATTLE_4){
